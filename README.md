@@ -16,11 +16,17 @@ When you are ready, you can follow these steps:
 2.	Unzip the xz file. You may need special software to do this.  I used "The UnArchiver" on my mac.
 3.  Copy the disk image (img) file you unzipped onto the flash drive.  Operating System specific instructions are below.
 4.  Before you remove the SD Card, You should edit this document in the edit the following file in the Pi-boot partition which should have automatically mounted after the imaging process: 
+
 						/boot/config.txt 
+						
 	to make sure that your PI will have a decent resolution even when an HDMI display is not connected. Use the following options:
+	
 		hdmi_force_hotplug=1
+		
 		hdmi_group=2
+		
 		hdmi_mode=46 (1440 x 900@60Hz)
+		
 		For the 3rd one, you can set your resolution to whatever you like.  I set it to option 46 (1440 x 900) since that is my laptop resolution.
 
 5.  Insert the SD Card into the Raspberry Pi, connect a mouse, keyboard, and display.  Then turn it on.
