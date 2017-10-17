@@ -15,7 +15,7 @@ When you are ready, you can follow these steps:
 1.	Download latest version of Ubuntu mate https://ubuntu-mate.org/raspberry-pi/
 2.	Unzip the xz file. You may need special software to do this.  I used "The UnArchiver" on my mac.
 3.  Copy the disk image (img) file you unzipped onto the flash drive.  Operating System specific instructions are below.
-4.  Before you remove the SD Card, You should edit this document in the edit the following file in the Pi-boot partition which should have automatically mounted after the imaging process: 
+4.  Before you remove the SD Card, You should edit the following file in the Pi-boot partition which should have automatically mounted after the imaging process: 
 
 						/boot/config.txt 
 						
@@ -34,8 +34,10 @@ When you are ready, you can follow these steps:
 7.  Copy the script setupAstroPi3.sh to your Raspberry Pi and Open a Terminal Window.
 8.  Navigate to the Folder containing the script.
 8.  Make sure the file is executable using
+
 	chmod +x setupAstroPi3.sh
 9.  Run the script using sudo
+
 	sudo ./setupAstroPi3.sh
 
 
