@@ -74,6 +74,60 @@ sudo systemctl enable vncserver-x11-serviced.service
 rm VNC.deb
 
 #########################################################
+#############  Configuration for Hotspot Wifi for Connecting on the Observing Field
+
+# This will fix a problem where AdHoc and Hotspot Networks Shut down very shortly after starting them
+# Apparently it was due to power management of the wifi network by Network Manager.
+# If Network Manager did not detect internet, it shut down the connections to save energy. 
+# If you want to leave wifi power management enabled, put #'s in front of this section
+display "Preventing Wifi Power Management from shutting down AdHoc and Hotspot Networks"
+sudo cat > /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf <<- EOF
+[connection]
+wifi.powersave = 2
+EOF
+
+# This will create a NetworkManager Wifi Hotspot File.  
+# You can edit this file to match your settings now or after the script runs in Network Manager.
+# If you prefer to set this up yourself, you can comment out this section with #'s.
+# If you want the hotspot to start up by default you should set autoconnect to true.
+display "Creating AstroFieldWifi Hotspot Wifi for the observing field"
+sudo cat > /etc/NetworkManager/system-connections/AstroFieldWifi <<- EOF
+[connection]
+id=AstroFieldWifi
+type=wifi
+autoconnect=false
+interface-name=wlan0
+
+[wifi]
+mac-address-blacklist=
+mac-address-randomization=0
+mode=ap
+ssid=AstroFieldWifi
+
+[ipv4]
+dns-search=
+method=shared
+
+[ipv6]
+addr-gen-mode=stable-privacy
+dns-search=
+ip6-privacy=0
+method=ignore
+EOF
+
+# This will make a link to start the hotspot wifi on the Desktop
+sudo cat > ~/Desktop/StartAstroFieldWifi.desktop <<- EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon[en_US]=mate-panel-launcher
+Name[en_US]=Start AstroFieldWifi
+Exec=nmcli con up AstroFieldWifi
+Name=Start AstroFieldWifi 
+Icon=mate-panel-launcher
+
+#########################################################
 #############  File Sharing Configuration
 
 display "Setting up File Sharing"
