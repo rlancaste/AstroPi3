@@ -32,6 +32,14 @@ fi
 #display "Updating Kernel"
 #sudo rpi-update 
 
+# This will prevent Firefox from being updated.  Right now when Firefox gets updated on Raspberry Pi, it breaks it. 
+display "Currently (11/2017) there is an issue with Ubuntu-Mate on Raspberry Pi.  Updating Firefox Breaks it."
+read -p "Do you want to prevent a Firefox update (y/n)? " preventUpdateFirefox
+if [ "$preventUpdateFirefox" == "y" ]
+then
+	sudo apt-mark hold firefox
+fi
+
 # Updates the Raspberry Pi to the latest packages.
 display "Updating installed packages"
 sudo apt-get update
@@ -175,4 +183,4 @@ sudo chown $SUDO_USER ~/Desktop/INDIWebManager.desktop
 
 #########################################################
 
-display "Script Execution Complete.  Your Raspberry Pi 3 should now be ready to use for Astrophotography."
+display "Script Execution Complete.  Your Raspberry Pi 3 should now be ready to use for Astrophotography.  You should restart your Pi."
