@@ -13,9 +13,9 @@ use the script as is or add or remove certain lines before running it by adding 
 When you are ready, you can follow these steps:
 
 1.	Download latest version of Ubuntu mate https://ubuntu-mate.org/raspberry-pi/
-2.	Unzip the xz file. You may need special software to do this.  I used "The UnArchiver" on my mac.
-3.  Copy the disk image (img) file you unzipped onto the flash drive.  Operating System specific instructions are below.
-4.  Before you remove the SD Card, You should edit the following file in the Pi-boot partition which should have automatically mounted after the imaging process: 
+2.  You will need to flash that img file to the SD card.  The easiest way to do this is to download the free program Etcher
+3.  Drag and drop the disk image you downloaded into etcher along with the mounted SD card.  Click to initialize the flash.
+4.  Before you remove the SD Card, You should edit the following file in the Pi-boot partition: 
 
 						/boot/config.txt 
 						
@@ -31,11 +31,19 @@ When you are ready, you can follow these steps:
 
 5.  Insert the SD Card into the Raspberry Pi, connect a mouse, keyboard, and display.  Then turn it on.
 6.  You should get a setup window.  Configure your Raspberry Pi using the window.  Be sure to choose your login name and computer name carefully.  This is difficult to change later.
-7.  Copy the script setupAstroPi3.sh to your Raspberry Pi and Open a Terminal Window.
-8.  Navigate to the Folder containing the script.
+7.  Copy the script setupAstroPi3.sh to your Raspberry Pi and Open a Terminal Window.  You could type the following commands into Terminal to accomplish this goal.
+
+	sudo apt-get install git
+	git clone https://github.com/rlancaste/AstroPi3.git
+	
+8.  Navigate to the Folder containing the script.  Assuming you typed the above commands, you can type the following to do this:
+
+	cd AstroPi3
+	
 8.  Make sure the file is executable using
 
 	chmod +x setupAstroPi3.sh
+	
 9.  Run the script using sudo
 
 	sudo ./setupAstroPi3.sh
