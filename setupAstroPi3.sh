@@ -51,12 +51,12 @@ EOF
 
 # Installs Synaptic Package Manager for easy software install/removal
 display "Installing Synaptic"
-sudo apt-get install synaptic
+sudo apt-get -y install synaptic
 
 # This will enable SSH which is apparently disabled on Raspberry Pi by default.
 display "Enabling SSH"
 sudo apt-get purge openssh-server
-sudo apt-get install openssh-server
+sudo apt-get -y install openssh-server
 
 # To view the Raspberry Pi Remotely, this installs RealVNC Servier and enables it to run by default.
 display "Installing RealVNC Server"
@@ -71,10 +71,10 @@ rm VNC.deb
 display "Setting up File Sharing"
 
 # Installs samba so that you can share files to your other computer(s).
-sudo apt-get install samba
+sudo apt-get -y install samba
 
 # Installs caja-share so that you can easily share the folders you want.
-sudo apt-get install caja-share
+sudo apt-get -y install caja-share
 
 # Adds yourself to the user group of who can use samba.
 sudo smbpasswd -a $SUDO_USER
@@ -101,23 +101,23 @@ sudo usermod -a -G dialout $SUDO_USER
 display "Installing INDI and KStars"
 sudo apt-add-repository ppa:mutlaqja/ppa
 sudo apt-get update
-sudo apt-get install indi-full
-sudo apt-get install indi-full kstars-bleeding
-sudo apt-get install kstars-bleeding-dbg indi-dbg
+sudo apt-get -y install indi-full
+sudo apt-get -y install indi-full kstars-bleeding
+sudo apt-get -y install kstars-bleeding-dbg indi-dbg
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
 display "Installing GSC"
-sudo apt-get install gsc
+sudo apt-get -y install gsc
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
 display "Installing Astrometry.net"
-sudo apt-get install astrometry.net
+sudo apt-get -y install astrometry.net
 
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
 display "Installing PHD2"
 sudo apt-add-repository ppa:pch/phd2
 sudo apt-get update
-sudo apt-get install phd2
+sudo apt-get -y install phd2
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
