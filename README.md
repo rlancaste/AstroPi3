@@ -35,6 +35,7 @@ When you are ready, you can follow these steps:
 7.  Copy the script setupAstroPi3.sh to your Raspberry Pi and Open a Terminal Window.  You could type the following commands into Terminal to accomplish this goal.
 
 	sudo apt-get install git
+	
 	git clone https://github.com/rlancaste/AstroPi3.git
 	
 8.  Navigate to the Folder containing the script.  Assuming you typed the above commands, you can type the following to do this:
