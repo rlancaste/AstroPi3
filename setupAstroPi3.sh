@@ -77,6 +77,7 @@ rm VNC.deb
 
 # This will make a folder on the desktop for the launchers
 mkdir ~/Desktop/utilities
+sudo chown $SUDO_USER ~/Desktop/utilities
 
 # This will create a shortcut on the desktop for creating udev rules for Serial Devices
 ##################
@@ -93,6 +94,7 @@ Name=Create Rule for Serial Device
 Icon=mate-panel-launcher
 EOF
 ##################
+sudo chown $SUDO_USER ~/Desktop/utilities/SerialDevices.desktop
 
 #########################################################
 #############  Configuration for Hotspot Wifi for Connecting on the Observing Field
@@ -154,6 +156,7 @@ Name=Start $(hostname -s)_FieldWifi
 Icon=mate-panel-launcher
 EOF
 ##################
+sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi.desktop
 
 # This will make a link to restart nm-applet which sometimes crashes
 ##################
@@ -169,6 +172,7 @@ Name=Restart Network Manager
 Icon=mate-panel-launcher
 EOF
 ##################
+sudo chown $SUDO_USER ~/Desktop/utilities/StartNmApplet.desktop
 
 #########################################################
 #############  File Sharing Configuration
