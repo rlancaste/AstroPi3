@@ -31,6 +31,7 @@ When you are ready, you can follow these steps:
 
 5.  Insert the SD Card into the Raspberry Pi, connect a mouse, keyboard, and display.  Then turn it on.
 6.  You should get a setup window.  Configure your Raspberry Pi using the window.  Be sure to choose your login name and computer name carefully.  This is difficult to change later.
+	Note, after the configuration, your pi will restart.  You may need to restart it again to get your wifi network connection started.
 7.  Copy the script setupAstroPi3.sh to your Raspberry Pi and Open a Terminal Window.  You could type the following commands into Terminal to accomplish this goal.
 
 	sudo apt-get install git
