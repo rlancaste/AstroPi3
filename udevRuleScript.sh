@@ -1,6 +1,10 @@
 #!/bin/bash
+if [ "$(whoami)" != "root" ]; then
+	display "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
+	exit 1
+fi
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo "Welcome to the KStars/INDI Linux Script"
+echo "Welcome to the KStars/INDI Linux Udev Script"
 echo "This will create udev rules that will allow multiple devices based on serial/tty communications to have consistent names when they are connected."
 echo "This script will place a rule in /lib/udev/rules.d/99-<device name>.rules so that when you connect this device to this computer, it can be accessed via a symlink name like /dev/moonlite instead of having to use /dev/ttyusb0"
 echo "Please Plug in only the device for which you want to make a udev rule."
