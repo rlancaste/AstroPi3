@@ -99,7 +99,7 @@ sudo usermod -a -G dialout $SUDO_USER
 
 # Installs INDI, Kstars, and Ekos bleeding edge and debugging
 display "Installing INDI and KStars"
-sudo apt-add-repository ppa:mutlaqja/ppa
+sudo apt-add-repository ppa:mutlaqja/ppa -y
 sudo apt-get update
 sudo apt-get -y install indi-full
 sudo apt-get -y install indi-full kstars-bleeding
@@ -115,7 +115,7 @@ sudo apt-get -y install astrometry.net
 
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
 display "Installing PHD2"
-sudo apt-add-repository ppa:pch/phd2
+sudo apt-add-repository ppa:pch/phd2 -y
 sudo apt-get update
 sudo apt-get -y install phd2
 
