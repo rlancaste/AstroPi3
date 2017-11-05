@@ -60,9 +60,9 @@ Here is a list of what the script does (If you want to disable or modify any of 
 
 - Sets the user account to auto-login
 
-- Installs Synaptic Package Manager (makes it easier to uninstall what you don't want
+- Installs Synaptic Package Manager (makes it easier to uninstall what you don't want)
 
-- Enables SSH which is disabled on Raspberry Pi
+- Enables SSH which is disabled by default on Raspberry Pi
 
 - Installs RealVNC Server
 
