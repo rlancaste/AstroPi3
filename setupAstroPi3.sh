@@ -63,7 +63,7 @@ sudo apt-get -y install synaptic
 
 # This will enable SSH which is apparently disabled on Raspberry Pi by default.
 display "Enabling SSH"
-sudo apt-get purge openssh-server
+sudo apt-get -y purge openssh-server
 sudo apt-get -y install openssh-server
 
 # To view the Raspberry Pi Remotely, this installs RealVNC Servier and enables it to run by default.
