@@ -13,7 +13,7 @@ use the script as is or add or remove certain lines before running it by adding 
 When you are ready, you can follow these steps:
 
 1.	Download latest version of Ubuntu mate https://ubuntu-mate.org/raspberry-pi/
-2.  You will need to flash that img file to the SD card.  The easiest way to do this is to download the free program Etcher
+2.  You will need to flash that img file to the SD card.  The easiest way to do this is to download the free program Etcher (https://etcher.io)
 3.  Drag and drop the disk image you downloaded into etcher along with the mounted SD card.  Click to initialize the flash.
 4.  Before you remove the SD Card, You should edit the following file in the Pi-boot partition: 
 
