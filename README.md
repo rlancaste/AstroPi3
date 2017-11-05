@@ -49,5 +49,53 @@ When you are ready, you can follow these steps:
 9.  Run the script using sudo
 
 	sudo ./setupAstroPi3.sh
+	
+Here is a list of what the script does (If you want to disable or modify any of these, please edit before running the script):
+
+- Optionally Holds Firefox at its current level because if it gets updated it stops working
+
+- (DISABLED) Updates the Raspberry Pi Kernel
+
+- Updates/Upgrades the Raspberry Pi
+
+- Sets the user account to auto-login
+
+- Installs Synaptic Package Manager (makes it easier to uninstall what you don't want
+
+- Enables SSH which is disabled on Raspberry Pi
+
+- Installs RealVNC Server
+
+- Makes a folder called utilties on the Desktop
+
+- Creates a shortcut/launcher for the UDev Script in utilities on the Desktop
+
+- Turns off powersave for Wifi so hotspots/adhoc networks don't shut down in the observing field
+
+- Creates a hotspot Wifi profile for the observing field
+
+- Makes a shortcut/launcher in utilities on the desktop to start the hotspot
+
+- Makes a shortcut/launcher in utitlies to restart nm-applet for NetworkManager which crashes sometimes
+
+- Sets up samba and caja filesharing so you can share any folder by right clicking
+
+- Creates 2GB of Swap memory to increase the memory capacity of the Pi
+
+- Ensures Serial connections will not be disabled
+
+- Installs INDI and KStars
+
+- Installs GSC
+
+- Installs Astrometry.net
+
+- Installs PHD2
+
+- Puts Shortcuts for Kstars and PHD2 on the Desktop
+
+- Installs INDI Web Manager and enables the service on startup
+
+- Places a shortcut/launcher for INDI Web Manager on the Desktop
 
 
