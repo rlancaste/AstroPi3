@@ -171,8 +171,8 @@ Name=Restart Network Manager Service
 Icon=mate-panel-launcher
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/StartNmApplet.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/StartNmApplet.desktop
+sudo chmod +x ~/Desktop/utilities/StartNmService.desktop
+sudo chown $SUDO_USER ~/Desktop/utilities/StartNmService.desktop
 
 # This will make a link to restart nm-applet which sometimes crashes
 ##################
