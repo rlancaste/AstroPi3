@@ -58,3 +58,4 @@ SUBSYSTEMS=="usb", $vendor, $product, $serial, MODE="0666", SYMLINK+="$symlink"
 EOF
 
 echo "Script finished.  You should now have a udev rule file located at /lib/udev/rules.d/99-$symlink.rules.  And you should now have a symlink called /dev/$symlink that will identify your device.  You may need to restart for this to take effect."
+read -p "Hit [Enter] to end the script" closing
