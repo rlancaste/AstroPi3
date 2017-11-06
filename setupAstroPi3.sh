@@ -157,6 +157,23 @@ EOF
 sudo chmod +x ~/Desktop/utilities/StartFieldWifi_5G.desktop
 sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi_5G.desktop
 
+# This will make a link to restart Network Manager Service if there is a problem
+##################
+sudo cat > ~/Desktop/utilities/StartNmService.desktop <<- EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon[en_US]=mate-panel-launcher
+Name[en_US]=Restart Network Manager Service
+Exec=gksu systemctl restart NetworkManager.service
+Name=Restart Network Manager Service
+Icon=mate-panel-launcher
+EOF
+##################
+sudo chmod +x ~/Desktop/utilities/StartNmApplet.desktop
+sudo chown $SUDO_USER ~/Desktop/utilities/StartNmApplet.desktop
+
 # This will make a link to restart nm-applet which sometimes crashes
 ##################
 sudo cat > ~/Desktop/utilities/StartNmApplet.desktop <<- EOF
