@@ -299,10 +299,13 @@ URL=http://localhost:8624
 Icon=/usr/local/lib/python2.7/dist-packages/indiweb/views/img/indi_logo.png
 EOF
 ##################
-
 sudo chmod +x ~/Desktop/INDIWebManager.desktop
 sudo chown $SUDO_USER ~/Desktop/INDIWebManager.desktop
 
 #########################################################
+
+# This will make the other scripts in the folder executable in case the user wants to use them.
+chmod +x ~/AstroPi3/install_driverRTL8822BU.sh
+chmod +x ~/AstroPi3/udevRuleScript.sh
 
 display "Script Execution Complete.  Your Raspberry Pi 3 should now be ready to use for Astrophotography.  You should restart your Pi."
