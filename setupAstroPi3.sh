@@ -117,31 +117,13 @@ EOF
 # If you prefer to set this up yourself, you can comment out this section with #'s.
 # If you want the hotspot to start up by default you should set autoconnect to true.
 display "Creating $(hostname -s)_FieldWifi, Hotspot Wifi for the observing field"
-##################
-sudo cat > /etc/NetworkManager/system-connections/$(hostname -s)_FieldWifi <<- EOF
-[connection]
-id=$(hostname -s)_FieldWifi
-type=wifi
-autoconnect=false
-interface-name=wlan0
+nmcli connection add type wifi ifname '*' con-name $(hostname -s)_FieldWifi autoconnect no ssid $(hostname -s)_FieldWifi
+nmcli connection modify $(hostname -s)_FieldWifi 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared
+nmcli connection modify $(hostname -s)_FieldWifi 802-11-wireless-security.key-mgmt wpa-psk 802-11-wireless-security.psk $(hostname -s)_password
 
-[wifi]
-mac-address-blacklist=
-mac-address-randomization=0
-mode=ap
-ssid=$(hostname -s)_FieldWifi
-
-[ipv4]
-dns-search=
-method=shared
-
-[ipv6]
-addr-gen-mode=stable-privacy
-dns-search=
-ip6-privacy=0
-method=ignore
-EOF
-##################
+nmcli connection add type wifi ifname '*' con-name $(hostname -s)_FieldWifi_5G autoconnect no ssid $(hostname -s)_FieldWifi_5G
+nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless.mode ap 802-11-wireless.band a ipv4.method shared
+nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless-security.key-mgmt wpa-psk 802-11-wireless-security.psk $(hostname -s)_password
 
 # This will make a link to start the hotspot wifi on the Desktop
 ##################
@@ -159,6 +141,21 @@ EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/StartFieldWifi.desktop
 sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi.desktop
+##################
+sudo cat > ~/Desktop/utilities/StartFieldWifi_5G.desktop <<- EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon[en_US]=mate-panel-launcher
+Name[en_US]=Start $(hostname -s) Field Wifi 5G
+Exec=nmcli con up $(hostname -s)_FieldWifi_5G
+Name=Start $(hostname -s)_FieldWifi_5G
+Icon=mate-panel-launcher
+EOF
+##################
+sudo chmod +x ~/Desktop/utilities/StartFieldWifi_5G.desktop
+sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi_5G.desktop
 
 # This will make a link to restart nm-applet which sometimes crashes
 ##################
