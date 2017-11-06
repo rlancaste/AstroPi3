@@ -94,6 +94,7 @@ Name=Create Rule for Serial Device
 Icon=mate-panel-launcher
 EOF
 ##################
+sudo chmod +x ~/Desktop/utilities/SerialDevices.desktop
 sudo chown $SUDO_USER ~/Desktop/utilities/SerialDevices.desktop
 
 #########################################################
@@ -156,6 +157,7 @@ Name=Start $(hostname -s)_FieldWifi
 Icon=mate-panel-launcher
 EOF
 ##################
+sudo chmod +x ~/Desktop/utilities/StartFieldWifi.desktop
 sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi.desktop
 
 # This will make a link to restart nm-applet which sometimes crashes
@@ -172,6 +174,7 @@ Name=Restart Network Manager
 Icon=mate-panel-launcher
 EOF
 ##################
+sudo chmod +x ~/Desktop/utilities/StartNmApplet.desktop
 sudo chown $SUDO_USER ~/Desktop/utilities/StartNmApplet.desktop
 
 #########################################################
