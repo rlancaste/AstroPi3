@@ -13,4 +13,4 @@ sudo make dkms-install
 make
 sudo make install
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo "Script Execution Complete"
+echo "Script Execution Complete.  You may need to restart for the wifi dongle to work well."
