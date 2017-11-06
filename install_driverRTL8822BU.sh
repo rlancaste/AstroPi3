@@ -4,7 +4,7 @@ if [ "$(whoami)" != "root" ]; then
 fi
 sudo apt-get -y install git
 sudo apt-get -y install dkms
-# sudo apt-get install raspberrypi-kernel-headers
+sudo apt-get install raspberrypi-kernel-headers
 git clone https://github.com/drwilco/RTL8822BU.git
 cd RTL8822BU
 sudo make dkms-install
