@@ -28,14 +28,6 @@ fi
 #########################################################
 #############  Updates
 
-# This will prevent Firefox from being updated.  Right now when Firefox gets updated on Raspberry Pi, it breaks it. It might be true on your 64 bit system.
-display "Currently (11/2017) there is an issue with Ubuntu-Mate on Raspberry Pi.  Updating Firefox Breaks it. This may also be true for your system."
-read -p "Do you want to prevent a Firefox update (y/n)? " preventUpdateFirefox
-if [ "$preventUpdateFirefox" == "y" ]
-then
-	sudo apt-mark hold firefox
-fi
-
 # Updates the computer to the latest packages.
 display "Updating installed packages"
 sudo apt-get update
@@ -48,7 +40,7 @@ sudo apt-get -y dist-upgrade
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
 ##################
-sudo cat > /usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf <<- EOF
+sudo bash -c 'cat > /usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf' <<- EOF
 [SeatDefaults]
 greeter-session=lightdm-gtk-greeter
 autologin-user=$SUDO_USER
@@ -77,7 +69,7 @@ sudo chown $SUDO_USER ~/Desktop/utilities
 
 # This will create a shortcut on the desktop for creating udev rules for Serial Devices
 ##################
-sudo cat > ~/Desktop/utilities/SerialDevices.desktop <<- EOF
+sudo bash -c 'cat > ~/Desktop/utilities/SerialDevices.desktop' <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -102,7 +94,7 @@ sudo chown $SUDO_USER ~/Desktop/utilities/SerialDevices.desktop
 # If you want to leave wifi power management enabled, put #'s in front of this section
 display "Preventing Wifi Power Management from shutting down AdHoc and Hotspot Networks"
 ##################
-sudo cat > /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf <<- EOF
+sudo bash -c 'cat > /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf' <<- EOF
 [connection]
 wifi.powersave = 2
 EOF
@@ -123,7 +115,7 @@ nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless-security.key
 
 # This will make a link to start the hotspot wifi on the Desktop
 ##################
-sudo cat > ~/Desktop/utilities/StartFieldWifi.desktop <<- EOF
+sudo bash -c 'cat > ~/Desktop/utilities/StartFieldWifi.desktop' <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -138,7 +130,7 @@ EOF
 sudo chmod +x ~/Desktop/utilities/StartFieldWifi.desktop
 sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi.desktop
 ##################
-sudo cat > ~/Desktop/utilities/StartFieldWifi_5G.desktop <<- EOF
+sudo bash -c 'cat > ~/Desktop/utilities/StartFieldWifi_5G.desktop' <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -155,7 +147,7 @@ sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi_5G.desktop
 
 # This will make a link to restart Network Manager Service if there is a problem
 ##################
-sudo cat > ~/Desktop/utilities/StartNmService.desktop <<- EOF
+sudo bash -c 'cat > ~/Desktop/utilities/StartNmService.desktop' <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -172,7 +164,7 @@ sudo chown $SUDO_USER ~/Desktop/utilities/StartNmService.desktop
 
 # This will make a link to restart nm-applet which sometimes crashes
 ##################
-sudo cat > ~/Desktop/utilities/StartNmApplet.desktop <<- EOF
+sudo bash -c 'cat > ~/Desktop/utilities/StartNmApplet.desktop' <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -262,7 +254,7 @@ sudo pip install indiweb
 
 # This will prepare the indiwebmanager.service file
 ##################
-sudo cat > /etc/systemd/system/indiwebmanager.service <<- EOF
+sudo bash -c 'cat > /etc/systemd/system/indiwebmanager.service' <<- EOF
 [Unit]
 Description=INDI Web Manager
 After=multi-user.target
@@ -286,7 +278,7 @@ sudo systemctl enable indiwebmanager.service
 
 # This will make a link to the Web Manager on the Desktop
 ##################
-sudo cat > ~/Desktop/INDIWebManager.desktop <<- EOF
+sudo bash -c 'cat > ~/Desktop/INDIWebManager.desktop' <<- EOF
 [Desktop Entry]
 Encoding=UTF-8
 Name=INDI Web Manager
