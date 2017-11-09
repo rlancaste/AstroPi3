@@ -56,12 +56,27 @@ display "Enabling SSH"
 sudo apt-get -y purge openssh-server
 sudo apt-get -y install openssh-server
 
-# To view the computer Remotely, this installs RealVNC Servier and enables it to run by default.
-display "Installing RealVNC Server"
-wget https://www.realvnc.com/download/binary/latest/debian/arm/ -O VNC.deb
-sudo dpkg -i VNC.deb
-sudo systemctl enable vncserver-x11-serviced.service
-rm VNC.deb
+# Note: RealVNC does not work on the 64 bit aarch64 system so far, as far as I can tell.
+# This will install x11vnc
+sudo apt-get install x11vnc
+# This will get the password for VNC
+x11vnc -storepasswd /etc/x11vnc.pass
+# This will store the service file.
+######################
+bash -c 'cat > /lib/systemd/system/x11vnc.service' << EOF
+[Unit]
+Description=Start x11vnc at startup.
+After=multi-user.target
+[Service]
+Type=simple
+ExecStart=/usr/bin/x11vnc -auth guess -forever -loop -noxdamage -repeat -rfbauth /etc/x11vnc.pass -rfbport 5900 -shared
+[Install]
+WantedBy=multi-user.target
+EOF
+######################
+# This enables the Service so it runs at startup
+sudo systemctl enable x11vnc.service
+sudo systemctl daemon-reload
 
 # This will make a folder on the desktop for the launchers
 mkdir ~/Desktop/utilities
@@ -249,8 +264,11 @@ sudo chown $SUDO_USER ~/Desktop/phd2.desktop
 
 display "Installing and Configuring INDI Web Manager"
 
+# This will install pip so you can use it in the next step
+sudo apt-get install python-pip
+
 # This will install INDI Web Manager
-sudo pip install indiweb
+sudo -H pip install indiweb
 
 # This will prepare the indiwebmanager.service file
 ##################
