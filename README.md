@@ -49,6 +49,7 @@ When you are ready, you can follow these steps:
 8.  Make sure the script file is executable using one of the following two commands depending on your system.
 
 	chmod +x setupAstroPi3.sh
+	
 	chmod +x setupAstro64.sh
 	
 9.  Run one of the following scripts using sudo.  Choose the right one for your system.  The setupAstroPi3.sh is specifically for a Raspberry Pi 3
@@ -56,6 +57,7 @@ When you are ready, you can follow these steps:
 	Be warned that right now the INDI SBIG driver does not compile in 64 bit.  I am working on a third script that will install on a 64 bit system and install 32 bit INDI/KStars to support SBIG cameras.
 
 	sudo ./setupAstroPi3.sh
+	
 	sudo ./setupAstro64.sh
 	
 Here is a list of what the script does (If you want to disable or modify any of these, please edit before running the script):
