@@ -58,7 +58,7 @@ sudo apt-get -y install openssh-server
 
 # Note: RealVNC does not work on the 64 bit aarch64 system so far, as far as I can tell.
 # This will install x11vnc
-sudo apt-get install x11vnc
+sudo apt-get -y install x11vnc
 # This will get the password for VNC
 x11vnc -storepasswd /etc/x11vnc.pass
 # This will store the service file.
