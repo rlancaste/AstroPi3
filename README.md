@@ -20,7 +20,7 @@ When you are ready, you can follow these steps:
 	the screen resolution over VNC when headless is reasoable.   You can also edit other settings such as overclocking etc, but read up on this first.  For the Raspberry Pi, you should edit 
 	the following file in the Pi-boot partition: 
 
-						/boot/config.txt 
+		/boot/config.txt 
 						
 	to make sure that your PI will have a decent resolution even when an HDMI display is not connected. Use the following options:
 	
@@ -44,7 +44,7 @@ When you are ready, you can follow these steps:
 	
 8.  Navigate to the Folder containing the script.  Assuming you typed the above commands, you can type the following to do this:
 
-	cd AstroPi3
+		cd AstroPi3
 	
 8.  Make sure the script file is executable using one of the following two commands depending on your system.
 
