@@ -38,9 +38,9 @@ When you are ready, you can follow these steps:
 	After the configuration, your pi will restart.  You may need to restart it again to get your wifi network connection started.
 7.  Copy the scripts in this GIT Repo to your SBC and Open a Terminal Window.  You could type the following commands into Terminal to accomplish this goal.
 
-	sudo apt-get install git
+		sudo apt-get install git
 	
-	git clone https://github.com/rlancaste/AstroPi3.git
+		git clone https://github.com/rlancaste/AstroPi3.git
 	
 8.  Navigate to the Folder containing the script.  Assuming you typed the above commands, you can type the following to do this:
 
@@ -48,17 +48,17 @@ When you are ready, you can follow these steps:
 	
 8.  Make sure the script file is executable using one of the following two commands depending on your system.
 
-	chmod +x setupAstroPi3.sh
+		chmod +x setupAstroPi3.sh
 	
-	chmod +x setupAstro64.sh
+		chmod +x setupAstro64.sh
 	
 9.  Run one of the following scripts using sudo.  Choose the right one for your system.  The setupAstroPi3.sh is specifically for a Raspberry Pi 3
 	running Ubuntu-Mate in the armhf architecture.  The setupAstro64.sh script is specifically for a 64 bit SBC system running Ubuntu-Mate in the aarch64/arm64 architecture.  
 	Be warned that right now the INDI SBIG driver does not compile in 64 bit.  I am working on a third script that will install on a 64 bit system and install 32 bit INDI/KStars to support SBIG cameras.
 
-	sudo ./setupAstroPi3.sh
+		sudo ./setupAstroPi3.sh
 	
-	sudo ./setupAstro64.sh
+		sudo ./setupAstro64.sh
 	
 Here is a list of what the script does (If you want to disable or modify any of these, please edit before running the script):
 
