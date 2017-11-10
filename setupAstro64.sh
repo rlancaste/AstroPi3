@@ -208,6 +208,9 @@ sudo apt-get -y install caja-share
 # Adds yourself to the user group of who can use samba.
 sudo smbpasswd -a $SUDO_USER
 
+# This makes sure that you actually get added to the right group
+sudo adduser $SUDO_USER sambashare
+
 #########################################################
 #############  Very Important Configuration Items
 
