@@ -205,10 +205,6 @@ sudo apt-get -y install caja-share
 # Adds yourself to the user group of who can use samba.
 sudo smbpasswd -a $SUDO_USER
 
-# Makes sure you have permissions to share folders.
-sudo chmod a+rwx /var/lib/samba/usershares/
-
-
 #########################################################
 #############  Very Important Configuration Items
 

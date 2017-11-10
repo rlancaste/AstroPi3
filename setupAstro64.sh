@@ -209,7 +209,7 @@ sudo apt-get -y install caja-share
 sudo smbpasswd -a $SUDO_USER
 
 # Makes sure you have permissions to share folders.
-sudo chmod a+rwx /var/lib/samba/usershares/
+#sudo chmod a+rwx /var/lib/samba/usershares/
 
 
 #########################################################
