@@ -28,9 +28,21 @@ fi
 echo "Please type a descriptive name for this device.  For Example:  MoonLite Focuser "
 read -p "Descriptive name: " longName
 #This will ask the user for the symlink name for the device
-echo "Please type a unique short name for this device that will be used to make the symlink as well as for the name of the udev rule file. It should have no spaces or special characters.  For example: focuser or moonlite.  But you might want to check that you don't have any other udev rules with the same name in /lib/udev/rules.d/.  See below for what is there now:"
-ls /lib/udev/rules.d/99-*
+echo "Please type a unique short name for this device that will be used to make the symlink as well as for the name of the udev rule file. It should have no spaces or special characters.  For example: focuser or moonlite.  But you might want to check that you don't have any other udev rules with the same name in /lib/udev/rules.d/ unless you want to overwrite an old one."
 read -p "symlink name: " symlink
+
+if [ -e "/lib/udev/rules.d/99-$symlink.rules" ]
+then
+	read -p "A File already exists with that name, do you wish to overwrite it? (y/n)" overwrite
+
+	if [ "$overwrite" != "y" ]
+	then
+		"Exiting Script.  Symlink not created. Run again with a different name if you like."
+		read -p "Hit [Enter] to end the script" closing
+		exit
+	fi
+
+fi
 
 #This will get the vendor id of the device
 vendor=$(udevadm info -a -n $devicePath | grep '{idVendor}' | head -n1)
@@ -45,20 +57,50 @@ echo "Here is the information that was collected for your $longName."
 echo $vendor
 echo $product
 echo $serial
-read -p "Do you wish to symlink the device with this information as /dev/$symlink y/n?" save
+echo "Please note that sometimes the rule works well with all three pieces of information, but sometimes that is too strict of a requirement and the rule doesn't work.  But on the other hand if you have two devices where two of the pieces of information is identical, you will need the third.  The most common one that needs to be left out is the serial ID."
+
+read -p "Do you want to leave it out? (y/n)" removeSerial
+
+read -p "Do you wish to symlink the device with this information as /dev/$symlink? (y/n)" save
 
 if [ "$save" != "y" ]
 then
 	"Exiting Script.  Symlink not created."
+	read -p "Hit [Enter] to end the script" closing
 	exit
 fi
 
-# This will create the udev rule file
+if [ "$removeSerial" == "y" ]
+then
+
+# This will create the udev rule file without the serial id
+sudo cat > /lib/udev/rules.d/99-$symlink.rules <<- EOF
+# $longName udev rule                                                                                                                                                                                                                     
+SUBSYSTEMS=="usb", $vendor, $product, MODE="0666", SYMLINK+="$symlink"
+EOF
+
+else
+
+# This will create the udev rule file including the serial id
 sudo cat > /lib/udev/rules.d/99-$symlink.rules <<- EOF
 # $longName udev rule                                                                                                                                                                                                                     
 SUBSYSTEMS=="usb", $vendor, $product, $serial, MODE="0666", SYMLINK+="$symlink"
 EOF
 
-echo "Script finished.  You should now have a udev rule file located at /lib/udev/rules.d/99-$symlink.rules.  And you should now have a symlink called /dev/$symlink that will identify your device.  You may need to restart for this to take effect.  Please see the rules list below:"
+fi
+
+
+echo "Script finished.  You should now have a udev rule file located at /lib/udev/rules.d/99-$symlink.rules.  And you should now have a symlink called /dev/$symlink that will identify your device.  Please see the rules list below to see your new rule included."
 ls /lib/udev/rules.d/99-*
+
+echo "If you unplug your device and plug it back in, this script can detect if the rule worked."
+read -p "Please hit [Enter] once you have done so." testing
+
+if [ -e "/dev/$symlink" ]
+then
+	echo "Your rule appears to work well."
+else
+	echo "Serial Device not detected.  Most likely the cause is one of these: you did not unplug it and plug it back in, or your device is not working, or your rule is too strict.  You might try changing the rule: /lib/udev/rules.d/99-$symlink.rules"
+fi
+
 read -p "Hit [Enter] to end the script" closing
