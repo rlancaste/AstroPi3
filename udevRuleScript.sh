@@ -7,6 +7,14 @@ echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 echo "Welcome to the KStars/INDI Linux Udev Script"
 echo "This will create udev rules that will allow multiple devices based on serial/tty communications to have consistent names when they are connected."
 echo "This script will place a rule in /lib/udev/rules.d/99-<device name>.rules so that when you connect this device to this computer, it can be accessed via a symlink name like /dev/moonlite instead of having to use /dev/ttyusb0"
+read -p "Do you wish to run this script? (y/n)" runscript
+if [ "$runscript" != "y" ]
+	then
+		echo "Quitting the script as you requested."
+		read -p "Hit [Enter] to end the script now." closing
+		exit
+	fi
+
 echo "Please Plug in only the device for which you want to make a udev rule."
 read -p "Hit [Enter] when you are ready" ready
 
