@@ -74,6 +74,10 @@ Here is a list of what the script does (If you want to disable or modify any of 
 
 - Enables SSH which is disabled by default on Raspberry Pi.
 
+- Optionally gives the SBC a static IP address by editing /boot/cmdline.txt so that in the field you can connect via a direct Ethernet cable if desired
+
+- Optionally edits the /etc/network/interfaces file so that the static IP address does not interfere with DHCP
+
 - Installs RealVNC Server (Raspberry Pi Script) or x11VNC (64 bit script)
 
 - Makes a folder called utilties on the Desktop
