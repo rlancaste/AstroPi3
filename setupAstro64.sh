@@ -56,6 +56,45 @@ display "Enabling SSH"
 sudo apt-get -y purge openssh-server
 sudo apt-get -y install openssh-server
 
+# This will give the SBC a static IP address so that you can connect to it over an ethernet cable
+# in the observing field if no router is available.
+# You may need to edit this ip address to make sure the first 2 numbers match your computer's self assigned ip address
+# If there is already a static IP defined, it leaves it alone.
+if [ -z "$(grep 'eth0' '/etc/rc.local')" ]
+then
+	read -p "Do you want to give your SBC a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
+	if [ "$useStaticIP" == "y" ]
+	then
+		read -p "Please enter the IP address you would prefer.  Please make sure that the first two numbers match your client computer's self assigned IP.  For Example mine is: 169.254.0.5 ? " IP
+		display "Setting Static IP to $IP.  Note, you can change this later by editing the file /etc/rc.local"
+		sed -i "/# By default this script does nothing. / a ifconfig eth0 $IP up" /etc/rc.local
+		echo "New contents of /etc/rc.local:"
+		echo "$(cat /etc/rc.local)"
+		echo "~~~~~~~~~~~~~~~~~~~~~~~"
+		
+# This will make sure that the SBC will still work over Ethernet connected directly to a router if you have assigned a static ip address as requested.
+##################
+sudo cat > /etc/network/interfaces <<- EOF
+# interfaces(5) file used by ifup(8) and ifdown(8)
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# These two lines allow the pi to respond to a router's dhcp even though you have a static ip defined.
+allow-hotplug eth0
+iface eth0 inet dhcp
+EOF
+##################
+	else
+		display "Leaving your IP address to be assigned only by dhcp.  Note that you will always need either a router or wifi network to connect to your SBC."
+	fi
+else
+	display "This computer already has been assigned a static ip address.  If you need to edit that, please edit the file /etc/rc.local"
+fi
+
 # Note: RealVNC does not work on the 64 bit aarch64 system so far, as far as I can tell.
 # This will install x11vnc
 sudo apt-get -y install x11vnc
