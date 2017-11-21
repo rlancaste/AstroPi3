@@ -1,4 +1,5 @@
 #!/bin/bash
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 function display
 {
@@ -126,7 +127,7 @@ Version=1.0
 Type=Application
 Terminal=true
 Icon[en_US]=mate-panel-launcher
-Exec=sudo $(echo ~/)AstroPi3/udevRuleScript.sh
+Exec=sudo $(echo $DIR)/udevRuleScript.sh
 Name[en_US]=Create Rule for Serial Device
 Name=Create Rule for Serial Device
 Icon=mate-panel-launcher
@@ -345,10 +346,32 @@ EOF
 ##################
 sudo chmod +x ~/Desktop/INDIWebManager.desktop
 sudo chown $SUDO_USER ~/Desktop/INDIWebManager.desktop
+#########################################################
+#############  Configuration for System Monitoring
+
+# This will set you up with conky so that you can see how your system is doing at a moment's glance
+# A big thank you to novaspirit who set up this theme https://github.com/novaspirit/rpi_conky
+sudo apt-get -y install conky-all
+cp "$DIR/conkyrc" ~/.conkyrc
+sudo chown $SUDO_USER ~/.conkyrc
+
+# This will put a link into the autostart folder so it starts at login
+##################
+sudo cat > /usr/share/mate/autostart/startConky.desktop <<- EOF
+[Desktop Entry]
+Name=StartConky
+Exec=conky -b
+Terminal=false
+Type=Application
+EOF
+##################
+# Note that in order to work, this link needs to stay owned by root and not be executable
+
 
 #########################################################
 
+
 # This will make the udev in the folder executable in case the user wants to use it.
-chmod +x ~/AstroPi3/udevRuleScript.sh
+chmod +x "$DIR/udevRuleScript.sh"
 
 display "Script Execution Complete.  Your Raspberry Pi 3 should now be ready to use for Astrophotography.  You should restart your Pi."
