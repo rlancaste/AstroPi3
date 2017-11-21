@@ -94,7 +94,9 @@ Here is a list of what the script does (If you want to disable or modify any of 
 
 - Sets up samba and caja filesharing so you can share any folder by right clicking
 
-- Creates 2GB of Swap memory to increase the memory capacity of the Pi
+- (DISABLED) Creates 2GB of Swap memory to increase the memory capacity of the SBC
+
+- Creates zRAM to get ~ 1.5x the current RAM capacity
 
 - Ensures Serial connections will not be disabled
 

@@ -247,10 +247,17 @@ sudo smbpasswd -a $SUDO_USER
 #############  Very Important Configuration Items
 
 # This will create a swap file for an increased 2 GB of artificial RAM.  This is not needed on all systems, since different cameras download different size images, but if you are using a DSLR, it definitely is.
-display "Creating SWAP Memory"
-wget https://raw.githubusercontent.com/Cretezy/Swap/master/swap.sh -O swap
-sh swap 2G
-rm swap
+# This method is disabled in favor of the zram method below. If you prefer this method, you can re-enable it by taking out the #'s
+#display "Creating SWAP Memory"
+#wget https://raw.githubusercontent.com/Cretezy/Swap/master/swap.sh -O swap
+#sh swap 2G
+#rm swap
+
+# This will create zram, basically a swap file saved in RAM. It will not read or write to the SD card, but instead, writes to compressed RAM.  
+# This is not needed on all systems, since different cameras download different size images, and different SBC's have different RAM capacities but 
+# if you are using a DSLR on a Raspberry Pi with 1GB of RAM, it definitely is needed. If you don't want this, comment it out.
+display "Installing zRAM for increased RAM capacity, from 1 GB to 1.5 GB"
+sudo apt-get install zram-config
 
 # This should fix an issue where you might not be able to use a serial mount connection because you are not in the "dialout" group
 display "Enabling Serial Communication"
