@@ -8,6 +8,7 @@ In Fall 2017,  I was configuring another PI, went back to my instructions and hi
 turned it into this script.  Hopefully this is much easier to use.
 
 ![Running KStars on Pi 3](/images/runningPi3.png "Running KStars on Pi 3")
+![Running Ekos on Pi 3](/images/ekosRunning.png "Running Ekos on Pi 3")
 
 Before running the script, please be sure to do some research and read up on all that it will do to your Raspberry Pi or other SBC.  You may want to 
 use the script as is or add or remove certain lines before running it by adding or removing comment symbols from the front of the line (#).
