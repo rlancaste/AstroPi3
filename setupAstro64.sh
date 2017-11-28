@@ -119,7 +119,7 @@ sudo systemctl enable x11vnc.service
 sudo systemctl daemon-reload
 
 # This will make a folder on the desktop for the launchers
-mkdir ~/Desktop/utilities
+mkdir -p ~/Desktop/utilities
 sudo chown $SUDO_USER ~/Desktop/utilities
 
 # This will create a shortcut on the desktop for creating udev rules for Serial Devices
