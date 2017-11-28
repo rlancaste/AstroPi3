@@ -52,10 +52,10 @@ EOF
 display "Installing Synaptic"
 sudo apt-get -y install synaptic
 
-# This will enable SSH which is apparently disabled on Raspberry Pi by default.  It might be true of your system.
-display "Enabling SSH"
-sudo apt-get -y purge openssh-server
-sudo apt-get -y install openssh-server
+# This will enable SSH which is apparently disabled on Raspberry Pi by default.  It might be true of your system.  If so, enable this.
+#display "Enabling SSH"
+#sudo apt-get -y purge openssh-server
+#sudo apt-get -y install openssh-server
 
 # This will give the SBC a static IP address so that you can connect to it over an ethernet cable
 # in the observing field if no router is available.

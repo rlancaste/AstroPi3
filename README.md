@@ -76,7 +76,7 @@ Here is a list of what the script does (If you want to disable or modify any of 
 
 - Installs Synaptic Package Manager (makes it easier to uninstall what you don't want)
 
-- Enables SSH which is disabled by default on Raspberry Pi.
+- Enables SSH which is disabled by default on Raspberry Pi. (Raspberry Pi script only, unless you enable it.)
 
 - Optionally gives the SBC a static IP address by editing /boot/cmdline.txt so that in the field you can connect via a direct Ethernet cable if desired
 
