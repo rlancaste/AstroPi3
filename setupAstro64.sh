@@ -68,7 +68,7 @@ then
 	then
 		read -p "Please enter the IP address you would prefer.  Please make sure that the first two numbers match your client computer's self assigned IP.  For Example mine is: 169.254.0.5 ? " IP
 		display "Setting Static IP to $IP.  Note, you can change this later by editing the file /etc/rc.local"
-		sed -i "/# By default this script does nothing. / a ifconfig eth0 $IP up" /etc/rc.local
+		sed -i "/# By default this script does nothing./ a ifconfig eth0 $IP up" /etc/rc.local
 		echo "New contents of /etc/rc.local:"
 		echo "$(cat /etc/rc.local)"
 		echo "~~~~~~~~~~~~~~~~~~~~~~~"
