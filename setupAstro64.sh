@@ -313,11 +313,13 @@ sudo chown $SUDO_USER ~/Desktop/phd2.desktop
 
 display "Installing and Configuring INDI Web Manager"
 
-# This will install pip so you can use it in the next step
+# This will install pip and the headers so you can use it in the next step
 sudo apt-get -y install python-pip
+sudo apt-get -y install python-dev
 
 # Setuptools may bee needed in order to install indiweb on some 64 bit systems
 sudo apt-get -y install python-setuptools
+sudo -H pip install setuptools --upgrade
 
 # Wheel might not be installed on some 64 bit systems
 sudo -H pip install wheel
