@@ -316,6 +316,12 @@ display "Installing and Configuring INDI Web Manager"
 # This will install pip so you can use it in the next step
 sudo apt-get -y install python-pip
 
+# Setuptools may bee needed in order to install indiweb on some 64 bit systems
+sudo apt-get -y install python-setuptools
+
+# Wheel might not be installed on some 64 bit systems
+sudo -H pip install wheel
+
 # This will install INDI Web Manager
 sudo -H pip install indiweb
 
