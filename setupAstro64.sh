@@ -293,6 +293,7 @@ sudo apt-get -y install astrometry.net
 
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
 display "Installing PHD2"
+sudo dpkg --add-architecture armhf
 sudo apt-add-repository ppa:pch/phd2 -y
 sudo apt-get update
 sudo apt-get -y install phd2
