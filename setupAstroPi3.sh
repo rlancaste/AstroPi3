@@ -284,7 +284,7 @@ sudo apt-get -y install kstars-bleeding-dbg indi-dbg
 # Creates a config file for kde themes and icons which is missing on the Raspberry pi.
 # Note:  This is required for KStars to have the breeze icons.
 ##################
-sudo cat >  ~/.config/kdeglobals <<- EOF
+sudo cat > ~/.config/kdeglobals <<- EOF
 [Icons]
 Theme=breeze
 EOF
