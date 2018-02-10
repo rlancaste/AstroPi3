@@ -40,7 +40,7 @@ read -p "Do you want to set Firefox to a known working version and prevent a Fir
 if [ "$preventUpdateFirefox" == "y" ]
 then
 	wget http://ports.ubuntu.com/pool/main/f/firefox/firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
-	sudo apt-get purge firefox
+	sudo apt-get -y purge firefox
 	sudo dpkg -i firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
 	sudo apt-mark hold firefox
 	rm firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
