@@ -65,6 +65,20 @@ autologin-user=$SUDO_USER
 EOF
 ##################
 
+# This will disable Parallel printer port CUPS modules that don't exist on the raspberry pi
+# This was added because the raspberry pi often says "Failed to start load kernel modules" on startup
+# Without this change, startup can take 1 to 2 extra minutes.
+display "Disabling CUPS Kernel Modules that don't exist on the raspberry pi for faster startup."
+##################
+sudo cat > /etc/modules-load.d/cups-filters.conf <<- EOF
+# Parallel printer driver modules loading for cups
+# LOAD_LP_MODULE was 'yes' in /etc/default/cups
+#lp
+#ppdev
+#parport_pc
+EOF
+##################
+
 # Installs Synaptic Package Manager for easy software install/removal
 display "Installing Synaptic"
 sudo apt-get -y install synaptic
