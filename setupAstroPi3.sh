@@ -33,12 +33,17 @@ fi
 #display "Updating Kernel"
 #sudo rpi-update 
 
-# This will prevent Firefox from being updated.  Right now when Firefox gets updated on Raspberry Pi, it breaks it. 
+# Right now when Firefox gets updated on Raspberry Pi, it breaks it. 
+# This will set Firefox to a known working version of Firefox and prevent any update.
 display "Currently (11/2017) there is an issue with Ubuntu-Mate on Raspberry Pi.  Updating Firefox Breaks it."
-read -p "Do you want to prevent a Firefox update (y/n)? " preventUpdateFirefox
+read -p "Do you want to set Firefox to a known working version and prevent a Firefox update (y/n)? " preventUpdateFirefox
 if [ "$preventUpdateFirefox" == "y" ]
 then
+	wget http://ports.ubuntu.com/pool/main/f/firefox/firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
+	sudo apt-get purge firefox
+	sudo dpkg -i firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
 	sudo apt-mark hold firefox
+	rm firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
 fi
 
 # Updates the Raspberry Pi to the latest packages.
@@ -275,6 +280,15 @@ sudo apt-get update
 sudo apt-get -y install indi-full
 sudo apt-get -y install indi-full kstars-bleeding
 sudo apt-get -y install kstars-bleeding-dbg indi-dbg
+
+# Creates a config file for kde themes and icons which is missing on the Raspberry pi.
+# Note:  This is required for KStars to have the breeze icons.
+##################
+sudo cat >  ~/.config/kdeglobals <<- EOF
+[Icons]
+Theme=breeze
+EOF
+##################
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
 display "Installing GSC"
