@@ -88,7 +88,7 @@ then
 fi
 
 sudo dpkg -i astrometry-data-*.deb
-rm *.deb
+sudo rm *.deb
 
 echo "Your requested installations are complete."
 
