@@ -21,7 +21,7 @@ echo "To download and install the correct files, you need to decide which packag
 echo "Note that for large file sizes, the index files are in a big set."
 echo "If you type the word 'large', you will get index files 4208-4219 which covers 30 arcmin to 2000 arcmin."
 echo "For smaller fields, the file sizes become much bigger, so they are in separate packages."
-echo "You just need to type the number to download and install that package"
+echo "You just need to type the file number to download and install that package"
 echo "You can select more than one packages by typing each number after the other separated by spaces or commas"
 echo "Here is a list of all the available index file sets and their FOV's in Arc minutes"
 echo "File  FOV"
@@ -34,7 +34,7 @@ echo "4202  4.0 - 5.6"
 echo "4201  2.8 - 4.0"
 echo "4200  2.0 - 2.8"
 
-read -p "Which file set would you like to download? Remember, type either 'large' or the number(s) above: " indexFile
+read -p "Which file set would you like to download? Remember, type either 'large' or the file number(s) above: " indexFile
 
 if [[ $indexFile = *"large"* ]]
 then
