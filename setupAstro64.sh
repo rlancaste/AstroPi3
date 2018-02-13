@@ -139,6 +139,24 @@ EOF
 sudo chmod +x ~/Desktop/utilities/SerialDevices.desktop
 sudo chown $SUDO_USER ~/Desktop/utilities/SerialDevices.desktop
 
+# This will create a shortcut on the desktop for Installing Astrometry Index Files.
+##################
+sudo bash -c 'cat > ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop' <<- EOF
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Icon[en_US]=mate-panel-launcher
+Exec=sudo $(echo $DIR)/astrometryIndexInstaller.sh
+Name[en_US]=Install Astrometry Index Files
+Name=Install Astrometry Index Files
+Icon=mate-panel-launcher
+EOF
+##################
+sudo chmod +x ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop
+sudo chown $SUDO_USER ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop
+
 #########################################################
 #############  Configuration for Hotspot Wifi for Connecting on the Observing Field
 
@@ -282,6 +300,16 @@ sudo apt-get -y install indi-full
 sudo apt-get -y install indi-full kstars-bleeding
 sudo apt-get -y install kstars-bleeding-dbg indi-dbg
 
+# Creates a config file for kde themes and icons which is missing on the Raspberry pi.
+# Note:  This is required for KStars to have the breeze icons.
+display "Creating KDE config file so KStars can have breeze icons."
+##################
+sudo cat > ~/.config/kdeglobals <<- EOF
+[Icons]
+Theme=breeze
+EOF
+##################
+
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
 display "Installing GSC"
 sudo apt-get -y install gsc
@@ -388,7 +416,8 @@ EOF
 #########################################################
 
 
-# This will make the udev in the folder executable in case the user wants to use it.
+# This will make the udev sccript and index installer in the folder executable in case the user wants to use them.
 chmod +x "$DIR/udevRuleScript.sh"
+chmod +x "$DIR/astrometryIndexInstaller.sh"
 
 display "Script Execution Complete.  Your Ubuntu Mate System should now be ready to use for Astrophotography.  You should restart your computer."
