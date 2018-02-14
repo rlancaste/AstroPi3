@@ -74,6 +74,8 @@ Here is a list of what the script does (If you want to disable or modify any of 
 
 - Sets the user account to auto-login
 
+- Disables the CUPS modules for parallel printers since none are attached and it slows down boot (Raspberry Pi script only)
+
 - Installs Synaptic Package Manager (makes it easier to uninstall what you don't want)
 
 - Enables SSH which is disabled by default on Raspberry Pi. (Raspberry Pi script only, unless you enable it.)
@@ -87,6 +89,8 @@ Here is a list of what the script does (If you want to disable or modify any of 
 - Makes a folder called utilties on the Desktop
 
 - Creates a shortcut/launcher for the UDev Script in utilities on the Desktop
+
+- Creates a shortcut/launcher for the Astrometry Index File Install Script in utilities on the Desktop
 
 - Turns off powersave for Wifi so hotspots/adhoc networks don't shut down in the observing field
 
@@ -105,6 +109,8 @@ Here is a list of what the script does (If you want to disable or modify any of 
 - Ensures Serial connections will not be disabled
 
 - Installs INDI and KStars
+
+- Installs the kdeglobals configuration file so that KStars can have breeze icons
 
 - Installs GSC (Currently not in arm64)
 
