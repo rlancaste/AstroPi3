@@ -112,7 +112,7 @@ Here is a list of what the script does (If you want to disable or modify any of 
 
 - Installs the kdeglobals configuration file so that KStars can have breeze icons
 
-- Installs GSC (Currently not in arm64)
+- Installs GSC
 
 - Installs Astrometry.net
 
