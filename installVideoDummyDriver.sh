@@ -72,7 +72,7 @@ EndSection
 EOF
 ##################
 
-display "Script Execution Complete.  The Video Dummy Driver is set up.  You should restart your computer and log in via VNC."
+echo "Script Execution Complete.  The Video Dummy Driver is set up.  You should restart your computer and log in via VNC."
 
 
 
