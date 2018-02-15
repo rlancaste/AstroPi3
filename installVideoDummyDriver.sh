@@ -52,10 +52,10 @@ EndSection
 
 Section "Device"
 	Identifier "Card0"
-	Option "NoDDC" "true"
-	Option "IgnoreEDID" "true"
+	#Option "NoDDC" "true"
+	#Option "IgnoreEDID" "true"
 	Driver "dummy"
-	VideoRam    16384
+	VideoRam	16384
 EndSection
 
 Section "Screen"
@@ -65,7 +65,7 @@ Section "Screen"
 	Monitor "Monitor0"
     SubSection "Display"
     	Depth 24
-    	#Modes "1024x768" "1152x864" "1280x800" "1280x1024" "1360x1024" "1440x900" "1600x1200" "1680x1050" "1920x1080" "1920x1200"
+    	# Modes "1024x768" "1152x864" "1280x800" "1280x1024" "1360x1024" "1440x900" "1600x1200" "1680x1050" "1920x1080" "1920x1200"
     	Modes "1440x900"
     EndSubSection
 EndSection
