@@ -6,18 +6,32 @@ fi
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 echo "Welcome to the KStars/INDI Xorg Video Dummy installer"
 echo "This script is for devices that need the XOrg Video Dummy Driver to show up properly in VNC."
-echo "Note that if you use this script, VNC will then work, but HDMI will no longer work since it is using the dummy driver instead"
+echo "Note that if you install the dummy driver, VNC will then work, but HDMI will no longer work since it is using the dummy driver instead"
+echo "If the script has already run, instead of setting it up, it will uninstall the dummy driver and remove the conf file."
 
 read -p "Do you wish to run this script? (y/n)" runscript
 if [ "$runscript" != "y" ]
-	then
-		echo "Quitting the script as you requested."
-		read -p "Hit [Enter] to end the script now." closing
+then
+	echo "Quitting the script as you requested."
+	exit
+fi
+
+if [ -e "/etc/X11/xorg.conf.d/10-videodummy.conf" ]
+then
+		read -p "The script was already run.  Do you wish to uninstall? (y/n)" uninstall
+		if [ "$uninstall" == "y" ]
+		then
+			echo "Removing the dummy driver and the conf file as you requested."
+			sudo apt-get -y remove xserver-xorg-video-dummy
+			sudo rm /etc/X11/xorg.conf.d/10-videodummy.conf
+		fi
+		echo "Script Execution Complete.  The Video Dummy Driver is removed.  You should restart your computer."
 		exit
 fi
 
+
 # This will install the Video Dummy Driver
-sudo apt-get install xserver-xorg-video-dummy
+sudo apt-get -y install xserver-xorg-video-dummy
 
 # This will create the configuration file needed to support the dummy driver.
 # Note:  Thanks to https://ubuntuforums.org/showthread.php?t=1297815&page=3 for all the modes.

@@ -1,4 +1,5 @@
 #!/bin/bash
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 function display
 {
@@ -28,18 +29,7 @@ fi
 #########################################################
 #############  Updates
 
-# This will prevent Firefox from being updated.  Right now when Firefox gets updated on Raspberry Pi, it breaks it. 
-display "Currently (11/2017) there is an issue with Ubuntu-Mate on Raspberry Pi.  Updating Firefox Breaks it.  This might also be true for your system."
-read -p "Do you want to prevent a Firefox update (y/n)? " preventUpdateFirefox
-if [ "$preventUpdateFirefox" == "y" ]
-then
-	sudo apt-mark hold firefox
-fi
-
-# This adds armhf architecture if it doesn't exist on the system yet.
-sudo dpkg --add-architecture armhf
-
-# Updates the system to the latest packages.
+# Updates the computer to the latest packages.
 display "Updating installed packages"
 sudo apt-get update
 sudo apt-get -y upgrade
@@ -51,7 +41,7 @@ sudo apt-get -y dist-upgrade
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
 ##################
-sudo cat > /usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf <<- EOF
+sudo bash -c 'cat > /usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf' <<- EOF
 [SeatDefaults]
 greeter-session=lightdm-gtk-greeter
 autologin-user=$SUDO_USER
@@ -62,32 +52,85 @@ EOF
 display "Installing Synaptic"
 sudo apt-get -y install synaptic
 
-# This will enable SSH which is apparently disabled on Raspberry Pi by default, maybe this is true for you system.
-display "Enabling SSH"
-sudo apt-get -y purge openssh-server
-sudo apt-get -y install openssh-server
+# This will enable SSH which is apparently disabled on Raspberry Pi by default.  It might be true of your system.  If so, enable this.
+#display "Enabling SSH"
+#sudo apt-get -y purge openssh-server
+#sudo apt-get -y install openssh-server
 
-# To view the computer Remotely, this installs RealVNC Servier and enables it to run by default.
-display "Installing RealVNC Server"
-wget https://www.realvnc.com/download/binary/latest/debian/arm/ -O VNC.deb
-sudo dpkg -i VNC.deb
-sudo systemctl enable vncserver-x11-serviced.service
-rm VNC.deb
+# This will give the SBC a static IP address so that you can connect to it over an ethernet cable
+# in the observing field if no router is available.
+# You may need to edit this ip address to make sure the first 2 numbers match your computer's self assigned ip address
+# If there is already a static IP defined, it leaves it alone.
+if [ -z "$(grep 'eth0' '/etc/rc.local')" ]
+then
+	read -p "Do you want to give your SBC a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
+	if [ "$useStaticIP" == "y" ]
+	then
+		read -p "Please enter the IP address you would prefer.  Please make sure that the first two numbers match your client computer's self assigned IP.  For Example mine is: 169.254.0.5 ? " IP
+		display "Setting Static IP to $IP.  Note, you can change this later by editing the file /etc/rc.local"
+		sed -i "/# By default this script does nothing./ a ifconfig eth0 $IP up" /etc/rc.local
+		echo "New contents of /etc/rc.local:"
+		echo "$(cat /etc/rc.local)"
+		echo "~~~~~~~~~~~~~~~~~~~~~~~"
+		
+# This will make sure that the SBC will still work over Ethernet connected directly to a router if you have assigned a static ip address as requested.
+##################
+sudo cat > /etc/network/interfaces <<- EOF
+# interfaces(5) file used by ifup(8) and ifdown(8)
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
 
-# This will make a folder on the desktop for the launchers
-mkdir ~/Desktop/utilities
-sudo chown $SUDO_USER ~/Desktop/utilities
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# These two lines allow the pi to respond to a router's dhcp even though you have a static ip defined.
+allow-hotplug eth0
+iface eth0 inet dhcp
+EOF
+##################
+	else
+		display "Leaving your IP address to be assigned only by dhcp.  Note that you will always need either a router or wifi network to connect to your SBC."
+	fi
+else
+	display "This computer already has been assigned a static ip address.  If you need to edit that, please edit the file /etc/rc.local"
+fi
+
+# Note: RealVNC does not work on the 64 bit aarch64 system so far, as far as I can tell.
+# This will install x11vnc
+sudo apt-get -y install x11vnc
+# This will get the password for VNC
+x11vnc -storepasswd /etc/x11vnc.pass
+# This will store the service file.
+######################
+bash -c 'cat > /lib/systemd/system/x11vnc.service' << EOF
+[Unit]
+Description=Start x11vnc at startup.
+After=multi-user.target
+[Service]
+Type=simple
+ExecStart=/usr/bin/x11vnc -auth guess -forever -loop -noxdamage -repeat -rfbauth /etc/x11vnc.pass -rfbport 5900 -shared
+[Install]
+WantedBy=multi-user.target
+EOF
+######################
+# This enables the Service so it runs at startup
+sudo systemctl enable x11vnc.service
+sudo systemctl daemon-reload
+
+# This will make a folder on the desktop with the right permissions for the launchers
+sudo -H -u $SUDO_USER bash -c 'mkdir -p ~/Desktop/utilities'
 
 # This will create a shortcut on the desktop for creating udev rules for Serial Devices
 ##################
-sudo cat > ~/Desktop/utilities/SerialDevices.desktop <<- EOF
+sudo bash -c 'cat > ~/Desktop/utilities/SerialDevices.desktop' <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
 Type=Application
 Terminal=true
 Icon[en_US]=mate-panel-launcher
-Exec=sudo $(echo ~/)AstroPi3/udevRuleScript.sh
+Exec=sudo $(echo $DIR)/udevRuleScript.sh
 Name[en_US]=Create Rule for Serial Device
 Name=Create Rule for Serial Device
 Icon=mate-panel-launcher
@@ -95,6 +138,24 @@ EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/SerialDevices.desktop
 sudo chown $SUDO_USER ~/Desktop/utilities/SerialDevices.desktop
+
+# This will create a shortcut on the desktop for Installing Astrometry Index Files.
+##################
+sudo bash -c 'cat > ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop' <<- EOF
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Icon[en_US]=mate-panel-launcher
+Exec=sudo $(echo $DIR)/astrometryIndexInstaller.sh
+Name[en_US]=Install Astrometry Index Files
+Name=Install Astrometry Index Files
+Icon=mate-panel-launcher
+EOF
+##################
+sudo chmod +x ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop
+sudo chown $SUDO_USER ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop
 
 #########################################################
 #############  Configuration for Hotspot Wifi for Connecting on the Observing Field
@@ -105,7 +166,7 @@ sudo chown $SUDO_USER ~/Desktop/utilities/SerialDevices.desktop
 # If you want to leave wifi power management enabled, put #'s in front of this section
 display "Preventing Wifi Power Management from shutting down AdHoc and Hotspot Networks"
 ##################
-sudo cat > /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf <<- EOF
+sudo bash -c 'cat > /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf' <<- EOF
 [connection]
 wifi.powersave = 2
 EOF
@@ -126,7 +187,7 @@ nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless-security.key
 
 # This will make a link to start the hotspot wifi on the Desktop
 ##################
-sudo cat > ~/Desktop/utilities/StartFieldWifi.desktop <<- EOF
+sudo bash -c 'cat > ~/Desktop/utilities/StartFieldWifi.desktop' <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -141,7 +202,7 @@ EOF
 sudo chmod +x ~/Desktop/utilities/StartFieldWifi.desktop
 sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi.desktop
 ##################
-sudo cat > ~/Desktop/utilities/StartFieldWifi_5G.desktop <<- EOF
+sudo bash -c 'cat > ~/Desktop/utilities/StartFieldWifi_5G.desktop' <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -158,7 +219,7 @@ sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi_5G.desktop
 
 # This will make a link to restart Network Manager Service if there is a problem
 ##################
-sudo cat > ~/Desktop/utilities/StartNmService.desktop <<- EOF
+sudo bash -c 'cat > ~/Desktop/utilities/StartNmService.desktop' <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -175,7 +236,7 @@ sudo chown $SUDO_USER ~/Desktop/utilities/StartNmService.desktop
 
 # This will make a link to restart nm-applet which sometimes crashes
 ##################
-sudo cat > ~/Desktop/utilities/StartNmApplet.desktop <<- EOF
+sudo bash -c 'cat > ~/Desktop/utilities/StartNmApplet.desktop' <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -204,15 +265,24 @@ sudo apt-get -y install caja-share
 # Adds yourself to the user group of who can use samba.
 sudo smbpasswd -a $SUDO_USER
 
+# This makes sure that you actually get added to the right group
+sudo adduser $SUDO_USER sambashare
 
 #########################################################
 #############  Very Important Configuration Items
 
 # This will create a swap file for an increased 2 GB of artificial RAM.  This is not needed on all systems, since different cameras download different size images, but if you are using a DSLR, it definitely is.
-display "Creating SWAP Memory"
-wget https://raw.githubusercontent.com/Cretezy/Swap/master/swap.sh -O swap
-sh swap 2G
-rm swap
+# This method is disabled in favor of the zram method below. If you prefer this method, you can re-enable it by taking out the #'s
+#display "Creating SWAP Memory"
+#wget https://raw.githubusercontent.com/Cretezy/Swap/master/swap.sh -O swap
+#sh swap 2G
+#rm swap
+
+# This will create zram, basically a swap file saved in RAM. It will not read or write to the SD card, but instead, writes to compressed RAM.  
+# This is not needed on all systems, since different cameras download different size images, and different SBC's have different RAM capacities but 
+# if you are using a DSLR on a system with 1GB of RAM, it definitely is needed.  If you don't want this, comment it out.
+display "Installing zRAM for increased RAM capacity"
+sudo apt-get -y install zram-config
 
 # This should fix an issue where you might not be able to use a serial mount connection because you are not in the "dialout" group
 display "Enabling Serial Communication"
@@ -262,6 +332,16 @@ apt-get download kstars-bleeding:armhf
 apt-get download kstars-bleeding-dbg
 sudo dpkg --force-all -i *.deb
 
+# Creates a config file for kde themes and icons which is missing on the Raspberry pi.
+# Note:  This is required for KStars to have the breeze icons.
+display "Creating KDE config file so KStars can have breeze icons."
+##################
+sudo cat > ~/.config/kdeglobals <<- EOF
+[Icons]
+Theme=breeze
+EOF
+##################
+
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
 display "Installing GSC"
 sudo apt-get -y install gsc
@@ -292,12 +372,23 @@ sudo chown $SUDO_USER ~/Desktop/phd2.desktop
 
 display "Installing and Configuring INDI Web Manager"
 
+# This will install pip and the headers so you can use it in the next step
+sudo apt-get -y install python-pip
+sudo apt-get -y install python-dev
+
+# Setuptools may bee needed in order to install indiweb on some 64 bit systems
+sudo apt-get -y install python-setuptools
+sudo -H pip install setuptools --upgrade
+
+# Wheel might not be installed on some 64 bit systems
+sudo -H pip install wheel
+
 # This will install INDI Web Manager
-sudo pip install indiweb
+sudo -H pip install indiweb
 
 # This will prepare the indiwebmanager.service file
 ##################
-sudo cat > /etc/systemd/system/indiwebmanager.service <<- EOF
+sudo bash -c 'cat > /etc/systemd/system/indiwebmanager.service' <<- EOF
 [Unit]
 Description=INDI Web Manager
 After=multi-user.target
@@ -321,7 +412,7 @@ sudo systemctl enable indiwebmanager.service
 
 # This will make a link to the Web Manager on the Desktop
 ##################
-sudo cat > ~/Desktop/INDIWebManager.desktop <<- EOF
+sudo bash -c 'cat > ~/Desktop/INDIWebManager.desktop' <<- EOF
 [Desktop Entry]
 Encoding=UTF-8
 Name=INDI Web Manager
@@ -332,10 +423,33 @@ EOF
 ##################
 sudo chmod +x ~/Desktop/INDIWebManager.desktop
 sudo chown $SUDO_USER ~/Desktop/INDIWebManager.desktop
+#########################################################
+#############  Configuration for System Monitoring
+
+# This will set you up with conky so that you can see how your system is doing at a moment's glance
+# A big thank you to novaspirit who set up this theme https://github.com/novaspirit/rpi_conky
+sudo apt-get -y install conky-all
+cp "$DIR/conkyrc" ~/.conkyrc
+sudo chown $SUDO_USER ~/.conkyrc
+
+# This will put a link into the autostart folder so it starts at login
+##################
+sudo bash -c 'cat > /usr/share/mate/autostart/startConky.desktop' <<- EOF
+[Desktop Entry]
+Name=StartConky
+Exec=conky -b
+Terminal=false
+Type=Application
+EOF
+##################
+# Note that in order to work, this link needs to stay owned by root and not be executable
+
 
 #########################################################
 
-# This will make the udev in the folder executable in case the user wants to use it.
-chmod +x ~/AstroPi3/udevRuleScript.sh
 
-display "Script Execution Complete.  Your Single Board Computer should now be ready to use for Astrophotography.  You should restart it."
+# This will make the udev sccript and index installer in the folder executable in case the user wants to use them.
+chmod +x "$DIR/udevRuleScript.sh"
+chmod +x "$DIR/astrometryIndexInstaller.sh"
+
+display "Script Execution Complete.  Your Ubuntu Mate System should now be ready to use for Astrophotography.  You should restart your computer."
