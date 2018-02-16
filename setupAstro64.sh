@@ -304,7 +304,7 @@ sudo apt-get -y install kstars-bleeding-dbg indi-dbg
 # Note:  This is required for KStars to have the breeze icons.
 display "Creating KDE config file so KStars can have breeze icons."
 ##################
-sudo cat > ~/.config/kdeglobals <<- EOF
+sudo bash -c 'cat > ~/.config/kdeglobals' <<- EOF
 [Icons]
 Theme=breeze
 EOF
