@@ -52,7 +52,7 @@ Section "Monitor"
      1360x1024 @ 60.00 Hz (GTF) hsync: 63.60 kHz; pclk: 116.01 MHz
     #Modeline "1360x1024" 116.01 1360 1448 1592 1824 1024 1025 1028 1060 -HSync +Vsync
      1440x900 @ 60.00 Hz (GTF) hsync: 55.92 kHz; pclk: 106.47 MHz
-    Modeline "1440x900" 106.47 1440 1520 1672 1904 900 901 904 932 -HSync +Vsync
+    #Modeline "1440x900" 106.47 1440 1520 1672 1904 900 901 904 932 -HSync +Vsync
      1600x1200 @ 60.00 Hz (GTF) hsync: 74.52 kHz; pclk: 160.96 MHz
     #Modeline "1600x1200" 160.96 1600 1704 1880 2160 1200 1201 1204 1242 -HSync +Vsync
      1680x1050 @ 60.00 Hz (GTF) hsync: 65.22 kHz; pclk: 147.14 MHz
