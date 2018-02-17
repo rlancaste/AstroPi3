@@ -37,6 +37,7 @@ chmod +x "$DIR/setupAstro64with32bitKStars.sh"
 chmod +x "$DIR/udevRuleScript.sh"
 chmod +x "$DIR/astrometryIndexInstaller.sh"
 chmod +x "$DIR/systemUpdater.sh"
+sudo chown $SUDO_USER *
 
 echo "Your requested updates are complete."
 
