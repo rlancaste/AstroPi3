@@ -68,8 +68,8 @@ ${font Arial:bold:size=10}${color Tan2}NETWORK ${color DarkSlateGray}${hr 2}
 $font${color DimGray}IP on wlan0 $alignr ${addr wlan0}
 $font${color DimGray}IP on eth0 $alignr ${addr eth0}
 
-Down $alignr ${downspeed wlan0} kb/s
-Up $alignr ${upspeed wlan0} kb/s
+Down $alignr wlan0:${downspeed wlan0}, eth0:${downspeed eth0} kb/s
+Up $alignr wlan0:${upspeed wlan0}, eth0:${upspeed eth0} kb/s
 
-Downloaded: $alignr  ${totaldown wlan0}
-Uploaded: $alignr  ${totalup wlan0}
+Downloaded: $alignr  wlan0:${totaldown wlan0}, eth0:${totaldown eth0}
+Uploaded: $alignr  wlan0:${totalup wlan0}, eth0:${totalup eth0}
