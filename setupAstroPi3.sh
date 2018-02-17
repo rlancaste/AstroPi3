@@ -137,7 +137,7 @@ rm VNC.deb
 mkdir ~/Desktop/utilities
 sudo chown $SUDO_USER ~/Desktop/utilities
 
-# This will create a shortcut on the desktop for creating udev rules for Serial Devices.
+# This will create a shortcut on the desktop in the utilities folder for creating udev rules for Serial Devices.
 ##################
 sudo cat > ~/Desktop/utilities/SerialDevices.desktop <<- EOF
 #!/usr/bin/env xdg-open
@@ -155,7 +155,7 @@ EOF
 sudo chmod +x ~/Desktop/utilities/SerialDevices.desktop
 sudo chown $SUDO_USER ~/Desktop/utilities/SerialDevices.desktop
 
-# This will create a shortcut on the desktop for Installing Astrometry Index Files.
+# This will create a shortcut on the desktop in the utilities folder for Installing Astrometry Index Files.
 ##################
 sudo cat > ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop <<- EOF
 #!/usr/bin/env xdg-open
@@ -172,6 +172,24 @@ EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop
 sudo chown $SUDO_USER ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop
+
+# This will create a shortcut on the desktop in the utilities folder for Updating the System.
+##################
+sudo cat > ~/Desktop/utilities/systemUpdater.desktop <<- EOF
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Icon[en_US]=mate-panel-launcher
+Exec=sudo $(echo $DIR)/systemUpdater.sh
+Name[en_US]=Software Update
+Name=Software Update
+Icon=mate-panel-launcher
+EOF
+##################
+sudo chmod +x ~/Desktop/utilities/systemUpdater.desktop
+sudo chown $SUDO_USER ~/Desktop/utilities/systemUpdater.desktop
 
 #########################################################
 #############  Configuration for Hotspot Wifi for Connecting on the Observing Field
@@ -418,8 +436,9 @@ EOF
 #########################################################
 
 
-# This will make the udev sccript and index installer in the folder executable in case the user wants to use them.
+# This will make the utility scripts in the folder executable in case the user wants to use them.
 chmod +x "$DIR/udevRuleScript.sh"
 chmod +x "$DIR/astrometryIndexInstaller.sh"
+chmod +x "$DIR/systemUpdater.sh"
 
 display "Script Execution Complete.  Your Raspberry Pi 3 should now be ready to use for Astrophotography.  You should restart your Pi."
