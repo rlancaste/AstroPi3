@@ -129,11 +129,11 @@ sudo bash -c 'cat > ~/Desktop/utilities/SerialDevices.desktop' <<- EOF
 Version=1.0
 Type=Application
 Terminal=true
-Icon[en_US]=mate-panel-launcher
+Icon[en_US]=plip
 Exec=sudo $(echo $DIR)/udevRuleScript.sh
 Name[en_US]=Create Rule for Serial Device
 Name=Create Rule for Serial Device
-Icon=mate-panel-launcher
+Icon=plip
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/SerialDevices.desktop
@@ -147,11 +147,11 @@ sudo bash -c 'cat > ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop' <<-
 Version=1.0
 Type=Application
 Terminal=true
-Icon[en_US]=mate-panel-launcher
+Icon[en_US]=mate-preferences-desktop-display
 Exec=sudo $(echo $DIR)/astrometryIndexInstaller.sh
 Name[en_US]=Install Astrometry Index Files
 Name=Install Astrometry Index Files
-Icon=mate-panel-launcher
+Icon=mate-preferences-desktop-display
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop
@@ -165,11 +165,11 @@ sudo bash -c 'cat > ~/Desktop/utilities/systemUpdater.desktop' <<- EOF
 Version=1.0
 Type=Application
 Terminal=true
-Icon[en_US]=mate-panel-launcher
+Icon[en_US]=system-software-update
 Exec=sudo $(echo $DIR)/systemUpdater.sh
 Name[en_US]=Software Update
 Name=Software Update
-Icon=mate-panel-launcher
+Icon=system-software-update
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/systemUpdater.desktop
@@ -210,11 +210,11 @@ sudo bash -c 'cat > ~/Desktop/utilities/StartFieldWifi.desktop' <<- EOF
 Version=1.0
 Type=Application
 Terminal=false
-Icon[en_US]=mate-panel-launcher
+Icon[en_US]=irda
 Name[en_US]=Start $(hostname -s) Field Wifi
 Exec=nmcli con up $(hostname -s)_FieldWifi
 Name=Start $(hostname -s)_FieldWifi 
-Icon=mate-panel-launcher
+Icon=irda
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/StartFieldWifi.desktop
@@ -225,11 +225,11 @@ sudo bash -c 'cat > ~/Desktop/utilities/StartFieldWifi_5G.desktop' <<- EOF
 Version=1.0
 Type=Application
 Terminal=false
-Icon[en_US]=mate-panel-launcher
+Icon[en_US]=irda
 Name[en_US]=Start $(hostname -s) Field Wifi 5G
 Exec=nmcli con up $(hostname -s)_FieldWifi_5G
 Name=Start $(hostname -s)_FieldWifi_5G
-Icon=mate-panel-launcher
+Icon=irda
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/StartFieldWifi_5G.desktop
@@ -242,11 +242,11 @@ sudo bash -c 'cat > ~/Desktop/utilities/StartNmService.desktop' <<- EOF
 Version=1.0
 Type=Application
 Terminal=false
-Icon[en_US]=mate-panel-launcher
+Icon[en_US]=preferences-system-network
 Name[en_US]=Restart Network Manager Service
 Exec=gksu systemctl restart NetworkManager.service
 Name=Restart Network Manager Service
-Icon=mate-panel-launcher
+Icon=preferences-system-network
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/StartNmService.desktop
@@ -259,11 +259,11 @@ sudo bash -c 'cat > ~/Desktop/utilities/StartNmApplet.desktop' <<- EOF
 Version=1.0
 Type=Application
 Terminal=false
-Icon[en_US]=mate-panel-launcher
+Icon[en_US]=preferences-system-network
 Name[en_US]=Restart Network Manager Applet
 Exec=nm-applet
 Name=Restart Network Manager
-Icon=mate-panel-launcher
+Icon=preferences-system-network
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/StartNmApplet.desktop
