@@ -30,6 +30,7 @@ rm "$DIR/setupAstro64with32bitKStars.sh"
 rm "$DIR/udevRuleScript.sh"
 rm "$DIR/astrometryIndexInstaller.sh"
 rm "$DIR/systemUpdater.sh"
+git pull
 git reset --hard
 chmod +x "$DIR/setupAstro64.sh"
 chmod +x "$DIR/setupAstroPi3.sh"
