@@ -28,6 +28,11 @@ net_avg_samples 1
 override_utf8_locale no
 use_spacer right
 
+# Wifi interface info
+template0 ${if_up \1}IP ${addr \1} ${alignr}Gateway ${gw_iface}\nEssid ${wireless_essid \1}\nSignal ${wireless_link_qual \1}: ${wireless_link_qual_perc \1}% ${alignr}${wireless_mode \1} Rate ${wireless_bitrate \1}\nUp [${totalup \1}] ${alignr}${upspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${upspeed \1} \nDn [${totaldown \1}]${alignr}${downspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${downspeed \1}\n ${else}WiFi (\1)${alignr}not connected\n${endif}
+# Ethernet interface info
+template1 ${if_up \1}IP ${addr \1}\nUp [${totalup \1}] ${alignr}${upspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${upspeed \1} \nDn [${totaldown \1}]${alignr}${downspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${downspeed \1} \n${else}Ethernet (\1)${alignr}not connected\n${endif}
+
 TEXT
 ${font Arial:size=20}${color Tan1}${exec hostname}${color Ivory} LINUX
 
@@ -65,11 +70,7 @@ $font${top_mem name 4}${alignr}${top mem 4} %
 $font${top_mem name 5}${alignr}${top mem 5} %
 
 ${font Arial:bold:size=10}${color Tan2}NETWORK ${color DarkSlateGray}${hr 2}
-$font${color DimGray}IP on wlan0 $alignr ${addr wlan0}
-$font${color DimGray}IP on eth0 $alignr ${addr eth0}
-
-Down $alignr wlan0: ${downspeed wlan0}, eth0: ${downspeed eth0} /s
-Up $alignr wlan0: ${upspeed wlan0}, eth0: ${upspeed eth0} /s
-
-Downloaded: $alignr  wlan0: ${totaldown wlan0}, eth0: ${totaldown eth0}
-Uploaded: $alignr  wlan0: ${totalup wlan0}, eth0: ${totalup eth0}
+$font${color Gray}Ethernet
+$font${color DimGray}${execpi 120 cat /proc/net/dev | grep 'eth' | cut --fields=-1 --delimiter=':' | sed 's/^/\$\{template1 /;s/$/\}/'}
+$font${color Gray}Wireless Networks
+$font${color DimGray}${execpi 120 cat /proc/net/dev | grep 'wl' | cut --fields=-1 --delimiter=':' | sed 's/^/\$\{template0 /;s/$/\}/'}
