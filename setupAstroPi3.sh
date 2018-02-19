@@ -215,9 +215,9 @@ sudo cat > ~/Desktop/utilities/backupOrRestore.desktop <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
-Terminal=true
+Terminal=false
 Icon[en_US]=system-upgrade
-Exec=$(echo $DIR)/backupOrRestore.sh
+Exec=mate-terminal -e '$(echo $DIR)/backupOrRestore.sh'
 Name[en_US]=Backup or Restore
 Name=Backup or Restore
 Icon=system-upgrade
