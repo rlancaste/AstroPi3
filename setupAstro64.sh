@@ -1,4 +1,12 @@
 #!/bin/bash
+
+#	AstroPi3 64 bit Ubuntu-Mate KStars/INDI Configuration Script
+#﻿  Copyright (C) 2018 Robert Lancaster <rlancaste@gmail.com>
+#	This script is free software; you can redistribute it and/or
+#	modify it under the terms of the GNU General Public
+#	License as published by the Free Software Foundation; either
+#	version 2 of the License, or (at your option) any later version.
+
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 function display
@@ -10,7 +18,7 @@ function display
     echo ""
 }
 
-display "Welcome to the INDI and KStars 64 bit Ubuntu Mate Configuration Script."
+display "Welcome to the AstroPi3 64 bit Ubuntu-Mate KStars/INDI Configuration Script."
 
 display "This will update, install and configure your Ubuntu Mate System to work with INDI and KStars to be a hub for Astrophotography. Be sure to read the script first to see what it does and to customize it."
 

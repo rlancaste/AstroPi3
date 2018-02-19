@@ -1,12 +1,21 @@
 #!/bin/bash
+
+#	AstroPi3 KStars/INDI Ubuntu-Mate System Updater Script
+#﻿  Copyright (C) 2018 Robert Lancaster <rlancaste@gmail.com>
+#	This script is free software; you can redistribute it and/or
+#	modify it under the terms of the GNU General Public
+#	License as published by the Free Software Foundation; either
+#	version 2 of the License, or (at your option) any later version.
+
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 if [ "$(whoami)" != "root" ]; then
 	echo "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
 	exit 1
 fi
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo "Welcome to the AstroPi3 KStars/INDI System Updater"
+echo "Welcome to the AstroPi3 KStars/INDI Ubuntu-Mate System Updater"
 echo "This script will update your SBC to all the latest software and the AstroPi3 Scripts to the latest version"
+echo "Please note, if there were any AstroPi3 setup script changes, you will probably want to run the setup script for your install again after running this script."
 
 read -p "Do you wish to run this script? (y/n)" runscript
 if [ "$runscript" != "y" ]

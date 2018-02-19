@@ -1,10 +1,18 @@
 #!/bin/bash
+
+#	AstroPi3 Xorg Video Dummy installer
+#﻿  Copyright (C) 2018 Robert Lancaster <rlancaste@gmail.com>
+#	This script is free software; you can redistribute it and/or
+#	modify it under the terms of the GNU General Public
+#	License as published by the Free Software Foundation; either
+#	version 2 of the License, or (at your option) any later version.
+
 if [ "$(whoami)" != "root" ]; then
 	echo "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
 	exit 1
 fi
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo "Welcome to the KStars/INDI Xorg Video Dummy installer"
+echo "Welcome to the AstroPi3 Xorg Video Dummy installer"
 echo "This script is for devices that need the XOrg Video Dummy Driver to show up properly in VNC."
 echo "Note that if you install the dummy driver, VNC will then work, but HDMI will no longer work since it is using the dummy driver instead"
 echo "If the script has already run, instead of setting it up, it will uninstall the dummy driver and remove the conf file."

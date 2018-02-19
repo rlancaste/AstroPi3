@@ -1,10 +1,18 @@
 #!/bin/bash
+
+#	AstroPi3 Linux UDEV Rule Script
+#﻿  Copyright (C) 2018 Robert Lancaster <rlancaste@gmail.com>
+#	This script is free software; you can redistribute it and/or
+#	modify it under the terms of the GNU General Public
+#	License as published by the Free Software Foundation; either
+#	version 2 of the License, or (at your option) any later version.
+
 if [ "$(whoami)" != "root" ]; then
 	display "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
 	exit 1
 fi
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo "Welcome to the KStars/INDI Linux Udev Script"
+echo "Welcome to the AstroPi3 Linux Udev Script"
 echo "This will create udev rules that will allow multiple devices based on serial/tty communications to have consistent names when they are connected."
 echo "This script will place a rule in /lib/udev/rules.d/99-<device name>.rules so that when you connect this device to this computer, it can be accessed via a symlink name like /dev/moonlite instead of having to use /dev/ttyusb0"
 read -p "Do you wish to run this script? (y/n)" runscript

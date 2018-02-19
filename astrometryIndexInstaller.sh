@@ -1,10 +1,18 @@
 #!/bin/bash
+
+#	AstroPi3 Astrometry Index File Installer
+#﻿  Copyright (C) 2018 Robert Lancaster <rlancaste@gmail.com>
+#	This script is free software; you can redistribute it and/or
+#	modify it under the terms of the GNU General Public
+#	License as published by the Free Software Foundation; either
+#	version 2 of the License, or (at your option) any later version.
+
 if [ "$(whoami)" != "root" ]; then
 	echo "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
 	exit 1
 fi
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo "Welcome to the KStars/INDI Astrometry Index Installer Script"
+echo "Welcome to the AstroPi3 Astrometry Index Installer Script"
 echo "This script will ask you which Index files you want to download and then will install them to /usr/share/astrometry"
 echo "Note that you need to install at least the index files that cover 10% to 100% of your FOV."
 echo "Please make sure you know your FOV before Proceeeding."

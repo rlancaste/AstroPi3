@@ -1,4 +1,12 @@
 #!/bin/bash
+
+#	AstroPi3 Ubuntu-Mate 64 Bit Configuration Script with 32 bit KStars (for SBIG)
+#﻿  Copyright (C) 2018 Robert Lancaster <rlancaste@gmail.com>
+#	This script is free software; you can redistribute it and/or
+#	modify it under the terms of the GNU General Public
+#	License as published by the Free Software Foundation; either
+#	version 2 of the License, or (at your option) any later version.
+
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 function display
@@ -10,7 +18,7 @@ function display
     echo ""
 }
 
-display "Welcome to the INDI and KStars 64 Bit Configuration Script with 32 bit KStars (for SBIG)."
+display "Welcome to the AstroPi3 Ubuntu-Mate 64 Bit Configuration Script with 32 bit KStars (for SBIG)."
 
 display "This will update, install and configure your 64 bit Ubuntu-Mate system to work with 32 bit INDI and KStars to be a hub for Astrophotography.  The 32 bit KStars is because SBIG doesn't work in 64 bit right now.   If you do not plan to use an SBIG, please use the other 64 bit installer. Be sure to read the script first to see what it does and to customize it."
 
