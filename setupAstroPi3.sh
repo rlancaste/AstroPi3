@@ -208,6 +208,24 @@ EOF
 sudo chmod +x ~/Desktop/utilities/systemUpdater.desktop
 sudo chown $SUDO_USER ~/Desktop/utilities/systemUpdater.desktop
 
+# This will create a shortcut on the desktop in the utilities folder for Backing Up and Restoring the KStars/INDI Files.
+##################
+sudo cat > ~/Desktop/utilities/backupOrRestore.desktop <<- EOF
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Icon[en_US]=system-upgrade
+Exec=$(echo $DIR)/backupOrRestore.sh
+Name[en_US]=Backup or Restore
+Name=Backup or Restore
+Icon=system-upgrade
+EOF
+##################
+sudo chmod +x ~/Desktop/utilities/backupOrRestore.desktop
+sudo chown $SUDO_USER ~/Desktop/utilities/backupOrRestore.desktop
+
 #########################################################
 #############  Configuration for Hotspot Wifi for Connecting on the Observing Field
 
@@ -457,5 +475,6 @@ EOF
 chmod +x "$DIR/udevRuleScript.sh"
 chmod +x "$DIR/astrometryIndexInstaller.sh"
 chmod +x "$DIR/systemUpdater.sh"
+chmod +x "$DIR/backupOrRestore.sh"
 
 display "Script Execution Complete.  Your Raspberry Pi 3 should now be ready to use for Astrophotography.  You should restart your Pi."
