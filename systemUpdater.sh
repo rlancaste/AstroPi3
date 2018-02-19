@@ -21,6 +21,7 @@ if [ "$?" -eq 2 ]
 then
     echo "dpkg is currently locked, meaning another program is either checking for updates or is currently updating the system."
     echo "Please wait for a few minutes or quit the other process and run this script again.  Exiting now."
+    read -p "Hit [Enter] to end the script" closing
     exit
 fi
 
