@@ -347,9 +347,9 @@ sudo usermod -a -G dialout $SUDO_USER
 
 # Installs INDI, Kstars, and Ekos bleeding edge and debugging
 display "Installing INDI and KStars"
+dpkg --add-architecture armhf
 sudo apt-add-repository ppa:mutlaqja/ppa -y
 sudo apt-get update
-sudo apt-get -fy install
 sudo apt-get -y install unity-gtk2-module:armhf
 sudo apt-get -y install gtk2-engines-murrine:armhf
 sudo apt-get -y install topmenu-gtk2:armhf
@@ -378,12 +378,14 @@ sudo apt-get -y install kstars-bleeding-data:all
 sudo apt-get -y install kded5:armhf
 sudo apt-get -y install kinit:armhf
 sudo apt-get -y install qml-module-qtquick-controls:armhf
-cd ~/Downloads
-mkdir kstars32bit
-cd kstars32bit
-apt-get download kstars-bleeding:armhf
-apt-get download kstars-bleeding-dbg
-sudo dpkg --force-all -i *.deb
+sudo apt-get -y install kstars-bleeding:armhf
+
+#cd ~/Downloads
+#mkdir kstars32bit
+#cd kstars32bit
+#apt-get download kstars-bleeding:armhf
+#apt-get download kstars-bleeding-dbg
+#sudo dpkg --force-all -i *.deb
 
 # Creates a config file for kde themes and icons which is missing on the Raspberry pi.
 # Note:  This is required for KStars to have the breeze icons.
