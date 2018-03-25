@@ -113,6 +113,11 @@ else
 	display "This computer already has been assigned a static ip address.  If you need to edit that, please edit the file /etc/rc.local"
 fi
 
+# This will promt you to install (1) x11vnc, (2) x2go, or (3) no remote access tool
+read -p "Do you want to install (1) x11vnc, (2) x2go, or (3) no remote access tool? input (1/2/3)? " remoteAccessTool
+if [ "$remoteAccessTool" == "1" ]
+then
+
 # Note: RealVNC does not work on the 64 bit aarch64 system so far, as far as I can tell.
 # This will install x11vnc
 sudo apt-get -y install x11vnc
@@ -134,6 +139,21 @@ EOF
 # This enables the Service so it runs at startup
 sudo systemctl enable x11vnc.service
 sudo systemctl daemon-reload
+
+elif [ "$remoteAccessTool" == "2" ]
+then
+
+# This will install x2go for Ubuntu Mate
+sudo add-apt-repository -y ppa:x2go/stable
+sudo apt-get update
+sudo apt-get install -y x2goserver x2goserver-xsession x2gomatebindings
+
+else
+
+    display "No remote access tool will be installed!"
+
+fi
+
 
 # This will make a folder on the desktop with the right permissions for the launchers
 sudo -H -u $SUDO_USER bash -c 'mkdir -p ~/Desktop/utilities'
@@ -362,6 +382,13 @@ sudo bash -c 'cat > ~/.config/kdeglobals' <<- EOF
 Theme=breeze
 EOF
 ##################
+
+
+# Installs the GPS-Daemon (GPSD) and GPSD Clients 
+# This is necesarry if you have a local GPS dongle attached to your SBC, 
+# and want to use it to set the coordinates and systemm time.
+# (If you don't need this, you can comment this line out with a #)
+sudo apt-get -y install gpsd gpsd-clients
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
 display "Installing GSC"
