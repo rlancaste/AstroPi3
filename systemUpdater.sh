@@ -40,6 +40,9 @@ sudo apt-get update
 sudo apt-get -y upgrade
 sudo apt-get -y dist-upgrade
 
+# Updates indiweb to the latest version
+sudo pip install indiweb --upgrade
+
 # Updates the AstroPi3 Script to the latest version.
 echo "Updating AstroPi3 Scripts"
 cd $DIR
