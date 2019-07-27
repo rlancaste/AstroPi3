@@ -74,6 +74,8 @@ Here is a list of what the script does (If you want to disable or modify any of 
 
 - Sets the user account to auto-login
 
+- Disables the screen lock and screen saver to prevent them from causing issues when connecting via VNC
+
 - Disables the CUPS modules for parallel printers since none are attached and it slows down boot (Raspberry Pi script only)
 
 - Installs Synaptic Package Manager (makes it easier to uninstall what you don't want)

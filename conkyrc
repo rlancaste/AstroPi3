@@ -41,6 +41,7 @@ ${color DimGray}
 ${font}
 ${font Arial:bold:size=10}${color Tan1}SYSTEM ${color DarkSlateGray} ${hr 2}
 $font${color DimGray}$sysname $kernel $alignr $machine
+Architecture $alignr${exec dpkg --print-architecture}
 Frequency $alignr${freq_g cpu0}Ghz
 Uptime $alignr${uptime}
 File System $alignr${fs_type}

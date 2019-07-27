@@ -82,6 +82,10 @@ autologin-user=$SUDO_USER
 EOF
 ##################
 
+# This will prevent the raspberry pi from turning on the lock-screen / screensaver which can be problematic when using VNC
+gsettings set org.gnome.desktop.session idle-delay 0
+gsettings set org.mate.screensaver lock-enabled false
+
 # This will disable Parallel printer port CUPS modules that don't exist on the raspberry pi
 # This was added because the raspberry pi often says "Failed to start load kernel modules" on startup
 # Without this change, startup can take 1 to 2 extra minutes.
