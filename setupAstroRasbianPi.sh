@@ -294,8 +294,14 @@ sudo smbpasswd -a $SUDO_USER
 # This will create zram, basically a swap file saved in RAM. It will not read or write to the SD card, but instead, writes to compressed RAM.  
 # This is not needed on all systems, since different cameras download different size images, and different SBC's have different RAM capacities but 
 # if you are using a DSLR on a Raspberry Pi with 1GB of RAM, it definitely is needed. If you don't want this, comment it out.
-display "Installing zRAM for increased RAM capacity, from 1 GB to 1.5 GB"
-sudo apt-get -y install zram-config
+display "Installing zRAM for increased RAM capacity"
+sudo wget -O /usr/bin/zram.sh https://raw.githubusercontent.com/novaspirit/rpi_zram/master/zram.sh
+sudo chmod +x /usr/bin/zram.sh
+
+if [ -z "$(grep '/usr/bin/zram.sh' '/etc/rc.local')" ]
+then
+   sed -i "/^exit 0/i /usr/bin/zram.sh &" /etc/rc.local
+fi
 
 # This should fix an issue where you might not be able to use a serial mount connection because you are not in the "dialout" group
 display "Enabling Serial Communication"
