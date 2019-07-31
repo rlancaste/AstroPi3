@@ -344,18 +344,21 @@ else
 	git pull
 fi
 
+display "Building and Installing core LibINDI"
 mkdir -p $USERHOME/AstroRoot/indi-build/libindi
 cd $USERHOME/AstroRoot/indi-build/libindi
 sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/libindi
 sudo make
 sudo make install
 
+display "Building and Installing the INDI 3rd Party Libraries"
 mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
 cd $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
 sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi/3rdparty
 sudo make
 sudo make install
 
+display "Building and Installing the INDI 3rd Party Drivers"
 mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
 cd $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
 sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/3rdparty
@@ -405,17 +408,17 @@ cd $USERHOME/AstroRoot/gsc/src
 make
 mv gsc.exe gsc
 sudo cp gsc /usr/bin/
-cp -r $USERHOME/AstroRoot/gsc $USERHOME/
-rm -r $USERHOME/gsc/bin-dos
-rm -r $USERHOME/gsc/src
-rm $USERHOME/gsc/bincats_GSC_1.2.tar.gz
-rm $USERHOME/gsc/gsc.exe
-rm $USERHOME/gsc/decode.exe
+cp -r $USERHOME/AstroRoot/gsc /usr/share/GSC
+rm -r /usr/share/GSC/bin-dos
+rm -r /usr/share/GSC/src
+rm /usr/share/GSC/bincats_GSC_1.2.tar.gz
+rm /usr/share/GSC/bin/gsc.exe
+rm /usr/share/GSC/bin/decode.exe
 
-if [ -z "$(grep 'export GSCDAT' $USERHOME/.bashrc)" ]
+if [ -z "$(grep 'export GSCDAT' /etc/profile)" ]
 then
-	cp $USERHOME/.bashrc $USERHOME/.bashrc.copy
-	echo "export GSCDAT=$USERHOME/gsc" >> $USERHOME/.bashrc
+	cp /etc/profile /etc/profile.copy
+	echo "export GSCDAT=/usr/share/GSC" >> /etc/profile
 fi
 
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
