@@ -38,13 +38,13 @@ fi
 #############  Updates
 
 ## check if DPKG database is locked
-dpkg -i /dev/zero 2>/dev/null
-if [ "$?" -eq 2 ]
-then
-    echo "dpkg is currently locked, meaning another program is either checking for updates or is currently updating the system."
-    echo "Please wait for a few minutes or quit the other process and run this script again.  Exiting now."
-    exit
-fi
+#dpkg -i /dev/zero 2>/dev/null
+#if [ "$?" -eq 2 ]
+#then
+#    echo "dpkg is currently locked, meaning another program is either checking for updates or is currently updating the system."
+#    echo "Please wait for a few minutes or quit the other process and run this script again.  Exiting now."
+#    exit
+#fi
 
 # This would update the Raspberry Pi kernel.  For now it is disabled because there is debate about whether to do it or not.  To enable it, take away the # sign.
 #display "Updating Kernel"
