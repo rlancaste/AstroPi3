@@ -308,7 +308,7 @@ sudo usermod -a -G dialout $SUDO_USER
 
 # Creates a config file for kde themes and icons which is missing on the Raspberry pi.
 # Note:  This is required for KStars to have the breeze icons.
-sudo apt-get install icon-breeze-theme
+sudo apt-get -y install breeze-icon-theme
 display "Creating KDE config file so KStars can have breeze icons."
 ##################
 sudo cat > $USERHOME/.config/kdeglobals <<- EOF
@@ -359,7 +359,7 @@ git clone git://anongit.kde.org/kstars
 mkdir -p $USERHOME/AstroRoot/kstars-build
 cd $USERHOME/AstroRoot/kstars-build
 
-sudo cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/kstars/kstars/
+sudo cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/kstars/
 sudo make
 sudo make install
 
@@ -455,7 +455,8 @@ sudo chown $SUDO_USER $USERHOME/.conkyrc
 
 # This will put a link into the autostart folder so it starts at login
 ##################
-sudo cat > /usr/share/mate/autostart/startConky.desktop <<- EOF
+mkdir -p $USERHOME/.config/autostart
+sudo cat > $USERHOME/.config/autostart/startConky.desktop <<- EOF
 [Desktop Entry]
 Name=StartConky
 Exec=conky -b
