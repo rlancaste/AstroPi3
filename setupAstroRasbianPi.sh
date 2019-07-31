@@ -354,9 +354,17 @@ sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug ../../3rdparty
 sudo make
 sudo make install
 
+# Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
+display "Installing Astrometry.net"
+sudo apt-get -y install astrometry.net
+
+# Installs the optional xplanet package for simulating the solar system.  If you don't want it, comment this out with a #.
+display "Installing XPlanet"
+sudo apt-get -y install xplanet
+
 # Installs Pre Requirements for KStars
 sudo apt-get -y install build-essential cmake git libeigen3-dev libcfitsio-dev zlib1g-dev libindi-dev extra-cmake-modules libkf5plotting-dev libqt5svg5-dev libkf5iconthemes-dev wcslib-dev
-sudo apt-get -y install libkf5xmlgui-dev kio-dev kinit-dev libkf5newstuff-dev kdoctools-dev libkf5notifications-dev libqt5websockets5-dev qtdeclarative5-dev libkf5crash-dev gettext qml-module-qtquick-controls
+sudo apt-get -y install libkf5xmlgui-dev kio-dev kinit-dev libkf5newstuff-dev kdoctools-dev libkf5notifications-dev libqt5websockets5-dev qtdeclarative5-dev libkf5crash-dev gettext qml-module-qtquick-controls qml-module-qtquick-layouts
 
 #This builds and installs KStars
 display "Building and Installing KStars"
@@ -388,15 +396,15 @@ then
 	echo "export GSCDAT=$USERHOME/gsc" >> $USERHOME/.bashrc
 fi
 
-# Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
-#display "Installing Astrometry.net"
-#sudo apt-get -y install astrometry.net
-
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
-#display "Installing PHD2"
-#sudo apt-add-repository ppa:pch/phd2 -y
-#sudo apt-get update
-#sudo apt-get -y install phd2
+display "Building and Installing PHD2"
+cd $USERHOME/AstroRoot/
+git clone https://github.com/OpenPHDGuiding/phd2.git
+mkdir -p $USERHOME/AstroRoot/phd2-build
+cd $USERHOME/AstroRoot/phd2-build
+cmake -DOPENSOURCE_ONLY=1 $USERHOME/AstroRoot/phd2
+make
+make install
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
