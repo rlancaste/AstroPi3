@@ -379,10 +379,14 @@ cd src
 make
 mv gsc.exe gsc
 sudo cp gsc /usr/bin/
-cd ..
-cp $USERHOME/AstroRoot/gsc/bin/regions.* $USERHOME/gsc
-cp $USERHOME/.bashrc $USERHOME/.bashrc.copy
-echo "export GSCDAT=$USERHOME/gsc" >> $USERHOME/.bashrc
+mkdir $USERHOME/gsc
+cp $USERHOME/AstroRoot/gsc/bin/regions.* $USERHOME/gsc/
+
+if [ -z "$(grep 'export GSCDAT' '$USERHOME/.bashrc')" ]
+then
+	cp $USERHOME/.bashrc $USERHOME/.bashrc.copy
+	echo "export GSCDAT=$USERHOME/gsc" >> $USERHOME/.bashrc
+fi
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
 #display "Installing Astrometry.net"
