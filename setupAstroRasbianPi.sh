@@ -329,28 +329,36 @@ sudo apt-get -y install libftdi-dev libgps-dev libraw-dev libdc1394-22-dev libgp
 
 #sudo apt-get install cdbs fxload libkrb5-dev dkms Are these needed too???
 
+mkdir -p $USERHOME/AstroRoot
 
 # This builds and installs INDI
 display "Building and Installing INDI"
-mkdir -p $USERHOME/AstroRoot
-cd $USERHOME/AstroRoot
-git clone https://github.com/indilib/indi.git 
 
-mkdir -p $USERHOME/AstroRoot/indi/build/libindi
-cd $USERHOME/AstroRoot/indi/build/libindi
-sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug ../../libindi
+if [ ! -d $USERHOME/AstroRoot/indi ]
+then
+	cd $USERHOME/AstroRoot/
+	git clone https://github.com/indilib/indi.git 
+	mkdir -p $USERHOME/AstroRoot/indi-build
+else
+	cd $USERHOME/AstroRoot/indi
+	git pull
+fi
+
+mkdir -p $USERHOME/AstroRoot/indi-build/libindi
+cd $USERHOME/AstroRoot/indi-build/libindi
+sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/libindi
 sudo make
 sudo make install
 
-mkdir -p $USERHOME/AstroRoot/indi/build/3rdpartyLibraries
-cd $USERHOME/AstroRoot/indi/build/3rdpartyLibraries
-sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 ../../3rdparty
+mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
+cd $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
+sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi/3rdparty
 sudo make
 sudo make install
 
-mkdir -p $USERHOME/AstroRoot/indi/build/3rdpartyDrivers
-cd $USERHOME/AstroRoot/indi/build/3rdpartyDrivers
-sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug ../../3rdparty
+mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
+cd $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
+sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/3rdparty
 sudo make
 sudo make install
 
@@ -368,11 +376,18 @@ sudo apt-get -y install libkf5xmlgui-dev kio-dev kinit-dev libkf5newstuff-dev kd
 
 #This builds and installs KStars
 display "Building and Installing KStars"
-cd $USERHOME/AstroRoot/
-git clone git://anongit.kde.org/kstars
-mkdir -p $USERHOME/AstroRoot/kstars-build
-cd $USERHOME/AstroRoot/kstars-build
 
+if [ ! -d $USERHOME/AstroRoot/kstars ]
+then
+	cd $USERHOME/AstroRoot/
+	git clone git://anongit.kde.org/kstars
+	mkdir -p $USERHOME/AstroRoot/kstars-build
+else
+	cd $USERHOME/AstroRoot/kstars
+	git pull
+fi
+
+cd $USERHOME/AstroRoot/kstars-build
 sudo cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/kstars/
 sudo make
 sudo make install
@@ -381,7 +396,10 @@ sudo make install
 display "Building and Installing GSC"
 mkdir -p $USERHOME/AstroRoot/gsc
 cd $USERHOME/AstroRoot/gsc
-wget -O bincats_GSC_1.2.tar.gz http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2
+if [ ! -f $USERHOME/AstroRoot/gsc/bincats_GSC_1.2.tar.gz ]
+then
+	wget -O bincats_GSC_1.2.tar.gz http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2
+fi
 tar -xvzf bincats_GSC_1.2.tar.gz
 cd $USERHOME/AstroRoot/gsc/src
 make
@@ -394,7 +412,7 @@ rm $USERHOME/gsc/bincats_GSC_1.2.tar.gz
 rm $USERHOME/gsc/gsc.exe
 rm $USERHOME/gsc/decode.exe
 
-if [ -z "$(grep 'export GSCDAT' '${USERHOME}/.bashrc)'" ]
+if [ -z "$(grep 'export GSCDAT' $USERHOME/.bashrc)" ]
 then
 	cp $USERHOME/.bashrc $USERHOME/.bashrc.copy
 	echo "export GSCDAT=$USERHOME/gsc" >> $USERHOME/.bashrc
@@ -403,9 +421,17 @@ fi
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
 sudo apt-get -y install libwxgtk3.0-dev
 display "Building and Installing PHD2"
-cd $USERHOME/AstroRoot/
-git clone https://github.com/OpenPHDGuiding/phd2.git
-mkdir -p $USERHOME/AstroRoot/phd2-build
+
+if [ ! -d $USERHOME/AstroRoot/phd2 ]
+then
+	cd $USERHOME/AstroRoot/
+	git clone https://github.com/OpenPHDGuiding/phd2.git
+	mkdir -p $USERHOME/AstroRoot/phd2-build
+else
+	cd $USERHOME/AstroRoot/phd2
+	git pull
+fi
+
 cd $USERHOME/AstroRoot/phd2-build
 cmake -DOPENSOURCE_ONLY=1 $USERHOME/AstroRoot/phd2
 sudo make
