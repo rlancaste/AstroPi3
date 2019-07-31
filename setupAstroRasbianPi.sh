@@ -354,10 +354,10 @@ sudo apt-get -y install libkf5xmlgui-dev kio-dev kinit-dev libkf5newstuff-dev kd
 display "Building and Installing KStars"
 cd ~/AstroRoot/
 git clone git://anongit.kde.org/kstars
-mkdir -p ~/AstroRoot/kstars/build
-cd ~/AstroRoot/kstars/build
+mkdir -p ~/AstroRoot/kstars-build
+cd ~/AstroRoot/kstars-build
 
-sudo cmake ../kstars -DCMAKE_INSTALL_PREFIX=/usr 
+sudo cmake -DCMAKE_INSTALL_PREFIX=/usr ~/AstroRoot/kstars/kstars/
 sudo make
 sudo make install
 
