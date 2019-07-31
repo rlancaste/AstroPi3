@@ -105,7 +105,7 @@ sudo apt-get -y install openssh-server
 ## Include files from /etc/network/interfaces.d:
 #source-directory /etc/network/interfaces.d
 #
-## The loopback network interface
+## The loopback network interface\n#
 #auto lo
 #iface lo inet loopback
 #
@@ -129,7 +129,7 @@ sudo systemctl enable vncserver-x11-serviced.service
 rm VNC.deb
 
 # This will make a folder on the desktop for the launchers
-mkdir ~/Desktop/utilities
+mkdir $HOME/Desktop/utilities
 sudo chown $SUDO_USER ~/Desktop/utilities
 
 # This will create a shortcut on the desktop in the utilities folder for creating udev rules for Serial Devices.
