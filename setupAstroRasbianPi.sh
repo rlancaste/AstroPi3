@@ -378,33 +378,38 @@ sudo make
 sudo make install
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
-display "Installing GSC"
+display "Building and Installing GSC"
 mkdir -p $USERHOME/AstroRoot/gsc
 cd $USERHOME/AstroRoot/gsc
 wget -O bincats_GSC_1.2.tar.gz http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2
 tar -xvzf bincats_GSC_1.2.tar.gz
-cd src
+cd $USERHOME/AstroRoot/gsc/src
 make
 mv gsc.exe gsc
 sudo cp gsc /usr/bin/
-mkdir $USERHOME/gsc
-cp $USERHOME/AstroRoot/gsc/bin/regions.* $USERHOME/gsc/
+cp $USERHOME/AstroRoot/gsc $USERHOME/gsc
+rm -r $USERHOME/gsc/bin-dos
+rm -r $USERHOME/gsc/src
+rm $USERHOME/gsc/bincats_GSC_1.2.tar.gz
+rm $USERHOME/gsc/gsc.exe
+rm $USERHOME/gsc/decode.exe
 
-if [ -z "$(grep 'export GSCDAT' '$USERHOME/.bashrc')" ]
+if [ -z "$(grep 'export GSCDAT' '${USERHOME}/.bashrc)'" ]
 then
 	cp $USERHOME/.bashrc $USERHOME/.bashrc.copy
 	echo "export GSCDAT=$USERHOME/gsc" >> $USERHOME/.bashrc
 fi
 
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
+sudo apt-get -y install libwxgtk3.0-dev
 display "Building and Installing PHD2"
 cd $USERHOME/AstroRoot/
 git clone https://github.com/OpenPHDGuiding/phd2.git
 mkdir -p $USERHOME/AstroRoot/phd2-build
 cd $USERHOME/AstroRoot/phd2-build
 cmake -DOPENSOURCE_ONLY=1 $USERHOME/AstroRoot/phd2
-make
-make install
+sudo make
+sudo make install
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
@@ -413,9 +418,9 @@ sudo cp /usr/share/applications/org.kde.kstars.desktop  $USERHOME/Desktop/
 sudo chmod +x $USERHOME/Desktop/org.kde.kstars.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/org.kde.kstars.desktop
 
-#sudo cp /usr/share/applications/phd2.desktop  $USERHOME/Desktop/
-#sudo chmod +x $USERHOME/Desktop/phd2.desktop
-#sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
+sudo cp /usr/share/applications/phd2.desktop  $USERHOME/Desktop/
+sudo chmod +x $USERHOME/Desktop/phd2.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
 
 #########################################################
 #############  INDI WEB MANAGER
