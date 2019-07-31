@@ -136,7 +136,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/utilities
 
 # This will create a shortcut on the desktop in the utilities folder for creating udev rules for Serial Devices.
 ##################
-sudo cat > ~/Desktop/utilities/SerialDevices.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/SerialDevices.desktop <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -149,12 +149,12 @@ Name=Create Rule for Serial Device
 Icon=plip
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/SerialDevices.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/SerialDevices.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/SerialDevices.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/SerialDevices.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Installing Astrometry Index Files.
 ##################
-sudo cat > ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -167,12 +167,12 @@ Name=Install Astrometry Index Files
 Icon=mate-preferences-desktop-display
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Updating the System.
 ##################
-sudo cat > ~/Desktop/utilities/systemUpdater.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/systemUpdater.desktop <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -185,12 +185,12 @@ Name=Software Update
 Icon=system-software-update
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/systemUpdater.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/systemUpdater.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/systemUpdater.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/systemUpdater.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Backing Up and Restoring the KStars/INDI Files.
 ##################
-sudo cat > ~/Desktop/utilities/backupOrRestore.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/backupOrRestore.desktop <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -203,8 +203,8 @@ Name=Backup or Restore
 Icon=system-upgrade
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/backupOrRestore.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/backupOrRestore.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/backupOrRestore.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/backupOrRestore.desktop
 
 #########################################################
 #############  Configuration for Hotspot Wifi for Connecting on the Observing Field
@@ -236,7 +236,7 @@ nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless-security.key
 
 # This will make a link to start the hotspot wifi on the Desktop
 ##################
-sudo cat > ~/Desktop/utilities/StartFieldWifi.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/StartFieldWifi.desktop <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -248,10 +248,10 @@ Name=Start $(hostname -s)_FieldWifi
 Icon=irda
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/StartFieldWifi.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi.desktop
 ##################
-sudo cat > ~/Desktop/utilities/StartFieldWifi_5G.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -263,8 +263,8 @@ Name=Start $(hostname -s)_FieldWifi_5G
 Icon=irda
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/StartFieldWifi_5G.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi_5G.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
 
 
 #########################################################
@@ -311,7 +311,7 @@ sudo usermod -a -G dialout $SUDO_USER
 sudo apt-get install icon-breeze-theme
 display "Creating KDE config file so KStars can have breeze icons."
 ##################
-sudo cat > ~/.config/kdeglobals <<- EOF
+sudo cat > $USERHOME/.config/kdeglobals <<- EOF
 [Icons]
 Theme=breeze
 EOF
@@ -326,24 +326,24 @@ sudo apt-get -y install libftdi-dev libgps-dev libraw-dev libdc1394-22-dev libgp
 
 # This builds and installs INDI
 display "Building and Installing INDI"
-mkdir -p ~/AstroRoot
-cd ~/AstroRoot
+mkdir -p $USERHOME/AstroRoot
+cd $USERHOME/AstroRoot
 git clone https://github.com/indilib/indi.git 
 
-mkdir -p ~/AstroRoot/indi/build/libindi
-cd ~/AstroRoot/indi/build/libindi
+mkdir -p $USERHOME/AstroRoot/indi/build/libindi
+cd $USERHOME/AstroRoot/indi/build/libindi
 sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug ../../libindi
 sudo make
 sudo make install
 
-mkdir -p ~/AstroRoot/indi/build/3rdpartyLibraries
-cd ~/AstroRoot/indi/build/3rdpartyLibraries
+mkdir -p $USERHOME/AstroRoot/indi/build/3rdpartyLibraries
+cd $USERHOME/AstroRoot/indi/build/3rdpartyLibraries
 sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 ../../3rdparty
 sudo make
 sudo make install
 
-mkdir -p ~/AstroRoot/indi/build/3rdpartyDrivers
-cd ~/AstroRoot/indi/build/3rdpartyDrivers
+mkdir -p $USERHOME/AstroRoot/indi/build/3rdpartyDrivers
+cd $USERHOME/AstroRoot/indi/build/3rdpartyDrivers
 sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug ../../3rdparty
 sudo make
 sudo make install
@@ -354,19 +354,19 @@ sudo apt-get -y install libkf5xmlgui-dev kio-dev kinit-dev libkf5newstuff-dev kd
 
 #This builds and installs KStars
 display "Building and Installing KStars"
-cd ~/AstroRoot/
+cd $USERHOME/AstroRoot/
 git clone git://anongit.kde.org/kstars
-mkdir -p ~/AstroRoot/kstars-build
-cd ~/AstroRoot/kstars-build
+mkdir -p $USERHOME/AstroRoot/kstars-build
+cd $USERHOME/AstroRoot/kstars-build
 
-sudo cmake -DCMAKE_INSTALL_PREFIX=/usr ~/AstroRoot/kstars/kstars/
+sudo cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/kstars/kstars/
 sudo make
 sudo make install
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
 display "Installing GSC"
-mkdir -p ~/AstroRoot/gsc
-cd ~/AstroRoot/gsc
+mkdir -p $USERHOME/AstroRoot/gsc
+cd $USERHOME/AstroRoot/gsc
 wget -O bincats_GSC_1.2.tar.gz http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2
 tar -xvzf bincats_GSC_1.2.tar.gz
 cd src
@@ -374,9 +374,9 @@ make
 mv gsc.exe gsc
 sudo cp gsc /usr/bin/
 cd ..
-cp ~/AstroRoot/gsc/bin/regions.* ~/gsc
-cp ~/.bashrc ~/.bashrc.copy
-echo "export GSCDAT=~/gsc" >> ~/.bashrc
+cp $USERHOME/AstroRoot/gsc/bin/regions.* $USERHOME/gsc
+cp $USERHOME/.bashrc $USERHOME/.bashrc.copy
+echo "export GSCDAT=$USERHOME/gsc" >> $USERHOME/.bashrc
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
 #display "Installing Astrometry.net"
@@ -391,13 +391,13 @@ echo "export GSCDAT=~/gsc" >> ~/.bashrc
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
 
-sudo cp /usr/share/applications/org.kde.kstars.desktop  ~/Desktop/
-sudo chmod +x ~/Desktop/org.kde.kstars.desktop
-sudo chown $SUDO_USER ~/Desktop/org.kde.kstars.desktop
+sudo cp /usr/share/applications/org.kde.kstars.desktop  $USERHOME/Desktop/
+sudo chmod +x $USERHOME/Desktop/org.kde.kstars.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/org.kde.kstars.desktop
 
-#sudo cp /usr/share/applications/phd2.desktop  ~/Desktop/
-#sudo chmod +x ~/Desktop/phd2.desktop
-#sudo chown $SUDO_USER ~/Desktop/phd2.desktop
+#sudo cp /usr/share/applications/phd2.desktop  $USERHOME/Desktop/
+#sudo chmod +x $USERHOME/Desktop/phd2.desktop
+#sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
 
 #########################################################
 #############  INDI WEB MANAGER
@@ -433,7 +433,7 @@ sudo systemctl enable indiwebmanager.service
 
 # This will make a link to the Web Manager on the Desktop
 ##################
-sudo cat > ~/Desktop/INDIWebManager.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/INDIWebManager.desktop <<- EOF
 [Desktop Entry]
 Encoding=UTF-8
 Name=INDI Web Manager
@@ -442,16 +442,16 @@ URL=http://localhost:8624
 Icon=/usr/local/lib/python2.7/dist-packages/indiweb/views/img/indi_logo.png
 EOF
 ##################
-sudo chmod +x ~/Desktop/INDIWebManager.desktop
-sudo chown $SUDO_USER ~/Desktop/INDIWebManager.desktop
+sudo chmod +x $USERHOME/Desktop/INDIWebManager.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/INDIWebManager.desktop
 #########################################################
 #############  Configuration for System Monitoring
 
 # This will set you up with conky so that you can see how your system is doing at a moment's glance
 # A big thank you to novaspirit who set up this theme https://github.com/novaspirit/rpi_conky
 sudo apt-get -y install conky-all
-cp "$DIR/conkyrc" ~/.conkyrc
-sudo chown $SUDO_USER ~/.conkyrc
+cp "$DIR/conkyrc" $USERHOME/.conkyrc
+sudo chown $SUDO_USER $USERHOME/.conkyrc
 
 # This will put a link into the autostart folder so it starts at login
 ##################
