@@ -34,7 +34,7 @@ then
 	exit
 fi
 
-export USERHOME=~$SUDO_USER
+export USERHOME=$(echo ~$SUDO_USER)
 
 #########################################################
 #############  Updates
