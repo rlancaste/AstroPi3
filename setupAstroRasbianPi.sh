@@ -34,6 +34,8 @@ then
 	exit
 fi
 
+export USERHOME=~$SUDO_USER
+
 #########################################################
 #############  Updates
 
@@ -129,8 +131,8 @@ sudo systemctl enable vncserver-x11-serviced.service
 rm VNC.deb
 
 # This will make a folder on the desktop for the launchers
-mkdir $HOME/Desktop/utilities
-sudo chown $SUDO_USER ~/Desktop/utilities
+mkdir $USERHOME/Desktop/utilities
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities
 
 # This will create a shortcut on the desktop in the utilities folder for creating udev rules for Serial Devices.
 ##################
