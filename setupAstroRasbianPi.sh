@@ -387,7 +387,7 @@ cd $USERHOME/AstroRoot/gsc/src
 make
 mv gsc.exe gsc
 sudo cp gsc /usr/bin/
-cp -r $USERHOME/AstroRoot/gsc $USERHOME/gsc
+cp -r $USERHOME/AstroRoot/gsc $USERHOME/
 rm -r $USERHOME/gsc/bin-dos
 rm -r $USERHOME/gsc/src
 rm $USERHOME/gsc/bincats_GSC_1.2.tar.gz
