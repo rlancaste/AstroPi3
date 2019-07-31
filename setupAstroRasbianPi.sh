@@ -34,7 +34,7 @@ then
 	exit
 fi
 
-export USERHOME=sudo -u $SUDO_USER -H bash -c 'echo $HOME'
+export USERHOME=$(sudo -u $SUDO_USER -H bash -c 'echo $HOME')
 
 #########################################################
 #############  Updates
