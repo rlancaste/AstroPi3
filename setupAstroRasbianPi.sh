@@ -146,7 +146,7 @@ Icon[en_US]=plip
 Exec=sudo $(echo $DIR)/udevRuleScript.sh
 Name[en_US]=Create Rule for Serial Device
 Name=Create Rule for Serial Device
-Icon=plip
+Icon=$(echo $DIR)/icons/plip.png
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/SerialDevices.desktop
@@ -164,7 +164,7 @@ Icon[en_US]=mate-preferences-desktop-display
 Exec=sudo $(echo $DIR)/astrometryIndexInstaller.sh
 Name[en_US]=Install Astrometry Index Files
 Name=Install Astrometry Index Files
-Icon=mate-preferences-desktop-display
+Icon=$(echo $DIR)/icons/mate-preferences-desktop-display.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
@@ -182,7 +182,7 @@ Icon[en_US]=system-software-update
 Exec=sudo $(echo $DIR)/systemUpdater.sh
 Name[en_US]=Software Update
 Name=Software Update
-Icon=system-software-update
+Icon=$(echo $DIR)/icons/system-software-update.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/systemUpdater.desktop
@@ -200,7 +200,7 @@ Icon[en_US]=system-upgrade
 Exec=mate-terminal -e '$(echo $DIR)/backupOrRestore.sh'
 Name[en_US]=Backup or Restore
 Name=Backup or Restore
-Icon=system-upgrade
+Icon=$(echo $DIR)/icons/system-upgrade.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/backupOrRestore.desktop
@@ -245,7 +245,7 @@ Icon[en_US]=irda
 Name[en_US]=Start $(hostname -s) Field Wifi
 Exec=nmcli con up $(hostname -s)_FieldWifi
 Name=Start $(hostname -s)_FieldWifi 
-Icon=irda
+Icon=$(echo $DIR)/icons/irda.png
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi.desktop
@@ -260,7 +260,7 @@ Icon[en_US]=irda
 Name[en_US]=Start $(hostname -s) Field Wifi 5G
 Exec=nmcli con up $(hostname -s)_FieldWifi_5G
 Name=Start $(hostname -s)_FieldWifi_5G
-Icon=irda
+Icon=$(echo $DIR)/icons/irda.png
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
@@ -485,7 +485,7 @@ Encoding=UTF-8
 Name=INDI Web Manager App
 Type=Application
 Exec=INDIWebManagerApp %U
-Icon=/usr/local/lib/python2.7/dist-packages/indiweb/views/img/indi_logo.png
+Icon=/usr/local/lib/python3.7/dist-packages/indiweb/views/img/indi_logo.png
 Comment=Program to start and configure INDI WebManager
 EOF
 ##################
