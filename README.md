@@ -126,4 +126,18 @@ Here is a list of what the script does (If you want to disable or modify any of 
 
 - Places a shortcut/launcher for INDI Web Manager on the Desktop
 
+Icons included in repo:
+The icons for INDI, KStars, and PHD2 are included in their respective packages and are the same
+no matter what operating system you are currently using.  The icons I used
+for my scripts in the utilities folder are available freely on Ubuntu-MATE systems, but are not
+all available on other operating systems.  To make them appear the same on different systems, I have
+included these in the icons folder.  These are listed below with their respective source and copyright info:
+
+irda.png (Hicolor icon theme, GPL)
+mate-preferences-desktop-display.svg (Hicolor icon theme, GPL)
+plip.png (Hicolor icon theme, GPL)
+preferences-system-network.svg (MATE icon theme, GPL)
+system-software-update.svg (Humanity icon theme, GPL)
+system-upgrade.svg (MATE icon theme, GPL)
+
 
