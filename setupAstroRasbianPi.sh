@@ -453,50 +453,46 @@ sudo chmod +x $USERHOME/Desktop/phd2.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
 
 #########################################################
-#############  INDI WEB MANAGER
+#############  INDI WEB MANAGER APP
 
-display "Installing and Configuring INDI Web Manager"
+display "Building and Installing INDI Web Manager App"
 
-# This will install INDI Web Manager
-sudo pip install indiweb
+# This will install indiweb as the user
+sudo -H pip3 install indiweb
 
-# This will prepare the indiwebmanager.service file
+# This will clone or update the repo
+if [ ! -d $USERHOME/AstroRoot/INDIWebManagerApp ]
+then
+	cd $USERHOME/AstroRoot/
+	git clone https://github.com/rlancaste/INDIWebManagerApp.git
+	mkdir -p $USERHOME/AstroRoot/INDIWebManagerApp-build
+else
+	cd $USERHOME/AstroRoot/INDIWebManagerApp
+	git pull
+fi
+
+# This will make and install the program
+cd $USERHOME/AstroRoot/INDIWebManagerApp-build
+sudo cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/INDIWebManagerApp/
+sudo make
+sudo make install
+
+# This will make a link to start INDIWebManagerApp on the desktop
 ##################
-sudo cat > /etc/systemd/system/indiwebmanager.service <<- EOF
-[Unit]
-Description=INDI Web Manager
-After=multi-user.target
-
-[Service]
-Type=idle
-User=$SUDO_USER
-ExecStart=/usr/local/bin/indi-web -v
-Restart=always
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-EOF
-##################
-
-# This will change the indiwebmanager.service file permissions and enable it.
-sudo chmod 644 /etc/systemd/system/indiwebmanager.service
-sudo systemctl daemon-reload
-sudo systemctl enable indiwebmanager.service
-
-# This will make a link to the Web Manager on the Desktop
-##################
-sudo cat > $USERHOME/Desktop/INDIWebManager.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/INDIWebManagerApp.desktop <<- EOF
 [Desktop Entry]
 Encoding=UTF-8
-Name=INDI Web Manager
-Type=Link
-URL=http://localhost:8624
+Name=INDI Web Manager App
+Type=Application
+Exec=INDIWebManagerApp %U
 Icon=/usr/local/lib/python2.7/dist-packages/indiweb/views/img/indi_logo.png
+Comment=Program to start and configure INDI WebManager
 EOF
 ##################
-sudo chmod +x $USERHOME/Desktop/INDIWebManager.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/INDIWebManager.desktop
+sudo chmod +x $USERHOME/Desktop/INDIWebManagerApp.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
+##################
+
 #########################################################
 #############  Configuration for System Monitoring
 
