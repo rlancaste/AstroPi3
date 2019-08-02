@@ -129,6 +129,7 @@ display "Installing RealVNC Server"
 wget https://www.realvnc.com/download/binary/latest/debian/arm/ -O VNC.deb
 sudo dpkg -i VNC.deb
 sudo systemctl enable vncserver-x11-serviced.service
+sudo systemctl start vncserver-x11-serviced.service
 rm VNC.deb
 
 # This will make a folder on the desktop for the launchers
