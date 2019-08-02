@@ -422,7 +422,7 @@ Encoding=UTF-8
 Name=INDI Web Manager App
 Type=Application
 Exec=INDIWebManagerApp %U
-Icon=/usr/local/lib/python3.7/dist-packages/indiweb/views/img/indi_logo.png
+Icon=$(python3 -m site --user-site)/indiweb/views/img/indi_logo.png
 Comment=Program to start and configure INDI WebManager
 EOF
 ##################
