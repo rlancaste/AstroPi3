@@ -68,6 +68,11 @@ sudo apt-get update
 sudo apt-get -y upgrade
 sudo apt-get -y dist-upgrade
 
+# This uninstalls the upgrades package because it prevents us from updating the system until it is done
+# It seems like a good idea, but I wouldn't want it doing that when doing astrophotography and when
+# I want to update or upgrade the system, I have to wait for it to stop in order to begin.
+sudo apt-get remove unattended-upgrades
+
 #########################################################
 #############  Configuration for Ease of Use/Access
 
