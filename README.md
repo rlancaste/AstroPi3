@@ -50,25 +50,31 @@ When you are ready, you can follow these steps:
 
 		cd AstroPi3
 	
-8.  Make sure the script file is executable using one of the following two commands depending on your system.
+8.  Make sure the script file is executable using one of the following commands depending on your system.
 
 		chmod +x setupAstroPi3.sh
 	
 		chmod +x setupAstro64.sh
+		
+		chmod +x setupAstroRasbianPi.sh
 	
 9.  Run one of the following scripts using sudo.  Choose the right one for your system.  The setupAstroPi3.sh is specifically for a Raspberry Pi 3
 	running Ubuntu-Mate in the armhf architecture.  The setupAstro64.sh script is specifically for a 64 bit SBC system running Ubuntu-Mate in the aarch64/arm64 architecture.  
-	Be warned that right now the INDI SBIG driver does not compile in 64 bit.  I am working on a third script that will install on a 64 bit system and install 32 bit INDI/KStars to support SBIG cameras.
+	Be warned that right now the INDI SBIG driver does not compile in 64 bit.
 
 		sudo ./setupAstroPi3.sh
 	
 		sudo ./setupAstro64.sh
+		
+		sudo ./setupAstroRasbianPi.sh
 	
 Here is a list of what the script does (If you want to disable or modify any of these, please edit before running the script):
 
-- Optionally Holds Firefox at its current level because if it gets updated it stops working (Raspberry Pi script only)
+- (DISABLED) Can hold Firefox back to an older version for installing on Ubuntu-Mate 16.04 (since updates break it)
 
-- (DISABLED) Updates the Raspberry Pi Kernel (Raspberry Pi script only)
+- (DISABLED) Updates the Raspberry Pi Kernel if desired (Raspberry Pi script only)
+
+- Uninstalls unattended-upgrades since they can slow down imaging and cause issues with updates.
 
 - Updates/Upgrades the SBC
 
@@ -122,9 +128,9 @@ Here is a list of what the script does (If you want to disable or modify any of 
 
 - Puts Shortcuts for Kstars and PHD2 on the Desktop
 
-- Installs INDI Web Manager and enables the service on startup
+- Installs INDI Web Manager App, indiweb, and python3-pip
 
-- Places a shortcut/launcher for INDI Web Manager on the Desktop
+- Places a shortcut/launcher for INDI Web Manager App on the Desktop
 
 Icons included in repo:
 The icons for INDI, KStars, and PHD2 are included in their respective packages and are the same
