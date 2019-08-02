@@ -411,16 +411,16 @@ sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
 #########################################################
 #############  INDI WEB MANAGER App
 
-display "Installing INDI Web Manager App"
+display "Building and Installing INDI Web Manager App, indiweb, and python3"
 
 # This will install pip3
-sudo apt-get install python3-pip
+sudo apt-get -y install python3-pip
 
 # This will install indiweb as the user
 sudo -H -u $SUDO_USER pip3 install indiweb
 
 #This will install the INDIWebManagerApp in the INDI PPA
-sudo apt-get install indiwebmanagerapp
+sudo apt-get -y install indiwebmanagerapp
 
 # This will make a link to start INDIWebManagerApp on the desktop
 ##################
