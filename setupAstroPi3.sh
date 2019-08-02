@@ -105,8 +105,9 @@ sudo apt-get -y install synaptic
 
 # This will enable SSH which is apparently disabled on Raspberry Pi by default.
 display "Enabling SSH"
-sudo apt-get -y purge openssh-server
 sudo apt-get -y install openssh-server
+sudo systemctl enable ssh
+sudo systemctl start ssh
 
 # This will give the Raspberry Pi a static IP address so that you can connect to it over an ethernet cable
 # in the observing field if no router is available.
