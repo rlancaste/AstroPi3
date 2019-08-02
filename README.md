@@ -35,6 +35,8 @@ When you are ready, you can follow these steps:
 		hdmi_mode=46 (1440 x 900@60Hz)
 		
 		For the 3rd one, you can set your resolution to whatever you like.  I set it to option 46 (1440 x 900) since that is my laptop resolution.
+		
+		NOTE: On the Raspberry Pi 4 running Raspbian, you may also need to comment out the line: dtoverlay=vc4-kms-v3d
 
 5.  Insert the SD Card into the SBC, connect a mouse, keyboard, and display.  Then turn it on.  Often the SBC will reboot the first time to resize the partition.
 6.  You should get a setup window if you are using a Raspberry Pi.  Configure your SBC.  If you are on the Pi, be sure to choose your login name and computer name carefully.
