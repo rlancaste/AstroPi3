@@ -458,7 +458,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
 display "Building and Installing INDI Web Manager App"
 
 # This will install indiweb as the user
-sudo -H pip3 install indiweb
+sudo -H -u $SUDO_USER pip3 install indiweb
 
 # This will clone or update the repo
 if [ ! -d $USERHOME/AstroRoot/INDIWebManagerApp ]
@@ -508,7 +508,7 @@ mkdir -p $USERHOME/.config/autostart
 sudo cat > $USERHOME/.config/autostart/startConky.desktop <<- EOF
 [Desktop Entry]
 Name=StartConky
-Exec=conky -b
+Exec=conky -d
 Terminal=false
 Type=Application
 EOF

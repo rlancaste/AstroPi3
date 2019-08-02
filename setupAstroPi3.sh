@@ -50,18 +50,17 @@ fi
 #display "Updating Kernel"
 #sudo rpi-update 
 
-# Right now when Firefox gets updated on Raspberry Pi, it breaks it. 
 # This will set Firefox to a known working version of Firefox and prevent any update.
-display "Currently (11/2017) there is an issue with Ubuntu-Mate on Raspberry Pi.  Updating Firefox Breaks it."
-read -p "Do you want to set Firefox to a known working version and prevent a Firefox update (y/n)? " preventUpdateFirefox
-if [ "$preventUpdateFirefox" == "y" ]
-then
-	wget http://ports.ubuntu.com/pool/main/f/firefox/firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
-	sudo apt-get -y purge firefox
-	sudo dpkg -i firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
-	sudo apt-mark hold firefox
-	rm firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
-fi
+# This fix was necessary on 16.04 because updating firefox would break it.
+#read -p "Do you want to set Firefox to a known working version and prevent a Firefox update (y/n)? " preventUpdateFirefox
+#if [ "$preventUpdateFirefox" == "y" ]
+#then
+#	wget http://ports.ubuntu.com/pool/main/f/firefox/firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
+#	sudo apt-get -y purge firefox
+#	sudo dpkg -i firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
+#	sudo apt-mark hold firefox
+#	rm firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
+#fi
 
 # Updates the Raspberry Pi to the latest packages.
 display "Updating installed packages"
@@ -170,7 +169,7 @@ Icon[en_US]=plip
 Exec=sudo $(echo $DIR)/udevRuleScript.sh
 Name[en_US]=Create Rule for Serial Device
 Name=Create Rule for Serial Device
-Icon=plip
+Icon=$(echo $DIR)/icons/plip.png
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/SerialDevices.desktop
@@ -188,7 +187,7 @@ Icon[en_US]=mate-preferences-desktop-display
 Exec=sudo $(echo $DIR)/astrometryIndexInstaller.sh
 Name[en_US]=Install Astrometry Index Files
 Name=Install Astrometry Index Files
-Icon=mate-preferences-desktop-display
+Icon=$(echo $DIR)/icons/mate-preferences-desktop-display.svg
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop
@@ -206,7 +205,7 @@ Icon[en_US]=system-software-update
 Exec=sudo $(echo $DIR)/systemUpdater.sh
 Name[en_US]=Software Update
 Name=Software Update
-Icon=system-software-update
+Icon=$(echo $DIR)/icons/system-software-update.svg
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/systemUpdater.desktop
@@ -224,7 +223,7 @@ Icon[en_US]=system-upgrade
 Exec=mate-terminal -e '$(echo $DIR)/backupOrRestore.sh'
 Name[en_US]=Backup or Restore
 Name=Backup or Restore
-Icon=system-upgrade
+Icon=$(echo $DIR)/icons/system-upgrade.svg
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/backupOrRestore.desktop
@@ -269,7 +268,7 @@ Icon[en_US]=irda
 Name[en_US]=Start $(hostname -s) Field Wifi
 Exec=nmcli con up $(hostname -s)_FieldWifi
 Name=Start $(hostname -s)_FieldWifi 
-Icon=irda
+Icon=$(echo $DIR)/icons/irda.png
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/StartFieldWifi.desktop
@@ -284,7 +283,7 @@ Icon[en_US]=irda
 Name[en_US]=Start $(hostname -s) Field Wifi 5G
 Exec=nmcli con up $(hostname -s)_FieldWifi_5G
 Name=Start $(hostname -s)_FieldWifi_5G
-Icon=irda
+Icon=$(echo $DIR)/icons/irda.png
 EOF
 ##################
 sudo chmod +x ~/Desktop/utilities/StartFieldWifi_5G.desktop
@@ -351,7 +350,7 @@ sudo smbpasswd -a $SUDO_USER
 # This will create zram, basically a swap file saved in RAM. It will not read or write to the SD card, but instead, writes to compressed RAM.  
 # This is not needed on all systems, since different cameras download different size images, and different SBC's have different RAM capacities but 
 # if you are using a DSLR on a Raspberry Pi with 1GB of RAM, it definitely is needed. If you don't want this, comment it out.
-display "Installing zRAM for increased RAM capacity, from 1 GB to 1.5 GB"
+display "Installing zRAM for increased RAM capacity"
 sudo apt-get -y install zram-config
 
 # This should fix an issue where you might not be able to use a serial mount connection because you are not in the "dialout" group
@@ -406,50 +405,32 @@ sudo chmod +x ~/Desktop/phd2.desktop
 sudo chown $SUDO_USER ~/Desktop/phd2.desktop
 
 #########################################################
-#############  INDI WEB MANAGER
+#############  INDI WEB MANAGER App
 
-display "Installing and Configuring INDI Web Manager"
+display "Installing INDI Web Manager App"
 
-# This will install INDI Web Manager
-sudo pip install indiweb
+# This will install indiweb as the user
+sudo -H -u $SUDO_USER pip3 install indiweb
 
-# This will prepare the indiwebmanager.service file
+#This will install the INDIWebManagerApp in the INDI PPA
+sudo apt-get install indiwebmanagerapp
+
+# This will make a link to start INDIWebManagerApp on the desktop
 ##################
-sudo cat > /etc/systemd/system/indiwebmanager.service <<- EOF
-[Unit]
-Description=INDI Web Manager
-After=multi-user.target
-
-[Service]
-Type=idle
-User=$SUDO_USER
-ExecStart=/usr/local/bin/indi-web -v
-Restart=always
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-EOF
-##################
-
-# This will change the indiwebmanager.service file permissions and enable it.
-sudo chmod 644 /etc/systemd/system/indiwebmanager.service
-sudo systemctl daemon-reload
-sudo systemctl enable indiwebmanager.service
-
-# This will make a link to the Web Manager on the Desktop
-##################
-sudo cat > ~/Desktop/INDIWebManager.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/INDIWebManagerApp.desktop <<- EOF
 [Desktop Entry]
 Encoding=UTF-8
-Name=INDI Web Manager
-Type=Link
-URL=http://localhost:8624
-Icon=/usr/local/lib/python2.7/dist-packages/indiweb/views/img/indi_logo.png
+Name=INDI Web Manager App
+Type=Application
+Exec=INDIWebManagerApp %U
+Icon=/usr/local/lib/python3.7/dist-packages/indiweb/views/img/indi_logo.png
+Comment=Program to start and configure INDI WebManager
 EOF
 ##################
-sudo chmod +x ~/Desktop/INDIWebManager.desktop
-sudo chown $SUDO_USER ~/Desktop/INDIWebManager.desktop
+sudo chmod +x $USERHOME/Desktop/INDIWebManagerApp.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
+##################
+
 #########################################################
 #############  Configuration for System Monitoring
 
@@ -464,7 +445,7 @@ sudo chown $SUDO_USER ~/.conkyrc
 sudo cat > /usr/share/mate/autostart/startConky.desktop <<- EOF
 [Desktop Entry]
 Name=StartConky
-Exec=conky -b
+Exec=conky -b -d
 Terminal=false
 Type=Application
 EOF
