@@ -34,6 +34,8 @@ then
 	exit
 fi
 
+export USERHOME=$(sudo -u $SUDO_USER -H bash -c 'echo $HOME')
+
 #########################################################
 #############  Updates
 
@@ -156,12 +158,12 @@ sudo systemctl start vncserver-x11-serviced.service
 rm VNC.deb
 
 # This will make a folder on the desktop for the launchers
-mkdir ~/Desktop/utilities
-sudo chown $SUDO_USER ~/Desktop/utilities
+mkdir $USERHOME/Desktop/utilities
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities
 
 # This will create a shortcut on the desktop in the utilities folder for creating udev rules for Serial Devices.
 ##################
-sudo cat > ~/Desktop/utilities/SerialDevices.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/SerialDevices.desktop <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -174,12 +176,12 @@ Name=Create Rule for Serial Device
 Icon=$(echo $DIR)/icons/plip.png
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/SerialDevices.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/SerialDevices.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/SerialDevices.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/SerialDevices.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Installing Astrometry Index Files.
 ##################
-sudo cat > ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -192,12 +194,12 @@ Name=Install Astrometry Index Files
 Icon=$(echo $DIR)/icons/mate-preferences-desktop-display.svg
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/InstallAstrometryIndexFiles.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Updating the System.
 ##################
-sudo cat > ~/Desktop/utilities/systemUpdater.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/systemUpdater.desktop <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -210,12 +212,12 @@ Name=Software Update
 Icon=$(echo $DIR)/icons/system-software-update.svg
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/systemUpdater.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/systemUpdater.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/systemUpdater.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/systemUpdater.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Backing Up and Restoring the KStars/INDI Files.
 ##################
-sudo cat > ~/Desktop/utilities/backupOrRestore.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/backupOrRestore.desktop <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -228,8 +230,8 @@ Name=Backup or Restore
 Icon=$(echo $DIR)/icons/system-upgrade.svg
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/backupOrRestore.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/backupOrRestore.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/backupOrRestore.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/backupOrRestore.desktop
 
 #########################################################
 #############  Configuration for Hotspot Wifi for Connecting on the Observing Field
@@ -261,7 +263,7 @@ nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless-security.key
 
 # This will make a link to start the hotspot wifi on the Desktop
 ##################
-sudo cat > ~/Desktop/utilities/StartFieldWifi.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/StartFieldWifi.desktop <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -273,10 +275,10 @@ Name=Start $(hostname -s)_FieldWifi
 Icon=$(echo $DIR)/icons/irda.png
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/StartFieldWifi.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi.desktop
 ##################
-sudo cat > ~/Desktop/utilities/StartFieldWifi_5G.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -288,12 +290,12 @@ Name=Start $(hostname -s)_FieldWifi_5G
 Icon=$(echo $DIR)/icons/irda.png
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/StartFieldWifi_5G.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/StartFieldWifi_5G.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
 
 # This will make a link to restart Network Manager Service if there is a problem
 ##################
-sudo cat > ~/Desktop/utilities/StartNmService.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/StartNmService.desktop <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -305,12 +307,12 @@ Name=Restart Network Manager Service
 Icon=preferences-system-network
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/StartNmService.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/StartNmService.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/StartNmService.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmService.desktop
 
 # This will make a link to restart nm-applet which sometimes crashes
 ##################
-sudo cat > ~/Desktop/utilities/StartNmApplet.desktop <<- EOF
+sudo cat > $USERHOME/Desktop/utilities/StartNmApplet.desktop <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -322,8 +324,8 @@ Name=Restart Network Manager
 Icon=preferences-system-network
 EOF
 ##################
-sudo chmod +x ~/Desktop/utilities/StartNmApplet.desktop
-sudo chown $SUDO_USER ~/Desktop/utilities/StartNmApplet.desktop
+sudo chmod +x $USERHOME/Desktop/utilities/StartNmApplet.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
 
 #########################################################
 #############  File Sharing Configuration
@@ -375,7 +377,7 @@ sudo apt-get -y install kstars-bleeding-dbg indi-dbg
 # Note:  This is required for KStars to have the breeze icons.
 display "Creating KDE config file so KStars can have breeze icons."
 ##################
-sudo cat > ~/.config/kdeglobals <<- EOF
+sudo cat > $USERHOME/.config/kdeglobals <<- EOF
 [Icons]
 Theme=breeze
 EOF
@@ -398,13 +400,13 @@ sudo apt-get -y install phd2
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
 
-sudo cp /usr/share/applications/org.kde.kstars.desktop  ~/Desktop/
-sudo chmod +x ~/Desktop/org.kde.kstars.desktop
-sudo chown $SUDO_USER ~/Desktop/org.kde.kstars.desktop
+sudo cp /usr/share/applications/org.kde.kstars.desktop  $USERHOME/Desktop/
+sudo chmod +x $USERHOME/Desktop/org.kde.kstars.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/org.kde.kstars.desktop
 
-sudo cp /usr/share/applications/phd2.desktop  ~/Desktop/
-sudo chmod +x ~/Desktop/phd2.desktop
-sudo chown $SUDO_USER ~/Desktop/phd2.desktop
+sudo cp /usr/share/applications/phd2.desktop  $USERHOME/Desktop/
+sudo chmod +x $USERHOME/Desktop/phd2.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
 
 #########################################################
 #############  INDI WEB MANAGER App
@@ -442,8 +444,8 @@ sudo chown $SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
 # This will set you up with conky so that you can see how your system is doing at a moment's glance
 # A big thank you to novaspirit who set up this theme https://github.com/novaspirit/rpi_conky
 sudo apt-get -y install conky-all
-cp "$DIR/conkyrc" ~/.conkyrc
-sudo chown $SUDO_USER ~/.conkyrc
+cp "$DIR/conkyrc" $USERHOME/.conkyrc
+sudo chown $SUDO_USER $USERHOME/.conkyrc
 
 # This will put a link into the autostart folder so it starts at login
 ##################
