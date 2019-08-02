@@ -405,6 +405,9 @@ sudo chown $SUDO_USER ~/Desktop/phd2.desktop
 
 display "Installing INDI Web Manager App"
 
+# This will install pip3
+sudo apt-get install python3-pip
+
 # This will install indiweb as the user
 sudo -H -u $SUDO_USER pip3 install indiweb
 
