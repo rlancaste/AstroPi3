@@ -58,7 +58,7 @@ export USERHOME=$(sudo -u $SUDO_USER -H bash -c 'echo $HOME')
 # This uninstalls the upgrades package because it prevents us from updating the system until it is done
 # It seems like a good idea, but I wouldn't want it doing that when doing astrophotography and when
 # I want to update or upgrade the system, I have to wait for it to stop in order to begin.
-sudo apt-get remove unattended-upgrades
+sudo apt-get -y remove unattended-upgrades
 
 # This prevents an update issue currently in the Raspberry Pi 3b+ where this package doesn't update correctly. (8/2/19)
 # Hopefully this fix is temporary.
