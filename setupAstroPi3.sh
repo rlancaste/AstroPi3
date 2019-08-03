@@ -304,7 +304,7 @@ Icon[en_US]=preferences-system-network
 Name[en_US]=Restart Network Manager Service
 Exec=gksu systemctl restart NetworkManager.service
 Name=Restart Network Manager Service
-Icon=preferences-system-network
+Icon=$(echo $DIR)/icons/preferences-system-network.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartNmService.desktop
@@ -321,7 +321,7 @@ Icon[en_US]=preferences-system-network
 Name[en_US]=Restart Network Manager Applet
 Exec=nm-applet
 Name=Restart Network Manager
-Icon=preferences-system-network
+Icon=$(echo $DIR)/icons/preferences-system-network.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartNmApplet.desktop
@@ -340,6 +340,9 @@ sudo apt-get -y install caja-share
 
 # Adds yourself to the user group of who can use samba.
 sudo smbpasswd -a $SUDO_USER
+
+# This makes sure that you actually get added to the right group
+sudo adduser $SUDO_USER sambashare
 
 #########################################################
 #############  Very Important Configuration Items
@@ -411,10 +414,18 @@ sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
 #########################################################
 #############  INDI WEB MANAGER App
 
-display "Building and Installing INDI Web Manager App, indiweb, and python3"
+display "Installing INDI Web Manager App, indiweb, and python3"
 
-# This will install pip3
+# This will install pip3 and python along with their headers for the next steps
 sudo apt-get -y install python3-pip
+sudo apt-get -y install python3-dev
+
+# Setuptools may be needed in order to install indiweb on some systems
+sudo apt-get -y install python3-setuptools
+sudo -H -u $SUDO_USER pip3 install setuptools --upgrade
+
+# Wheel might not be installed on some systems
+sudo -H -u $SUDO_USER pip3 install wheel
 
 # This will install indiweb as the user
 sudo -H -u $SUDO_USER pip3 install indiweb
