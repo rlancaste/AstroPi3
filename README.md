@@ -56,17 +56,17 @@ When you are ready, you can follow these steps:
 
 		chmod +x setupAstroPi3.sh
 	
-		chmod +x setupAstro64.sh
+		chmod +x setupUbuntuSBC.sh
 		
 		chmod +x setupAstroRasbianPi.sh
 	
-9.  Run one of the following scripts using sudo.  Choose the right one for your system.  The setupAstroPi3.sh is specifically for a Raspberry Pi 3
-	running Ubuntu-Mate in the armhf architecture.  The setupAstro64.sh script is specifically for a 64 bit SBC system running Ubuntu-Mate in the aarch64/arm64 architecture.  
+9.  Run one of the following scripts using sudo.  Choose the right one for your system.  The setupAstroPi3.sh is specifically for a Raspberry Pi 3b or 3b+
+	running Ubuntu-Mate in the armhf architecture.  The setupUbuntuSBC.sh script is specifically for an SBC system running Ubuntu on any architecture such as a Rock64 or Odroid C2.  
 	Be warned that right now the INDI SBIG driver does not compile in 64 bit.
 
 		sudo ./setupAstroPi3.sh
 	
-		sudo ./setupAstro64.sh
+		sudo ./setupUbuntuSBC.sh
 		
 		sudo ./setupAstroRasbianPi.sh
 	
