@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#	AstroPi3 64 bit Ubuntu-Mate KStars/INDI Configuration Script
+#	AstroPi3 Ubuntu SBC KStars/INDI Configuration Script
 #﻿  Copyright (C) 2018 Robert Lancaster <rlancaste@gmail.com>
 #	This script is free software; you can redistribute it and/or
 #	modify it under the terms of the GNU General Public
@@ -18,9 +18,9 @@ function display
     echo ""
 }
 
-display "Welcome to the AstroPi3 64 bit Ubuntu-Mate KStars/INDI Configuration Script."
+display "Welcome to the AstroPi3 Ubuntu SBC KStars/INDI Configuration Script."
 
-display "This will update, install and configure your Ubuntu Mate System to work with INDI and KStars to be a hub for Astrophotography. Be sure to read the script first to see what it does and to customize it."
+display "This will update, install and configure your Ubuntu System to work with INDI and KStars to be a hub for Astrophotography. Be sure to read the script first to see what it does and to customize it."
 
 if [ "$(whoami)" != "root" ]; then
 	display "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
@@ -121,8 +121,8 @@ read -p "Do you want to install (1) x11vnc, (2) x2go, or (3) no remote access to
 if [ "$remoteAccessTool" == "1" ]
 then
 
-# Note: RealVNC does not work on the 64 bit aarch64 system so far, as far as I can tell.
-# This will install x11vnc
+# Note: RealVNC does not work on non-Raspberry Pi ARM systems as far as I can tell.
+# This will install x11vnc instead
 sudo apt-get -y install x11vnc
 # This will get the password for VNC
 x11vnc -storepasswd /etc/x11vnc.pass
@@ -146,7 +146,7 @@ sudo systemctl daemon-reload
 elif [ "$remoteAccessTool" == "2" ]
 then
 
-# This will install x2go for Ubuntu Mate
+# This will install x2go for Ubuntu
 sudo add-apt-repository -y ppa:x2go/stable
 sudo apt-get update
 sudo apt-get install -y x2goserver x2goserver-xsession x2gomatebindings
@@ -487,4 +487,4 @@ chmod +x "$DIR/astrometryIndexInstaller.sh"
 chmod +x "$DIR/systemUpdater.sh"
 chmod +x "$DIR/backupOrRestore.sh"
 
-display "Script Execution Complete.  Your Ubuntu Mate System should now be ready to use for Astrophotography.  You should restart your computer."
+display "Script Execution Complete.  Your Ubuntu System should now be ready to use for Astrophotography.  You should restart your computer."
