@@ -54,7 +54,7 @@ sudo apt-get -y dist-upgrade
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
-if [ -z "$(grep '#autologin-user' '/etc/lightdm/lightdm.conf')" ]
+if [ -n "$(grep '#autologin-user' '/etc/lightdm/lightdm.conf')" ]
 then
 	sed -i "s/#autologin-user=/autologin-user=$SUDO_USER/g" /etc/lightdm/lightdm.conf
 	sed -i "s/#autologin-user-timeout=0/autologin-user-timeout=0/g" /etc/lightdm/lightdm.conf
