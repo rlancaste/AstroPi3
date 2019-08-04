@@ -331,7 +331,7 @@ sudo apt-get -y install libftdi-dev libgps-dev libraw-dev libdc1394-22-dev libgp
 
 #sudo apt-get install cdbs fxload libkrb5-dev dkms Are these needed too???
 
-mkdir -p $USERHOME/AstroRoot
+sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
 
 # This builds and installs INDI
 display "Building and Installing INDI"
@@ -339,32 +339,32 @@ display "Building and Installing INDI"
 if [ ! -d $USERHOME/AstroRoot/indi ]
 then
 	cd $USERHOME/AstroRoot/
-	git clone https://github.com/indilib/indi.git 
-	mkdir -p $USERHOME/AstroRoot/indi-build
+	sudo -H -u $SUDO_USER git clone https://github.com/indilib/indi.git 
+	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build
 else
 	cd $USERHOME/AstroRoot/indi
-	git pull
+	sudo -H -u $SUDO_USER git pull
 fi
 
 display "Building and Installing core LibINDI"
-mkdir -p $USERHOME/AstroRoot/indi-build/libindi
+sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/libindi
 cd $USERHOME/AstroRoot/indi-build/libindi
-sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/libindi
-sudo make
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/libindi
+sudo -H -u $SUDO_USER make
 sudo make install
 
 display "Building and Installing the INDI 3rd Party Libraries"
-mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
-cd $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
-sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi/3rdparty
-sudo make
+sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
+sudo -H -u $SUDO_USER cd $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi/3rdparty
+sudo -H -u $SUDO_USER make
 sudo make install
 
 display "Building and Installing the INDI 3rd Party Drivers"
-mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
+sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
 cd $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
-sudo cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/3rdparty
-sudo make
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/3rdparty
+sudo -H -u $SUDO_USER make
 sudo make install
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
@@ -385,38 +385,38 @@ display "Building and Installing KStars"
 if [ ! -d $USERHOME/AstroRoot/kstars ]
 then
 	cd $USERHOME/AstroRoot/
-	git clone git://anongit.kde.org/kstars
-	mkdir -p $USERHOME/AstroRoot/kstars-build
+	sudo -H -u $SUDO_USER git clone git://anongit.kde.org/kstars
+	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/kstars-build
 else
 	cd $USERHOME/AstroRoot/kstars
-	git pull
+	sudo -H -u $SUDO_USER git pull
 fi
 
 cd $USERHOME/AstroRoot/kstars-build
-sudo cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/kstars/
-sudo make
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/kstars/
+sudo -H -u $SUDO_USER make
 sudo make install
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
 display "Building and Installing GSC"
-mkdir -p $USERHOME/AstroRoot/gsc
+sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/gsc
 cd $USERHOME/AstroRoot/gsc
 if [ ! -f $USERHOME/AstroRoot/gsc/bincats_GSC_1.2.tar.gz ]
 then
-	wget -O bincats_GSC_1.2.tar.gz http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2
+	sudo -H -u $SUDO_USER wget -O bincats_GSC_1.2.tar.gz http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2
 fi
-tar -xvzf bincats_GSC_1.2.tar.gz
+sudo -H -u $SUDO_USER tar -xvzf bincats_GSC_1.2.tar.gz
 cd $USERHOME/AstroRoot/gsc/src
-make
-mv gsc.exe gsc
+sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER mv gsc.exe gsc
 sudo cp gsc /usr/bin/
 cp -r $USERHOME/AstroRoot/gsc /usr/share/
-mv /usr/share/gsc /usr/share/GSC
-rm -r /usr/share/GSC/bin-dos
-rm -r /usr/share/GSC/src
-rm /usr/share/GSC/bincats_GSC_1.2.tar.gz
-rm /usr/share/GSC/bin/gsc.exe
-rm /usr/share/GSC/bin/decode.exe
+sudo mv /usr/share/gsc /usr/share/GSC
+sudo rm -r /usr/share/GSC/bin-dos
+sudo rm -r /usr/share/GSC/src
+sudo rm /usr/share/GSC/bincats_GSC_1.2.tar.gz
+sudo rm /usr/share/GSC/bin/gsc.exe
+sudo rm /usr/share/GSC/bin/decode.exe
 
 if [ -z "$(grep 'export GSCDAT' /etc/profile)" ]
 then
@@ -431,16 +431,16 @@ display "Building and Installing PHD2"
 if [ ! -d $USERHOME/AstroRoot/phd2 ]
 then
 	cd $USERHOME/AstroRoot/
-	git clone https://github.com/OpenPHDGuiding/phd2.git
-	mkdir -p $USERHOME/AstroRoot/phd2-build
+	sudo -H -u $SUDO_USER git clone https://github.com/OpenPHDGuiding/phd2.git
+	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/phd2-build
 else
 	cd $USERHOME/AstroRoot/phd2
-	git pull
+	sudo -H -u $SUDO_USER git pull
 fi
 
 cd $USERHOME/AstroRoot/phd2-build
-cmake -DOPENSOURCE_ONLY=1 $USERHOME/AstroRoot/phd2
-sudo make
+sudo -H -u $SUDO_USER cmake -DOPENSOURCE_ONLY=1 $USERHOME/AstroRoot/phd2
+sudo -H -u $SUDO_USER make
 sudo make install
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
@@ -469,17 +469,17 @@ sudo -H -u $SUDO_USER pip3 install indiweb
 if [ ! -d $USERHOME/AstroRoot/INDIWebManagerApp ]
 then
 	cd $USERHOME/AstroRoot/
-	git clone https://github.com/rlancaste/INDIWebManagerApp.git
-	mkdir -p $USERHOME/AstroRoot/INDIWebManagerApp-build
+	sudo -H -u $SUDO_USER git clone https://github.com/rlancaste/INDIWebManagerApp.git
+	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/INDIWebManagerApp-build
 else
 	cd $USERHOME/AstroRoot/INDIWebManagerApp
-	git pull
+	sudo -H -u $SUDO_USER git pull
 fi
 
 # This will make and install the program
 cd $USERHOME/AstroRoot/INDIWebManagerApp-build
-sudo cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/INDIWebManagerApp/
-sudo make
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/INDIWebManagerApp/
+sudo -H -u $SUDO_USER make
 sudo make install
 
 # This will make a link to start INDIWebManagerApp on the desktop
