@@ -53,19 +53,18 @@ sudo apt-get -y dist-upgrade
 #############  Configuration for Ease of Use/Access
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
-#display "Setting account: "$SUDO_USER" to auto login."
-##################
-#sudo cat > /usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf <<- EOF
-#[SeatDefaults]
-#greeter-session=lightdm-gtk-greeter
-#autologin-user=$SUDO_USER
-#EOF
-##################
+display "Setting account: "$SUDO_USER" to auto login."
+if [ -z "$(grep '#autologin-user' '/etc/lightdm/lightdm.conf')" ]
+then
+	sed -i "s/#autologin-user=/autologin-user=$SUDO_USER/g" /etc/lightdm/lightdm.conf
+	sed -i "s/#autologin-user-timeout=0/autologin-user-timeout=0/g" /etc/lightdm/lightdm.conf
+fi
 
 # This will prevent the raspberry pi from turning on the lock-screen / screensaver which can be problematic when using VNC
-#gsettings set org.gnome.desktop.session idle-delay 0
-#gsettings set org.mate.screensaver lock-enabled false
-
+if [ -z "$(grep 'xserver-command=X -s 0 dpms' '/etc/lightdm/lightdm.conf')" ]
+then
+	sed -i "/[Seat:*]/ a xserver-command=X -s 0 dpms" /etc/lightdm/lightdm.conf
+fi
 
 # Installs Synaptic Package Manager for easy software install/removal
 display "Installing Synaptic"
@@ -77,43 +76,48 @@ sudo apt-get -y install openssh-server
 sudo systemctl enable ssh
 sudo systemctl start ssh
 
+# This will install and configure network manager and remove dhcpcd5 because it has some issues
+# Also the commands below that setup networking depend upon network manager.
+sudo apt-get -y install network-manager network-manager-gnome
+sudo apt-get purge -y openresolv dhcpcd5
+
 # This will give the Raspberry Pi a static IP address so that you can connect to it over an ethernet cable
 # in the observing field if no router is available.
 # You may need to edit this ip address to make sure the first 2 numbers match your computer's self assigned ip address
 # If there is already a static IP defined, it leaves it alone.
-#if [ -z "$(grep 'ip=' '/boot/cmdline.txt')" ]
-#then
-#	read -p "Do you want to give your pi a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
-#	if [ "$useStaticIP" == "y" ]
-#	then
-#		read -p "Please enter the IP address you would prefer.  Please make sure that the first two numbers match your client computer's self assigned IP.  For Example mine is: 169.254.0.5 ? " IP
-#		display "Setting Static IP to $IP.  Note, you can change this later by editing the file /boot/cmdline.txt"
-#		echo "New contents of /boot/cmdline.txt:"
-#		echo -n $(cat /boot/cmdline.txt) "ip=$IP" | sudo tee /boot/cmdline.txt
-#		echo ""
+if [ -z "$(grep 'ip=' '/boot/cmdline.txt')" ]
+then
+	read -p "Do you want to give your pi a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
+	if [ "$useStaticIP" == "y" ]
+	then
+		read -p "Please enter the IP address you would prefer.  Please make sure that the first two numbers match your client computer's self assigned IP.  For Example mine is: 169.254.0.5 ? " IP
+		display "Setting Static IP to $IP.  Note, you can change this later by editing the file /boot/cmdline.txt"
+		echo "New contents of /boot/cmdline.txt:"
+		echo -n $(cat /boot/cmdline.txt) "ip=$IP" | sudo tee /boot/cmdline.txt
+		echo ""
 		
 # This will make sure that the pi will still work over Ethernet connected directly to a router if you have assigned a static ip address as requested.
-###################
-#sudo cat > /etc/network/interfaces <<- EOF
-## interfaces(5) file used by ifup(8) and ifdown(8)
-## Include files from /etc/network/interfaces.d:
-#source-directory /etc/network/interfaces.d
-#
-## The loopback network interface\n#
-#auto lo
-#iface lo inet loopback
-#
-## These two lines allow the pi to respond to a router's dhcp even though you have a static ip defined.
-#allow-hotplug eth0
-#iface eth0 inet dhcp
-#EOF
-###################
-#	else
-#		display "Leaving your IP address to be assigned only by dhcp.  Note that you will always need either a router or wifi network to connect to your pi."
-#	fi
-#else
-#	display "This computer already has been assigned a static ip address.  If you need to edit that, please edit the file /boot/cmdline.txt"
-#fi
+##################
+sudo cat > /etc/network/interfaces <<- EOF
+# interfaces(5) file used by ifup(8) and ifdown(8)
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# These two lines allow the pi to respond to a router's dhcp even though you have a static ip defined.
+allow-hotplug eth0
+iface eth0 inet dhcp
+EOF
+##################
+	else
+		display "Leaving your IP address to be assigned only by dhcp.  Note that you will always need either a router or wifi network to connect to your pi."
+	fi
+else
+	display "This computer already has been assigned a static ip address.  If you need to edit that, please edit the file /boot/cmdline.txt"
+fi
 
 # To view the Raspberry Pi Remotely, this installs RealVNC Servier and enables it to run by default.
 display "Installing RealVNC Server"
