@@ -263,6 +263,40 @@ EOF
 sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
 
+# This will make a link to restart Network Manager Service if there is a problem or to go back to regular wifi after using the adhoc connection
+##################
+sudo cat > $USERHOME/Desktop/utilities/StartNmService.desktop <<- EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon[en_US]=preferences-system-network
+Name[en_US]=Restart Network Manager Service
+Exec=gksu systemctl restart NetworkManager.service
+Name=Restart Network Manager Service
+Icon=$(echo $DIR)/icons/preferences-system-network.svg
+EOF
+##################
+sudo chmod +x $USERHOME/Desktop/utilities/StartNmService.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmService.desktop
+
+# This will make a link to restart nm-applet which sometimes crashes
+##################
+sudo cat > $USERHOME/Desktop/utilities/StartNmApplet.desktop <<- EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon[en_US]=preferences-system-network
+Name[en_US]=Restart Network Manager Applet
+Exec=nm-applet
+Name=Restart Network Manager
+Icon=$(echo $DIR)/icons/preferences-system-network.svg
+EOF
+##################
+sudo chmod +x $USERHOME/Desktop/utilities/StartNmApplet.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
+
 
 #########################################################
 #############  File Sharing Configuration
