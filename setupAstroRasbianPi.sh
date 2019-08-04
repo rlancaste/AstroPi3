@@ -63,7 +63,7 @@ fi
 # This will prevent the raspberry pi from turning on the lock-screen / screensaver which can be problematic when using VNC
 if [ -z "$(grep 'xserver-command=X -s 0 dpms' '/etc/lightdm/lightdm.conf')" ]
 then
-	sed -i "/[Seat:*]/ a xserver-command=X -s 0 dpms" /etc/lightdm/lightdm.conf
+	sed -i "/\[Seat:\*\]/ a xserver-command=X -s 0 dpms" /etc/lightdm/lightdm.conf
 fi
 
 # Installs Synaptic Package Manager for easy software install/removal
