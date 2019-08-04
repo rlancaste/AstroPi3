@@ -36,18 +36,18 @@ sudo -H pip install indiweb --upgrade
 # Updates the AstroPi3 Script to the latest version.
 echo "Updating AstroPi3 Scripts"
 cd $DIR
-rm "$DIR/setupAstro64.sh"
+rm "$DIR/setupUbuntuSBC.sh"
 rm "$DIR/setupAstroPi3.sh"
-rm "$DIR/setupAstro64with32bitKStars.sh"
+rm "$DIR/setupAstroRasbianPi.sh"
 rm "$DIR/udevRuleScript.sh"
 rm "$DIR/astrometryIndexInstaller.sh"
 rm "$DIR/systemUpdater.sh"
 rm "$DIR/backupOrRestore.sh"
 git pull
 git reset --hard
-chmod +x "$DIR/setupAstro64.sh"
+chmod +x "$DIR/setupUbuntuSBC.sh"
 chmod +x "$DIR/setupAstroPi3.sh"
-chmod +x "$DIR/setupAstro64with32bitKStars.sh"
+chmod +x "$DIR/setupAstroRasbianPi.sh"
 chmod +x "$DIR/udevRuleScript.sh"
 chmod +x "$DIR/astrometryIndexInstaller.sh"
 chmod +x "$DIR/systemUpdater.sh"
