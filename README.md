@@ -1,6 +1,6 @@
 # AstroPi3
 
-This script is meant to automate the many setup steps involved with configuring a Raspberry Pi 3 or similar single board computer (SBC) running Ubuntu Mate,
+This script is meant to automate the many setup steps involved with configuring a Raspberry Pi 3 or similar single board computer (SBC) running Ubuntu,
 so that it can be an Astrophotography hub using INDI, KStars, and Ekos.  I first developed the series of steps by research, trial, and error
 in 2016.  Then several users on indilib.org, especially James Taylor ( u2pilotjt ), tested my steps and helped me revise them.
 James Taylor wrote a beginners guide which can be accessed here:  http://www.indilib.org/support/tutorials/169-ekos-on-raspberry-pi-complete-guide.html
@@ -22,7 +22,8 @@ When you are ready, you can follow these steps:
 	Be warned that right now the INDI SBIG driver does not compile in 64 bit on the ARM architecture, so if you are using an SBIG camera on a Pi, use an armhf (32 bit) image.
 2.  You will need to flash that img file to the SD card.  The easiest way to do this is to download the free program Etcher (https://etcher.io)
 3.  Drag and drop the disk image you downloaded into etcher along with the mounted SD card.  Click to initialize the flash.
-4.  Note: Formerly, you had to edit the /boot/config.txt file here, but I automated this step.  Until you have run the script, be sure to keep an HDMI display connected while you are setting up the pi, so that the HDMI connection does not go to sleep. 
+4.  Note: Formerly, you had to edit the /boot/config.txt file here, but I automated this step.  Until you have run the script, be sure to keep an HDMI display connected while you are setting up the pi, so that the HDMI connection does not go to sleep.
+	(Once you have run the script, you can plug in an HDMI monitor at any time) 
 5.  Insert the SD Card into the SBC, connect a mouse, keyboard, and display.  Then turn it on.  Often the SBC will reboot the first time to resize the partition.
 6.  You should get a setup window if you are using a Raspberry Pi running Ubuntu-MATE that will allow you to setup your login name and computer name.
     This is difficult to change later, so set it up carefully. Note that it may say your name is unavailable at first, but when you enter your login name that may change.
