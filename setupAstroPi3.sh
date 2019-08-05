@@ -89,6 +89,8 @@ autologin-user=$SUDO_USER
 EOF
 ##################
 
+display "Setting HDMI settings in /boot/config.txt."
+
 # This pretends an HDMI display is connected at all times, otherwise, the pi might shut off HDMI
 # So that when you go to plug in an HDMI connector to diagnose a problem, it doesn't work
 # This makes the HDMI output always available
