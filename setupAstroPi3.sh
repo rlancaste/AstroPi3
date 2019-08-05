@@ -49,7 +49,7 @@ export USERHOME=$(sudo -u $SUDO_USER -H bash -c 'echo $HOME')
 #if [ "$preventUpdateFirefox" == "y" ]
 #then
 #	wget http://ports.ubuntu.com/pool/main/f/firefox/firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
-#	sudo apt-get -y purge firefox
+#	sudo apt -y purge firefox
 #	sudo dpkg -i firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
 #	sudo apt-mark hold firefox
 #	rm firefox_52.0.2+build1-0ubuntu0.12.04.1_armhf.deb
@@ -58,7 +58,7 @@ export USERHOME=$(sudo -u $SUDO_USER -H bash -c 'echo $HOME')
 # This uninstalls the upgrades package because it prevents us from updating the system until it is done
 # It seems like a good idea, but I wouldn't want it doing that when doing astrophotography and when
 # I want to update or upgrade the system, I have to wait for it to stop in order to begin.
-sudo apt-get -y remove unattended-upgrades
+sudo apt -y remove unattended-upgrades
 
 # This prevents an update issue currently in the Raspberry Pi 3b+ where this package doesn't update correctly. (8/2/19)
 # Hopefully this fix is temporary.
@@ -66,9 +66,9 @@ sudo apt-mark hold linux-firmware-raspi2
 
 # Updates the Raspberry Pi to the latest packages.
 display "Updating installed packages"
-sudo apt-get update
-sudo apt-get -y upgrade
-sudo apt-get -y dist-upgrade
+sudo apt update
+sudo apt -y upgrade
+sudo apt -y dist-upgrade
 
 #########################################################
 #############  Configuration for Ease of Use/Access
@@ -103,11 +103,11 @@ EOF
 
 # Installs Synaptic Package Manager for easy software install/removal
 display "Installing Synaptic"
-sudo apt-get -y install synaptic
+sudo apt -y install synaptic
 
 # This will enable SSH which is apparently disabled on Raspberry Pi by default.
 display "Enabling SSH"
-sudo apt-get -y install openssh-server
+sudo apt -y install openssh-server
 sudo systemctl enable ssh
 sudo systemctl start ssh
 
@@ -333,10 +333,10 @@ sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
 display "Setting up File Sharing"
 
 # Installs samba so that you can share files to your other computer(s).
-sudo apt-get -y install samba
+sudo apt -y install samba
 
 # Installs caja-share so that you can easily share the folders you want.
-sudo apt-get -y install caja-share
+sudo apt -y install caja-share
 
 # Adds yourself to the user group of who can use samba.
 sudo smbpasswd -a $SUDO_USER
@@ -358,7 +358,7 @@ sudo adduser $SUDO_USER sambashare
 # This is not needed on all systems, since different cameras download different size images, and different SBC's have different RAM capacities but 
 # if you are using a DSLR on a Raspberry Pi with 1GB of RAM, it definitely is needed. If you don't want this, comment it out.
 display "Installing zRAM for increased RAM capacity"
-sudo apt-get -y install zram-config
+sudo apt -y install zram-config
 
 # This should fix an issue where you might not be able to use a serial mount connection because you are not in the "dialout" group
 display "Enabling Serial Communication"
@@ -371,10 +371,10 @@ sudo usermod -a -G dialout $SUDO_USER
 # Installs INDI, Kstars, and Ekos bleeding edge and debugging
 display "Installing INDI and KStars"
 sudo apt-add-repository ppa:mutlaqja/ppa -y
-sudo apt-get update
-sudo apt-get -y install indi-full
-sudo apt-get -y install indi-full kstars-bleeding
-sudo apt-get -y install kstars-bleeding-dbg indi-dbg
+sudo apt update
+sudo apt -y install indi-full
+sudo apt -y install indi-full kstars-bleeding
+sudo apt -y install kstars-bleeding-dbg indi-dbg
 
 # Creates a config file for kde themes and icons which is missing on the Raspberry pi.
 # Note:  This is required for KStars to have the breeze icons.
@@ -388,17 +388,17 @@ EOF
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
 display "Installing GSC"
-sudo apt-get -y install gsc
+sudo apt -y install gsc
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
 display "Installing Astrometry.net"
-sudo apt-get -y install astrometry.net
+sudo apt -y install astrometry.net
 
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
 display "Installing PHD2"
 sudo apt-add-repository ppa:pch/phd2 -y
-sudo apt-get update
-sudo apt-get -y install phd2
+sudo apt update
+sudo apt -y install phd2
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
@@ -417,11 +417,11 @@ sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
 display "Installing INDI Web Manager App, indiweb, and python3"
 
 # This will install pip3 and python along with their headers for the next steps
-sudo apt-get -y install python3-pip
-sudo apt-get -y install python3-dev
+sudo apt -y install python3-pip
+sudo apt -y install python3-dev
 
 # Setuptools may be needed in order to install indiweb on some systems
-sudo apt-get -y install python3-setuptools
+sudo apt -y install python3-setuptools
 sudo -H -u $SUDO_USER pip3 install setuptools --upgrade
 
 # Wheel might not be installed on some systems
@@ -431,7 +431,7 @@ sudo -H -u $SUDO_USER pip3 install wheel
 sudo -H -u $SUDO_USER pip3 install indiweb
 
 #This will install the INDIWebManagerApp in the INDI PPA
-sudo apt-get -y install indiwebmanagerapp
+sudo apt -y install indiwebmanagerapp
 
 # This will make a link to start INDIWebManagerApp on the desktop
 ##################
@@ -454,7 +454,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
 
 # This will set you up with conky so that you can see how your system is doing at a moment's glance
 # A big thank you to novaspirit who set up this theme https://github.com/novaspirit/rpi_conky
-sudo apt-get -y install conky-all
+sudo apt -y install conky-all
 cp "$DIR/conkyrc" $USERHOME/.conkyrc
 sudo chown $SUDO_USER $USERHOME/.conkyrc
 

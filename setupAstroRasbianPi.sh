@@ -45,9 +45,9 @@ export USERHOME=$(sudo -u $SUDO_USER -H bash -c 'echo $HOME')
 
 # Updates the Raspberry Pi to the latest packages.
 display "Updating installed packages"
-sudo apt-get update
-sudo apt-get -y upgrade
-sudo apt-get -y dist-upgrade
+sudo apt update
+sudo apt -y upgrade
+sudo apt -y dist-upgrade
 
 #########################################################
 #############  Configuration for Ease of Use/Access
@@ -68,18 +68,18 @@ fi
 
 # Installs Synaptic Package Manager for easy software install/removal
 display "Installing Synaptic"
-sudo apt-get -y install synaptic
+sudo apt -y install synaptic
 
 # This will enable SSH which is apparently disabled on Raspberry Pi by default.
 display "Enabling SSH"
-sudo apt-get -y install openssh-server
+sudo apt -y install openssh-server
 sudo systemctl enable ssh
 sudo systemctl start ssh
 
 # This will install and configure network manager and remove dhcpcd5 because it has some issues
 # Also the commands below that setup networking depend upon network manager.
-sudo apt-get -y install network-manager network-manager-gnome
-sudo apt-get purge -y openresolv dhcpcd5
+sudo apt -y install network-manager network-manager-gnome
+sudo apt purge -y openresolv dhcpcd5
 
 # This will give the Raspberry Pi a static IP address so that you can connect to it over an ethernet cable
 # in the observing field if no router is available.
@@ -304,10 +304,10 @@ sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
 display "Setting up File Sharing"
 
 # Installs samba so that you can share files to your other computer(s).
-sudo apt-get -y install samba
+sudo apt -y install samba
 
 # Installs caja-share so that you can easily share the folders you want.
-sudo apt-get -y install caja-share
+sudo apt -y install caja-share
 
 # Adds yourself to the user group of who can use samba.
 sudo smbpasswd -a $SUDO_USER
@@ -345,7 +345,7 @@ sudo usermod -a -G dialout $SUDO_USER
 
 # Creates a config file for kde themes and icons which is missing on the Raspberry pi.
 # Note:  This is required for KStars to have the breeze icons.
-sudo apt-get -y install breeze-icon-theme
+sudo apt -y install breeze-icon-theme
 display "Creating KDE config file so KStars can have breeze icons."
 ##################
 sudo cat > $USERHOME/.config/kdeglobals <<- EOF
@@ -355,10 +355,10 @@ EOF
 ##################
 
 # Installs Pre Requirements for INDI
-sudo apt-get -y install libnova-dev libcfitsio-dev libusb-1.0-0-dev libusb-dev zlib1g-dev libgsl-dev build-essential cmake git libjpeg-dev libcurl4-gnutls-dev libtiff-dev
-sudo apt-get -y install libftdi-dev libgps-dev libraw-dev libdc1394-22-dev libgphoto2-dev libboost-dev libboost-regex-dev librtlsdr-dev liblimesuite-dev libftdi1-dev
+sudo apt -y install libnova-dev libcfitsio-dev libusb-1.0-0-dev libusb-dev zlib1g-dev libgsl-dev build-essential cmake git libjpeg-dev libcurl4-gnutls-dev libtiff-dev
+sudo apt -y install libftdi-dev libgps-dev libraw-dev libdc1394-22-dev libgphoto2-dev libboost-dev libboost-regex-dev librtlsdr-dev liblimesuite-dev libftdi1-dev
 
-#sudo apt-get install cdbs fxload libkrb5-dev dkms Are these needed too???
+#sudo apt install cdbs fxload libkrb5-dev dkms Are these needed too???
 
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
 
@@ -398,15 +398,15 @@ sudo make install
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
 display "Installing Astrometry.net"
-sudo apt-get -y install astrometry.net
+sudo apt -y install astrometry.net
 
 # Installs the optional xplanet package for simulating the solar system.  If you don't want it, comment this out with a #.
 display "Installing XPlanet"
-sudo apt-get -y install xplanet
+sudo apt -y install xplanet
 
 # Installs Pre Requirements for KStars
-sudo apt-get -y install build-essential cmake git libeigen3-dev libcfitsio-dev zlib1g-dev libindi-dev extra-cmake-modules libkf5plotting-dev libqt5svg5-dev libkf5iconthemes-dev wcslib-dev
-sudo apt-get -y install libkf5xmlgui-dev kio-dev kinit-dev libkf5newstuff-dev kdoctools-dev libkf5notifications-dev libqt5websockets5-dev qtdeclarative5-dev libkf5crash-dev gettext qml-module-qtquick-controls qml-module-qtquick-layouts
+sudo apt -y install build-essential cmake git libeigen3-dev libcfitsio-dev zlib1g-dev libindi-dev extra-cmake-modules libkf5plotting-dev libqt5svg5-dev libkf5iconthemes-dev wcslib-dev
+sudo apt -y install libkf5xmlgui-dev kio-dev kinit-dev libkf5newstuff-dev kdoctools-dev libkf5notifications-dev libqt5websockets5-dev qtdeclarative5-dev libkf5crash-dev gettext qml-module-qtquick-controls qml-module-qtquick-layouts
 
 #This builds and installs KStars
 display "Building and Installing KStars"
@@ -454,7 +454,7 @@ then
 fi
 
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
-sudo apt-get -y install libwxgtk3.0-dev
+sudo apt -y install libwxgtk3.0-dev
 display "Building and Installing PHD2"
 
 if [ ! -d $USERHOME/AstroRoot/phd2 ]
@@ -489,7 +489,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
 display "Building and Installing INDI Web Manager App, indiweb, and python3"
 
 # This will install pip3
-sudo apt-get -y install python3-pip
+sudo apt -y install python3-pip
 
 # This will install indiweb as the user
 sudo -H -u $SUDO_USER pip3 install indiweb
@@ -532,7 +532,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
 
 # This will set you up with conky so that you can see how your system is doing at a moment's glance
 # A big thank you to novaspirit who set up this theme https://github.com/novaspirit/rpi_conky
-sudo apt-get -y install conky-all
+sudo apt -y install conky-all
 cp "$DIR/conkyrc" $USERHOME/.conkyrc
 sudo chown $SUDO_USER $USERHOME/.conkyrc
 
