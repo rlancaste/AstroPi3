@@ -16,15 +16,18 @@ use the script as is or add or remove certain lines before running it by adding 
 
 When you are ready, you can follow these steps:
 
-1.	Download latest version of Ubuntu mate https://ubuntu-mate.org/raspberry-pi/ (For Raspberry Pi)
+1.	Download latest version of Ubuntu mate https://ubuntu-mate.org/raspberry-pi/ (For Raspberry Pi) or Raspbian https://www.raspberrypi.org/downloads/raspbian/ (For Raspberry Pi)
+	If you are using a different SBC like a Rock64 or Odroid, you should find an appropriate image for your system.  My scripts so far are all based on Ubuntu or Raspbian, so you should
+	probably get an image that is Ubuntu or Raspbian for now.
+	Be warned that right now the INDI SBIG driver does not compile in 64 bit on the ARM architecture, so if you are using an SBIG camera on a Pi, use an armhf (32 bit) image.
 2.  You will need to flash that img file to the SD card.  The easiest way to do this is to download the free program Etcher (https://etcher.io)
 3.  Drag and drop the disk image you downloaded into etcher along with the mounted SD card.  Click to initialize the flash.
-4.  Note:  The Raspberry Pi scripts used to have you edit the config files on the SD card before you eject.  
-	I have since automated those steps, so this is no longer necessary. Please see the comments in the scripts for details
+4.  Note: Formerly, you had to edit the /boot/config.txt file here, but I automated this step.  Until you have run the script, be sure to keep an HDMI display connected while you are setting up the pi, so that the HDMI connection does not go to sleep. 
 5.  Insert the SD Card into the SBC, connect a mouse, keyboard, and display.  Then turn it on.  Often the SBC will reboot the first time to resize the partition.
-6.  You should get a setup window if you are using a Raspberry Pi.  Configure your SBC.  If you are on the Pi, be sure to choose your login name and computer name carefully.
-    This is difficult to change later. Note that it may say your name is unavailable at first, but when you enter your login name that may change.
-	After the configuration, your pi will restart.  You may need to restart it again to get your wifi network connection started.
+6.  You should get a setup window if you are using a Raspberry Pi running Ubuntu-MATE that will allow you to setup your login name and computer name.
+    This is difficult to change later, so set it up carefully. Note that it may say your name is unavailable at first, but when you enter your login name that may change.
+	After the configuration, your pi will restart.  You may need to restart it again to get your wifi network connection started.  If you are running Raspbian or some other SBC,
+	you might not have the option to setup the login name or computer name in the setup script.  I would recommend that you try to do this before you run my script.
 7.  Copy the scripts in this GIT Repo to your SBC and Open a Terminal Window.  You could type the following commands into Terminal to accomplish this goal.
 
 		sudo apt-get install git
@@ -37,7 +40,7 @@ When you are ready, you can follow these steps:
 	
 9.  Run one of the following scripts using sudo.  Choose the right one for your system.  The setupAstroPi3.sh is specifically for a Raspberry Pi 3b or 3b+
 	running Ubuntu-Mate in the armhf architecture.  The setupUbuntuSBC.sh script is specifically for an SBC system running Ubuntu on any architecture such as a Rock64 or Odroid C2.  
-	Be warned that right now the INDI SBIG driver does not compile in 64 bit.
+	The setupRaspbianPi.sh script is for a Raspberry Pi running Raspbian.
 
 		sudo ./setupAstroPi3.sh
 	
