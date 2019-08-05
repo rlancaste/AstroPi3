@@ -16,6 +16,9 @@ function display
     echo "~ $*"
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     echo ""
+    
+    # This will display the message in the title bar (Note that the PS1 variable needs to be changed too--see below)
+    echo -en "\033]0;AstroPi3-SetupAstroRaspbianPi-$*\a"
 }
 
 display "Welcome to the AstroPi3 Raspberry Pi 3 Raspbian KStars/INDI Configuration Script."
@@ -35,6 +38,9 @@ then
 fi
 
 export USERHOME=$(sudo -u $SUDO_USER -H bash -c 'echo $HOME')
+
+# This changes the UserPrompt for the Setup Script (Necessary to make the messages display in the title bar)
+PS1='AstroPi3-SetupAstroRaspbianPi~$ '
 
 #########################################################
 #############  Updates
@@ -309,8 +315,11 @@ sudo apt -y install samba
 # Installs caja-share so that you can easily share the folders you want.
 sudo apt -y install caja-share
 
-# Adds yourself to the user group of who can use samba.
-sudo smbpasswd -a $SUDO_USER
+# Adds yourself to the user group of who can use samba, but checks first if you are already in the list
+if [ -z "$(sudo pdbedit -L | grep -q $SUDO_USER)" ]
+then
+	sudo smbpasswd -a $SUDO_USER
+fi
 
 #########################################################
 #############  Very Important Configuration Items
