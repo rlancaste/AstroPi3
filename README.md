@@ -58,7 +58,7 @@ When you are ready, you can follow these steps:
 	
 		chmod +x setupUbuntuSBC.sh
 		
-		chmod +x setupAstroRasbianPi.sh
+		chmod +x setupAstroRaspbianPi.sh
 	
 9.  Run one of the following scripts using sudo.  Choose the right one for your system.  The setupAstroPi3.sh is specifically for a Raspberry Pi 3b or 3b+
 	running Ubuntu-Mate in the armhf architecture.  The setupUbuntuSBC.sh script is specifically for an SBC system running Ubuntu on any architecture such as a Rock64 or Odroid C2.  
@@ -68,7 +68,7 @@ When you are ready, you can follow these steps:
 	
 		sudo ./setupUbuntuSBC.sh
 		
-		sudo ./setupAstroRasbianPi.sh
+		sudo ./setupAstroRaspbianPi.sh
 	
 Here is a list of what the script does (If you want to disable or modify any of these, please edit before running the script):
 
