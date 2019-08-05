@@ -58,6 +58,14 @@ sudo apt -y dist-upgrade
 #########################################################
 #############  Configuration for Ease of Use/Access
 
+# This will set up the Pi so that double clicking on desktop icons brings up the program right away
+# The default behavior is to ask what you want to do with the executable file.
+display "Setting desktop icons to open programs when you click them."
+if [ -n "$(grep 'quick_exec=0' $USERHOME/.config/libfm/libfm.conf)" ]
+then
+	sed -i "s/quick_exec=0/quick_exec=1/g" $USERHOME/.config/libfm/libfm.conf
+fi
+
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
 if [ -n "$(grep '#autologin-user' '/etc/lightdm/lightdm.conf')" ]
@@ -127,7 +135,7 @@ sudo apt purge -y openresolv dhcpcd5
 # This should remove the old manager panel from the taskbar
 if [ -n "$(grep 'type=dhcpcdui' $USERHOME/.config/lxpanel/LXDE-pi/panels/panel)" ]
 then
-	sed -iz "s/Plugin {\n  type=dhcpcdui\n  Config {\n  }\n}/ /g" $USERHOME/.config/lxpanel/LXDE-pi/panels/panel
+	sed -i "s/type=dhcpcdui/type=space/g" $USERHOME/.config/lxpanel/LXDE-pi/panels/panel
 fi
 
 
