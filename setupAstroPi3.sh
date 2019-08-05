@@ -348,7 +348,7 @@ Type=Application
 Terminal=false
 Icon[en_US]=preferences-system-network
 Name[en_US]=Restart Network Manager Service
-Exec=gksu systemctl restart NetworkManager.service
+Exec=pkexec systemctl restart NetworkManager.service
 Name=Restart Network Manager Service
 Icon=$(echo $DIR)/icons/preferences-system-network.svg
 EOF
