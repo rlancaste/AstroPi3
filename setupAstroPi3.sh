@@ -89,6 +89,30 @@ autologin-user=$SUDO_USER
 EOF
 ##################
 
+# This pretends an HDMI display is connected at all times, otherwise, the pi might shut off HDMI
+# So that when you go to plug in an HDMI connector to diagnose a problem, it doesn't work
+# This makes the HDMI output always available
+if [ -n "$(grep '#hdmi_force_hotplug=1' '/boot/config.txt')" ]
+then
+	sed -i "s/#hdmi_force_hotplug=1/hdmi_force_hotplug=1/g" /boot/config.txt
+fi
+
+# This sets the group for the HDMI mode.  Please see the config file for details about all the different modes
+# There are many options.  I selected group 1 mode 46 because that matches my laptop's resolution.
+# You might want a different mode and group if you want a certain resolution in VNC
+if [ -n "$(grep '#hdmi_group=1' '/boot/config.txt')" ]
+then
+	sed -i "s/#hdmi_group=1/hdmi_group=2/g" /boot/config.txt
+fi
+
+# This sets the HDMI mode.  Please see the config file for details about all the different modes
+# There are many options.  I selected group 1 mode 46 because that matches my laptop's resolution.
+# You might want a different mode and group if you want a certain resolution in VNC
+if [ -n "$(grep '#hdmi_mode=1' '/boot/config.txt')" ]
+then
+	sed -i "s/#hdmi_mode=1/hdmi_mode=46/g" /boot/config.txt
+fi
+
 # This will prevent the raspberry pi from turning on the lock-screen / screensaver which can be problematic when using VNC
 gsettings set org.gnome.desktop.session idle-delay 0
 gsettings set org.mate.screensaver lock-enabled false

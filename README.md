@@ -19,25 +19,8 @@ When you are ready, you can follow these steps:
 1.	Download latest version of Ubuntu mate https://ubuntu-mate.org/raspberry-pi/ (For Raspberry Pi)
 2.  You will need to flash that img file to the SD card.  The easiest way to do this is to download the free program Etcher (https://etcher.io)
 3.  Drag and drop the disk image you downloaded into etcher along with the mounted SD card.  Click to initialize the flash.
-4.  Before you remove the SD Card, You should edit the config or ini files that are in the boot partition.  The primary goal of this is to make sure that 
-	when an HDMI cable is not connected (a headless setup), the SBC doesn't shut down the GUI, so you can still access it over VNC.  The secondary goal is to ensure that 
-	the screen resolution over VNC when headless is reasoable.   You can also edit other settings such as overclocking etc, but read up on this first.  For the Raspberry Pi, you should edit 
-	the following file in the Pi-boot partition: 
-
-		/boot/config.txt 
-						
-	to make sure that your PI will have a decent resolution even when an HDMI display is not connected. Use the following options:
-	
-		hdmi_force_hotplug=1
-		
-		hdmi_group=2
-		
-		hdmi_mode=46 (1440 x 900@60Hz)
-		
-		For the 3rd one, you can set your resolution to whatever you like.  I set it to option 46 (1440 x 900) since that is my laptop resolution.
-		
-		NOTE: On the Raspberry Pi 4 running Raspbian, you may also need to comment out the line: dtoverlay=vc4-kms-v3d
-
+4.  Note:  The Raspberry Pi scripts used to have you edit the config files on the SD card before you eject.  
+	I have since automated those steps, so this is no longer necessary. Please see the comments in the scripts for details
 5.  Insert the SD Card into the SBC, connect a mouse, keyboard, and display.  Then turn it on.  Often the SBC will reboot the first time to resize the partition.
 6.  You should get a setup window if you are using a Raspberry Pi.  Configure your SBC.  If you are on the Pi, be sure to choose your login name and computer name carefully.
     This is difficult to change later. Note that it may say your name is unavailable at first, but when you enter your login name that may change.
@@ -51,14 +34,6 @@ When you are ready, you can follow these steps:
 8.  Navigate to the Folder containing the script.  Assuming you typed the above commands, you can type the following to do this:
 
 		cd AstroPi3
-	
-8.  Make sure the script file is executable using one of the following commands depending on your system.
-
-		chmod +x setupAstroPi3.sh
-	
-		chmod +x setupUbuntuSBC.sh
-		
-		chmod +x setupAstroRaspbianPi.sh
 	
 9.  Run one of the following scripts using sudo.  Choose the right one for your system.  The setupAstroPi3.sh is specifically for a Raspberry Pi 3b or 3b+
 	running Ubuntu-Mate in the armhf architecture.  The setupUbuntuSBC.sh script is specifically for an SBC system running Ubuntu on any architecture such as a Rock64 or Odroid C2.  
@@ -81,6 +56,10 @@ Here is a list of what the script does (If you want to disable or modify any of 
 - Updates/Upgrades the SBC
 
 - Sets the user account to auto-login
+
+- Sets the HDMI to force-hotplug so that it doesn't turn off HDMI when it doesn't immediately detect a display (Raspberry Pi scripts only--Helps to solve issues)
+
+- Sets the HDMI group and HDMI mode for a certain display resolution (Raspberry Pi scripts only--Please see the comments in the scripts for details and the file /boot/config.txt on the SD card for options.)
 
 - Disables the screen lock and screen saver to prevent them from causing issues when connecting via VNC
 
