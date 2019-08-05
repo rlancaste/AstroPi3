@@ -26,9 +26,9 @@ fi
 
 # Updates the computer to the latest packages.
 echo "Updating installed packages"
-sudo apt-get update
-sudo apt-get -y upgrade
-sudo apt-get -y dist-upgrade
+sudo apt update
+sudo apt -y upgrade
+sudo apt -y dist-upgrade
 
 # Updates indiweb to the latest version
 sudo -H pip install indiweb --upgrade
