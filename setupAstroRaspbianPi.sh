@@ -167,9 +167,12 @@ sudo apt install realvnc-vnc-server
 sudo systemctl enable vncserver-x11-serviced.service
 sudo systemctl start vncserver-x11-serviced.service
 
-# This will make a folder on the desktop for the launchers
-mkdir $USERHOME/Desktop/utilities
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities
+# This will make a folder on the desktop for the launchers if it doesn't exist already
+if [ ! -d "$USERHOME/Desktop/utilities" ]
+then
+	mkdir -p $USERHOME/Desktop/utilities
+	sudo chown $SUDO_USER $USERHOME/Desktop/utilities
+fi
 
 # This will create a shortcut on the desktop in the utilities folder for creating udev rules for Serial Devices.
 ##################
@@ -273,7 +276,8 @@ then
 	nmcli connection add type wifi ifname '*' con-name $(hostname -s)_FieldWifi_5G autoconnect no ssid $(hostname -s)_FieldWifi_5G
 	nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless.mode ap 802-11-wireless.band a ipv4.method shared
 	nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless-security.key-mgmt wpa-psk 802-11-wireless-security.psk $(hostname -s)_password
-
+else
+	echo "$(hostname -s)_FieldWifi is already setup."
 fi
 
 # This will make a link to start the hotspot wifi on the Desktop
@@ -341,7 +345,6 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartNmApplet.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
-
 
 #########################################################
 #############  File Sharing Configuration
