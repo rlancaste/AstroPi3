@@ -99,9 +99,16 @@ then
 	if [ -z "$(grep '#dtoverlay=vc4-kms-v3d' '/boot/config.txt')" ]
 	then
 		sed -i "s/dtoverlay=vc4-kms-v3d/#dtoverlay=vc4-kms-v3d/g" /boot/config.txt
+	fi
+fi
+if [ -n "$(grep 'dtoverlay=vc4-fkms-v3d' '/boot/config.txt')" ]
+then
+	if [ -z "$(grep '#dtoverlay=vc4-fkms-v3d' '/boot/config.txt')" ]
+	then
 		sed -i "s/dtoverlay=vc4-fkms-v3d/#dtoverlay=vc4-fkms-v3d/g" /boot/config.txt
 	fi
 fi
+
 
 # This will prevent the raspberry pi from turning on the lock-screen / screensaver which can be problematic when using VNC
 if [ -z "$(grep 'xserver-command=X -s 0 dpms' '/etc/lightdm/lightdm.conf')" ]
