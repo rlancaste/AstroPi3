@@ -16,6 +16,9 @@ function display
     echo "~ $*"
     echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     echo ""
+    
+    # This will display the message in the title bar (Note that the PS1 variable needs to be changed too--see below)
+    echo -en "\033]0;AstroPi3-SetupAstroPi3-$*\a"
 }
 
 display "Welcome to the AstroPi3 Raspberry Pi 3 Ubuntu-Mate KStars/INDI Configuration Script."
@@ -35,6 +38,9 @@ then
 fi
 
 export USERHOME=$(sudo -u $SUDO_USER -H bash -c 'echo $HOME')
+
+# This changes the UserPrompt for the Setup Script (Necessary to make the messages display in the title bar)
+PS1='AstroPi3-SetupAstroPi3~$ '
 
 #########################################################
 #############  Updates
