@@ -322,6 +322,7 @@ sudo apt -y install caja-share
 if [ -z "$(sudo pdbedit -L | grep $SUDO_USER)" ]
 then
 	sudo smbpasswd -a $SUDO_USER
+	sudo adduser $SUDO_USER sambashare
 fi
 
 #########################################################

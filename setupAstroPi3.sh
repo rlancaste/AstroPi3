@@ -157,11 +157,9 @@ fi
 
 # To view the Raspberry Pi Remotely, this installs RealVNC Servier and enables it to run by default.
 display "Installing RealVNC Server"
-wget https://www.realvnc.com/download/binary/latest/debian/arm/ -O VNC.deb
-sudo dpkg -i VNC.deb
+sudo apt install realvnc-vnc-server
 sudo systemctl enable vncserver-x11-serviced.service
 sudo systemctl start vncserver-x11-serviced.service
-rm VNC.deb
 
 # This will make a folder on the desktop for the launchers
 mkdir $USERHOME/Desktop/utilities
@@ -259,13 +257,18 @@ EOF
 # If you prefer to set this up yourself, you can comment out this section with #'s.
 # If you want the hotspot to start up by default you should set autoconnect to true.
 display "Creating $(hostname -s)_FieldWifi, Hotspot Wifi for the observing field"
-nmcli connection add type wifi ifname '*' con-name $(hostname -s)_FieldWifi autoconnect no ssid $(hostname -s)_FieldWifi
-nmcli connection modify $(hostname -s)_FieldWifi 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared
-nmcli connection modify $(hostname -s)_FieldWifi 802-11-wireless-security.key-mgmt wpa-psk 802-11-wireless-security.psk $(hostname -s)_password
+if [ -z "$(ls /etc/NetworkManager/system-connections/ | grep $(hostname -s)_FieldWifi)" ]
+then
 
-nmcli connection add type wifi ifname '*' con-name $(hostname -s)_FieldWifi_5G autoconnect no ssid $(hostname -s)_FieldWifi_5G
-nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless.mode ap 802-11-wireless.band a ipv4.method shared
-nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless-security.key-mgmt wpa-psk 802-11-wireless-security.psk $(hostname -s)_password
+	nmcli connection add type wifi ifname '*' con-name $(hostname -s)_FieldWifi autoconnect no ssid $(hostname -s)_FieldWifi
+	nmcli connection modify $(hostname -s)_FieldWifi 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared
+	nmcli connection modify $(hostname -s)_FieldWifi 802-11-wireless-security.key-mgmt wpa-psk 802-11-wireless-security.psk $(hostname -s)_password
+
+	nmcli connection add type wifi ifname '*' con-name $(hostname -s)_FieldWifi_5G autoconnect no ssid $(hostname -s)_FieldWifi_5G
+	nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless.mode ap 802-11-wireless.band a ipv4.method shared
+	nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless-security.key-mgmt wpa-psk 802-11-wireless-security.psk $(hostname -s)_password
+
+fi
 
 # This will make a link to start the hotspot wifi on the Desktop
 ##################
@@ -344,11 +347,12 @@ sudo apt -y install samba
 # Installs caja-share so that you can easily share the folders you want.
 sudo apt -y install caja-share
 
-# Adds yourself to the user group of who can use samba.
-sudo smbpasswd -a $SUDO_USER
-
-# This makes sure that you actually get added to the right group
-sudo adduser $SUDO_USER sambashare
+# Adds yourself to the user group of who can use samba, but checks first if you are already in the list
+if [ -z "$(sudo pdbedit -L | grep $SUDO_USER)" ]
+then
+	sudo smbpasswd -a $SUDO_USER
+	sudo adduser $SUDO_USER sambashare
+fi
 
 #########################################################
 #############  Very Important Configuration Items
