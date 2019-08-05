@@ -124,6 +124,12 @@ sudo systemctl start ssh
 # Also the commands below that setup networking depend upon network manager.
 sudo apt -y install network-manager network-manager-gnome
 sudo apt purge -y openresolv dhcpcd5
+# This should remove the old manager panel from the taskbar
+if [ -n "$(grep '^Plugin {^  type=dhcpcdui^  Config {^  }^}' '$USERHOME/.config/lxpanel/LXDE-pi/panels/panel')" ]
+then
+	sed -i "s/^Plugin {^  type=dhcpcdui^  Config {^  }^}//g" $USERHOME/.config/lxpanel/LXDE-pi/panels/panel
+fi
+
 
 # This will give the Raspberry Pi a static IP address so that you can connect to it over an ethernet cable
 # in the observing field if no router is available.
