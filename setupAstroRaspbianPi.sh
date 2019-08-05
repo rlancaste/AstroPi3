@@ -368,10 +368,9 @@ sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
 display "Setting up File Sharing"
 
 # Installs samba so that you can share files to your other computer(s).
-sudo apt -y install samba
+sudo apt -y install samba samba-common-bin system-config-samba
+sudo touch /etc/libuser.conf
 
-# Installs caja-share so that you can easily share the folders you want.
-sudo apt -y install caja-share
 
 # Adds yourself to the user group of who can use samba, but checks first if you are already in the list
 if [ -z "$(sudo pdbedit -L | grep $SUDO_USER)" ]
