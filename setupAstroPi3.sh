@@ -183,7 +183,12 @@ fi
 
 # To view the Raspberry Pi Remotely, this installs RealVNC Servier and enables it to run by default.
 display "Installing RealVNC Server"
-sudo apt install realvnc-vnc-server
+if [ -z "$(dpkg -l | grep realvnc-vnc-server)" ]
+then
+	wget https://www.realvnc.com/download/binary/latest/debian/arm/ -O VNC.deb
+	sudo dpkg -i VNC.deb
+	rm VNC.deb
+fi
 sudo systemctl enable vncserver-x11-serviced.service
 sudo systemctl start vncserver-x11-serviced.service
 
