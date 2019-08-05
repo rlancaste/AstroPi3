@@ -99,6 +99,7 @@ then
 	if [ -z "$(grep '#dtoverlay=vc4-kms-v3d' '/boot/config.txt')" ]
 	then
 		sed -i "s/dtoverlay=vc4-kms-v3d/#dtoverlay=vc4-kms-v3d/g" /boot/config.txt
+		sed -i "s/dtoverlay=vc4-fkms-v3d/#dtoverlay=vc4-fkms-v3d/g" /boot/config.txt
 	fi
 fi
 
