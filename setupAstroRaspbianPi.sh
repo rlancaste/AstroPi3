@@ -71,7 +71,7 @@ then
 fi
 if [ -z "$(grep 'quick_exec' /etc/xdg/libfm/libfm.conf)" ]
 then
-	sed -i "/# \[config\]/ a quick_exec=1" /etc/xdg/libfm/libfm.conf
+	sed -i "/\[config\]/ a quick_exec=1" /etc/xdg/libfm/libfm.conf
 fi
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
