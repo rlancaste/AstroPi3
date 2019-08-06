@@ -26,14 +26,14 @@ export USERHOME=$(sudo -u $SUDO_USER -H bash -c 'echo $HOME')
 cd $USERHOME
 
 sudo apt -y install git
-sudo apt -y install dkms
 # For Raspberry pi
 sudo apt install raspberrypi-kernel-headers
 # For Ubuntu MATE
 sudo apt install linux-headers-$(uname -r)
-sudo -H -u $SUDO_USER git clone https://github.com/drwilco/RTL8822BU.git
-cd RTL8822BU
-sudo -H -u $SUDO_USER make dkms-install
+sudo -H -u $SUDO_USER git clone https://github.com/FomalhautWeisszwerg/rtl8822bu.git
+# This link needs to be made for it to find the headers on ubuntu mate raspberry pi 3.
+sudo ln -s /usr/src/linux-headers-$(uname -r)/arch/arm/ /usr/src/linux-headers-$(uname -r)/arch/armv7l
+cd rtl8822bu
 sudo -H -u $SUDO_USER make
 sudo make install
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~"
