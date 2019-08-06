@@ -21,9 +21,16 @@ then
 	exit
 fi
 
-sudo apt-get -y install git
-sudo apt-get -y install dkms
-sudo apt-get install raspberrypi-kernel-headers
+export USERHOME=$(sudo -u $SUDO_USER -H bash -c 'echo $HOME')
+
+cd $USERHOME
+
+sudo apt -y install git
+sudo apt -y install dkms
+# For Raspberry pi
+sudo apt install raspberrypi-kernel-headers
+# For Ubuntu MATE
+sudo apt install linux-headers-$(uname -r)
 git clone https://github.com/drwilco/RTL8822BU.git
 cd RTL8822BU
 sudo make dkms-install
