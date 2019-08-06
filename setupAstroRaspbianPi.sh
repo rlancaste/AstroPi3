@@ -181,6 +181,7 @@ iface lo inet loopback
 
 # DHCP support for ethernet connections
 iface eth0 inet dhcp
+allow-hotplug eth0
 
 # A Second ethernet connection based upon a static IP address
 auto eth0:1
