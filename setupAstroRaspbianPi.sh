@@ -65,6 +65,10 @@ if [ -n "$(grep 'quick_exec=0' $USERHOME/.config/libfm/libfm.conf)" ]
 then
 	sed -i "s/quick_exec=0/quick_exec=1/g" $USERHOME/.config/libfm/libfm.conf
 fi
+if [ -n "$(grep 'quick_exec=0' /etc/xdg/libfm/libfm.conf)" ]
+then
+	sed -i "s/quick_exec=0/quick_exec=1/g" /etc/xdg/libfm/libfm.conf
+fi
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
