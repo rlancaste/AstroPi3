@@ -133,9 +133,17 @@ sudo systemctl start ssh
 sudo apt -y install network-manager network-manager-gnome
 sudo apt purge -y openresolv dhcpcd5
 # This should remove the old manager panel from the taskbar
-if [ -n "$(grep 'type=dhcpcdui' $USERHOME/.config/lxpanel/LXDE-pi/panels/panel)" ]
+if [ -n "$(grep 'type=dhcpcdui' $USERHOME/.config/lxpanel/LXDE-$SUDO_USER/panels/panel)" ]
 then
-	sed -i "s/type=dhcpcdui/type=space/g" $USERHOME/.config/lxpanel/LXDE-pi/panels/panel
+	sed -i "s/type=dhcpcdui/type=space/g" $USERHOME/.config/lxpanel/LXDE-$SUDO_USER/panels/panel
+fi
+if [ -n "$(grep 'type=dhcpcdui' /etc/xdg/lxpanel/LXDE-$SUDO_USER/panels/panel)" ]
+then
+	sed -i "s/type=dhcpcdui/type=space/g" /etc/xdg/lxpanel/LXDE-$SUDO_USER/panels/panel
+fi
+if [ -n "$(grep 'type=dhcpcdui' /etc/xdg/lxpanel/LXDE/panels/panel)" ]
+then
+	sed -i "s/type=dhcpcdui/type=space/g" /etc/xdg/lxpanel/LXDE/panels/panel
 fi
 
 
