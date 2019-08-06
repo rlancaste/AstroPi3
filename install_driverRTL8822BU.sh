@@ -31,10 +31,10 @@ sudo apt -y install dkms
 sudo apt install raspberrypi-kernel-headers
 # For Ubuntu MATE
 sudo apt install linux-headers-$(uname -r)
-git clone https://github.com/drwilco/RTL8822BU.git
+sudo -H -u $SUDO_USER git clone https://github.com/drwilco/RTL8822BU.git
 cd RTL8822BU
-sudo make dkms-install
-make
+sudo -H -u $SUDO_USER make dkms-install
+sudo -H -u $SUDO_USER make
 sudo make install
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~"
 echo "Script Execution Complete.  You may need to restart for the wifi dongle to work well."
