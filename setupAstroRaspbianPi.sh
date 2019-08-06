@@ -154,6 +154,11 @@ then
 	sed -i "s/type=dhcpcdui/type=space/g" /etc/xdg/lxpanel/LXDE/panels/panel
 fi
 
+# This will make sure that network manager can manage whether the ethernet connection is on or off.
+if [ -n "$(grep 'managed=false' /etc/NetworkManager/NetworkManager.conf)" ]
+then
+	sed -i "s/managed=false/managed=true/g" /etc/NetworkManager/NetworkManager.conf
+fi
 
 # This will set up your Pi to have access to internet with wifi, ethernet with DHCP, and ethernet with direct connection
 if [ -z "$(grep 'address' '/etc/network/interfaces')" ]
