@@ -1,6 +1,6 @@
 # AstroPi3
 
-This script is meant to automate the many setup steps involved with configuring a Raspberry Pi 3 or similar single board computer (SBC) running Ubuntu,
+This script is meant to automate the many setup steps involved with configuring a Raspberry Pi 3b, 3b+, 4 or similar single board computer (SBC) running Ubuntu or Raspbian,
 so that it can be an Astrophotography hub using INDI, KStars, and Ekos.  I first developed the series of steps by research, trial, and error
 in 2016.  Then several users on indilib.org, especially James Taylor ( u2pilotjt ), tested my steps and helped me revise them.
 James Taylor wrote a beginners guide which can be accessed here:  http://www.indilib.org/support/tutorials/169-ekos-on-raspberry-pi-complete-guide.html
@@ -16,10 +16,14 @@ use the script as is or add or remove certain lines before running it by adding 
 
 When you are ready, you can follow these steps:
 
-1.	Download latest version of Ubuntu mate https://ubuntu-mate.org/raspberry-pi/ (For Raspberry Pi) or Raspbian https://www.raspberrypi.org/downloads/raspbian/ (For Raspberry Pi)
-	If you are using a different SBC like a Rock64 or Odroid, you should find an appropriate image for your system.  My scripts so far are all based on Ubuntu or Raspbian, so you should
+1.	Download latest version of an image for your SBC.  Some sources:
+- Ubuntu-MATE: https://ubuntu-mate.org/raspberry-pi/ (For Raspberry Pi) 
+- Raspbian: https://www.raspberrypi.org/downloads/raspbian/ (For Raspberry Pi)
+- Bionic LXDE: https://wiki.pine64.org/index.php/ROCK64_Software_Release (For Rock64--Note, still has some issues)
+- Ubuntu-MATE: https://wiki.odroid.com/odroid-c2/os_images/ubuntu/v3.0 (For Odroid C2)
+	If you are using a different SBC, you should find an appropriate image for your system.  My scripts so far are all based on Ubuntu or Raspbian, so you should
 	probably get an image that is Ubuntu or Raspbian for now.
-	Be warned that right now the INDI SBIG driver does not compile in 64 bit on the ARM architecture, so if you are using an SBIG camera on a Pi, use an armhf (32 bit) image.
+	**Be warned that right now the INDI SBIG driver does not compile in 64 bit on the ARM architecture, so if you are using an SBIG camera on a Pi, use an armhf (32 bit) image.
 2.  You will need to flash that img file to the SD card.  The easiest way to do this is to download the free program Etcher (https://etcher.io)
 3.  Drag and drop the disk image you downloaded into etcher along with the mounted SD card.  Click to initialize the flash.
 4.  Note: Formerly, you had to edit the /boot/config.txt file here, but I automated this step.  Until you have run the script, be sure to keep an HDMI display connected while you are setting up the pi, so that the HDMI connection does not go to sleep.
