@@ -143,20 +143,13 @@ sudo apt -y install openssh-server
 sudo systemctl enable ssh
 sudo systemctl start ssh
 
-# This will give the Raspberry Pi a static IP address so that you can connect to it over an ethernet cable
-# in the observing field if no router is available.
-# You may need to edit this ip address to make sure the first 2 numbers match your computer's self assigned ip address
-# If there is already a static IP defined, it leaves it alone.
-if [ -z "$(grep 'ip=' '/boot/cmdline.txt')" ]
+# This will set up your Pi to have access to internet with wifi, ethernet with DHCP, and ethernet with direct connection
+if [ -z "$(grep 'address' '/etc/network/interfaces')" ]
 then
 	read -p "Do you want to give your pi a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
 	if [ "$useStaticIP" == "y" ]
 	then
 		read -p "Please enter the IP address you would prefer.  Please make sure that the first two numbers match your client computer's self assigned IP.  For Example mine is: 169.254.0.5 ? " IP
-		display "Setting Static IP to $IP.  Note, you can change this later by editing the file /boot/cmdline.txt"
-		echo "New contents of /boot/cmdline.txt:"
-		echo -n $(cat /boot/cmdline.txt) "ip=$IP" | sudo tee /boot/cmdline.txt
-		echo ""
 		
 # This will make sure that the pi will still work over Ethernet connected directly to a router if you have assigned a static ip address as requested.
 ##################
@@ -169,16 +162,22 @@ source-directory /etc/network/interfaces.d
 auto lo
 iface lo inet loopback
 
-# These two lines allow the pi to respond to a router's dhcp even though you have a static ip defined.
-allow-hotplug eth0
+# DHCP support for ethernet connections
 iface eth0 inet dhcp
+allow-hotplug eth0
+
+# A Second ethernet connection based upon a static IP address
+auto eth0:1
+iface eth0:1 inet static
+address $IP
+netmask 255.255.255.0
 EOF
 ##################
 	else
 		display "Leaving your IP address to be assigned only by dhcp.  Note that you will always need either a router or wifi network to connect to your pi."
 	fi
 else
-	display "This computer already has been assigned a static ip address.  If you need to edit that, please edit the file /boot/cmdline.txt"
+	display "This computer already has been assigned a static ip address.  If you need to edit that, please edit the file /etc/network/interfaces"
 fi
 
 # To view the Raspberry Pi Remotely, this installs RealVNC Servier and enables it to run by default.
@@ -339,7 +338,7 @@ EOF
 sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
 
-# This will make a link to restart Network Manager Service if there is a problem
+# This will make a link to restart Network Manager Service if there is a problem or to go back to regular wifi after using the adhoc connection
 ##################
 sudo cat > $USERHOME/Desktop/utilities/StartNmService.desktop <<- EOF
 [Desktop Entry]
