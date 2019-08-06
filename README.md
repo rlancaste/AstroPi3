@@ -21,6 +21,7 @@ When you are ready, you can follow these steps:
 - Raspbian: https://www.raspberrypi.org/downloads/raspbian/ (For Raspberry Pi)
 - Bionic LXDE: https://wiki.pine64.org/index.php/ROCK64_Software_Release (For Rock64--Note, still has some issues)
 - Ubuntu-MATE: https://wiki.odroid.com/odroid-c2/os_images/ubuntu/v3.0 (For Odroid C2)
+
 	If you are using a different SBC, you should find an appropriate image for your system.  My scripts so far are all based on Ubuntu or Raspbian, so you should
 	probably get an image that is Ubuntu or Raspbian for now.
 	**Be warned that right now the INDI SBIG driver does not compile in 64 bit on the ARM architecture, so if you are using an SBIG camera on a Pi, use an armhf (32 bit) image.
