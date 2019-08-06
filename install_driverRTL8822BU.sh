@@ -34,6 +34,10 @@ sudo -H -u $SUDO_USER git clone https://github.com/FomalhautWeisszwerg/rtl8822bu
 # This link needs to be made for it to find the headers on ubuntu mate raspberry pi 3.
 sudo ln -s /usr/src/linux-headers-$(uname -r)/arch/arm/ /usr/src/linux-headers-$(uname -r)/arch/armv7l
 cd rtl8822bu
+if [ -z "$(grep 'Wno-incompatible-pointer-types' Makefile)" ]
+then
+	sed -i "/EXTRA_CFLAGS += -Wall/ a EXTRA_CFLAGS += -Wno-incompatible-pointer-types" Makefile
+fi
 sudo -H -u $SUDO_USER make
 sudo make install
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~"
