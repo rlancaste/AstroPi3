@@ -598,7 +598,7 @@ Encoding=UTF-8
 Name=INDI Web Manager App
 Type=Application
 Exec=INDIWebManagerApp %U
-Icon=$(python3 -m site --user-site)/indiweb/views/img/indi_logo.png
+Icon=$(sudo -H -u $SUDO_USER python3 -m site --user-site)/indiweb/views/img/indi_logo.png
 Comment=Program to start and configure INDI WebManager
 EOF
 ##################
