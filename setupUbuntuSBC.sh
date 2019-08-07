@@ -126,7 +126,7 @@ then
 		
 # This will make sure that the pi will still work over Ethernet connected directly to a router if you have assigned a static ip address as requested.
 ##################
-sudo cat > /etc/network/interfaces <<- EOF
+sudo bash -c 'cat > /etc/network/interfaces <<- EOF
 # interfaces(5) file used by ifup(8) and ifdown(8)
 # Include files from /etc/network/interfaces.d:
 source-directory /etc/network/interfaces.d
@@ -165,7 +165,7 @@ then
 	x11vnc -storepasswd /etc/x11vnc.pass
 	# This will store the service file.
 ######################
-bash -c 'cat > /lib/systemd/system/x11vnc.service' << EOF
+sudo bash -c 'cat > /lib/systemd/system/x11vnc.service' << EOF
 [Unit]
 Description=Start x11vnc at startup.
 After=multi-user.target
