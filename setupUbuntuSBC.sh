@@ -192,7 +192,7 @@ fi
 # This will make a folder on the desktop with the right permissions for the launchers
 if [ ! -d "$USERHOME/Desktop/utilities" ]
 then
-	sudo -H -u $SUDO_USER bash -c 'mkdir -p $USERHOME/Desktop/utilities'
+	sudo --preserve-env -H -u $SUDO_USER bash -c 'mkdir -p $USERHOME/Desktop/utilities'
 fi
 
 # This will create a shortcut on the desktop in the utilities folder for creating udev rules for Serial Devices.
