@@ -211,7 +211,7 @@ Icon=$(echo $DIR)/icons/plip.png
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/SerialDevices.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/SerialDevices.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/SerialDevices.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Installing Astrometry Index Files.
 ##################
@@ -229,7 +229,7 @@ Icon=$(echo $DIR)/icons/mate-preferences-desktop-display.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Updating the System.
 ##################
@@ -247,7 +247,7 @@ Icon=$(echo $DIR)/icons/system-software-update.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/systemUpdater.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/systemUpdater.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/systemUpdater.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Backing Up and Restoring the KStars/INDI Files.
 ##################
@@ -265,7 +265,7 @@ Icon=$(echo $DIR)/icons/system-upgrade.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/backupOrRestore.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/backupOrRestore.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/backupOrRestore.desktop
 
 #########################################################
 #############  Configuration for Hotspot Wifi for Connecting on the Observing Field
@@ -316,7 +316,7 @@ Icon=$(echo $DIR)/icons/irda.png
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi.desktop
 ##################
 sudo --preserve-env bash -c 'cat > $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop' <<- EOF
 [Desktop Entry]
@@ -331,7 +331,7 @@ Icon=$(echo $DIR)/icons/irda.png
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
 
 # This will make a link to restart Network Manager Service if there is a problem or to go back to regular wifi after using the adhoc connection
 ##################
@@ -348,7 +348,7 @@ Icon=$(echo $DIR)/icons/preferences-system-network.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartNmService.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmService.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartNmService.desktop
 
 # This will make a link to restart nm-applet which sometimes crashes
 ##################
@@ -365,7 +365,13 @@ Icon=$(echo $DIR)/icons/preferences-system-network.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartNmApplet.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
+
+#This will make all of the desktop files in the utilities folder trusted so they can be launched
+for i in $USERHOME/Desktop/utilities/*.desktop; do
+  [ -f "${i}" ] || break
+  sudo -H -u $SUDO_USER gio set "${i}" "metadata::trusted" yes
+done
 
 #########################################################
 #############  File Sharing Configuration
@@ -453,11 +459,13 @@ display "Putting shortcuts on Desktop"
 
 sudo cp /usr/share/applications/org.kde.kstars.desktop  $USERHOME/Desktop/
 sudo chmod +x $USERHOME/Desktop/org.kde.kstars.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/org.kde.kstars.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/org.kde.kstars.desktop
+sudo -H -u $SUDO_USER gio set "$USERHOME/Desktop/org.kde.kstars.desktop" "metadata::trusted" yes
 
 sudo cp /usr/share/applications/phd2.desktop  $USERHOME/Desktop/
 sudo chmod +x $USERHOME/Desktop/phd2.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/phd2.desktop
+sudo -H -u $SUDO_USER gio set "$USERHOME/Desktop/phd2.desktop" "metadata::trusted" yes
 
 #########################################################
 #############  INDI WEB MANAGER App
@@ -494,7 +502,8 @@ Comment=Program to start and configure INDI WebManager
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/INDIWebManagerApp.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
+sudo -H -u $SUDO_USER gio set "$USERHOME/Desktop/INDIWebManagerApp.desktop" "metadata::trusted" yes
 ##################
 
 #########################################################
@@ -504,7 +513,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
 # A big thank you to novaspirit who set up this theme https://github.com/novaspirit/rpi_conky
 sudo apt -y install conky-all
 cp "$DIR/conkyrc" $USERHOME/.conkyrc
-sudo chown $SUDO_USER $USERHOME/.conkyrc
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/.conkyrc
 
 # This will put a link into the autostart folder so it starts at login
 ##################
