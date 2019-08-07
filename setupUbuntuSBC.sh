@@ -518,17 +518,8 @@ EOF
 ##################
 # Note that in order to work, this link needs to stay owned by root and not be executable
 
-#This will make all of the desktop files trusted so they can be launched
-sudo --preserve-env su - $SUDO_USER
-for i in $USERHOME/Desktop/*.desktop; do
-  [ -f "${i}" ] || break
-  gio set "${i}" "metadata::trusted" yes
-done
-for i in $USERHOME/Desktop/utilities/*.desktop; do
-  [ -f "${i}" ] || break
-  gio set "${i}" "metadata::trusted" yes
-done
-
+# This will run a script that should trust the desktop icons in Gnome
+su - $SUDO_USER -c "$DIR/trustIconsGnome.sh"
 
 #########################################################
 
