@@ -27,9 +27,9 @@ cd $USERHOME
 
 sudo apt -y install git
 # For Raspberry pi
-sudo apt install raspberrypi-kernel-headers
+sudo apt -y install raspberrypi-kernel-headers
 # For Ubuntu MATE
-sudo apt install linux-headers-$(uname -r)
+sudo apt -y install linux-headers-$(uname -r)
 sudo -H -u $SUDO_USER git clone https://github.com/FomalhautWeisszwerg/rtl8822bu.git
 # This link needs to be made for it to find the headers on ubuntu mate raspberry pi 3.
 sudo ln -s /usr/src/linux-headers-$(uname -r)/arch/arm/ /usr/src/linux-headers-$(uname -r)/arch/armv7l
