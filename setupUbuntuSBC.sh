@@ -367,12 +367,6 @@ EOF
 sudo chmod +x $USERHOME/Desktop/utilities/StartNmApplet.desktop
 sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
 
-#This will make all of the desktop files in the utilities folder trusted so they can be launched
-for i in $USERHOME/Desktop/utilities/*.desktop; do
-  [ -f "${i}" ] || break
-  sudo -H -u $SUDO_USER gio set "${i}" "metadata::trusted" yes
-done
-
 #########################################################
 #############  File Sharing Configuration
 
@@ -460,12 +454,10 @@ display "Putting shortcuts on Desktop"
 sudo cp /usr/share/applications/org.kde.kstars.desktop  $USERHOME/Desktop/
 sudo chmod +x $USERHOME/Desktop/org.kde.kstars.desktop
 sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/org.kde.kstars.desktop
-sudo -H -u $SUDO_USER gio set "$USERHOME/Desktop/org.kde.kstars.desktop" "metadata::trusted" yes
 
 sudo cp /usr/share/applications/phd2.desktop  $USERHOME/Desktop/
 sudo chmod +x $USERHOME/Desktop/phd2.desktop
 sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/phd2.desktop
-sudo -H -u $SUDO_USER gio set "$USERHOME/Desktop/phd2.desktop" "metadata::trusted" yes
 
 #########################################################
 #############  INDI WEB MANAGER App
@@ -503,7 +495,6 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/INDIWebManagerApp.desktop
 sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
-sudo -H -u $SUDO_USER gio set "$USERHOME/Desktop/INDIWebManagerApp.desktop" "metadata::trusted" yes
 ##################
 
 #########################################################
@@ -526,6 +517,17 @@ Type=Application
 EOF
 ##################
 # Note that in order to work, this link needs to stay owned by root and not be executable
+
+#This will make all of the desktop files trusted so they can be launched
+sudo su - $SUDO_USER
+for i in $USERHOME/Desktop/*.desktop; do
+  [ -f "${i}" ] || break
+  gio set "${i}" "metadata::trusted" yes
+done
+for i in $USERHOME/Desktop/utilities/*.desktop; do
+  [ -f "${i}" ] || break
+  gio set "${i}" "metadata::trusted" yes
+done
 
 
 #########################################################
