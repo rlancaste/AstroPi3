@@ -510,6 +510,15 @@ sudo apt -y install conky-all
 cp "$DIR/conkyrc" $USERHOME/.conkyrc
 sudo chown $SUDO_USER $USERHOME/.conkyrc
 
+#This should dynamically add lines to the conkyrc file based on the number of CPUs found
+NUMEROFCPUS=$(grep -c ^processor /proc/cpuinfo)
+for (( c=1; c<=$NUMEROFCPUS; c++ ))
+do  
+   CPULINE="CPU$c  \${cpu cpu$c}% \${cpubar cpu$c}"
+   echo $CPULINE
+   sed -i "/\${cpugraph DimGray DarkSlateGray} \$color/i $CPULINE" $USERHOME/.conkyrc
+done
+
 # This will put a link into the autostart folder so it starts at login
 ##################
 sudo cat > /usr/share/mate/autostart/startConky.desktop <<- EOF
