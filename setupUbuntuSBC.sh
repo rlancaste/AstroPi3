@@ -190,9 +190,12 @@ else
 fi
 
 # This will make a folder on the desktop with the right permissions for the launchers
-sudo -H -u $SUDO_USER bash -c 'mkdir -p $USERHOME/Desktop/utilities'
+if [ ! -d "$USERHOME/Desktop/utilities" ]
+then
+	sudo -H -u $SUDO_USER bash -c 'mkdir -p $USERHOME/Desktop/utilities'
+fi
 
-# This will create a shortcut on the desktop in the utilities folder for creating udev rules for Serial Devices
+# This will create a shortcut on the desktop in the utilities folder for creating udev rules for Serial Devices.
 ##################
 sudo bash -c 'cat > $USERHOME/Desktop/utilities/SerialDevices.desktop' <<- EOF
 #!/usr/bin/env xdg-open
@@ -284,13 +287,19 @@ EOF
 # If you prefer to set this up yourself, you can comment out this section with #'s.
 # If you want the hotspot to start up by default you should set autoconnect to true.
 display "Creating $(hostname -s)_FieldWifi, Hotspot Wifi for the observing field"
-nmcli connection add type wifi ifname '*' con-name $(hostname -s)_FieldWifi autoconnect no ssid $(hostname -s)_FieldWifi
-nmcli connection modify $(hostname -s)_FieldWifi 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared
-nmcli connection modify $(hostname -s)_FieldWifi 802-11-wireless-security.key-mgmt wpa-psk 802-11-wireless-security.psk $(hostname -s)_password
+if [ -z "$(ls /etc/NetworkManager/system-connections/ | grep $(hostname -s)_FieldWifi)" ]
+then
 
-nmcli connection add type wifi ifname '*' con-name $(hostname -s)_FieldWifi_5G autoconnect no ssid $(hostname -s)_FieldWifi_5G
-nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless.mode ap 802-11-wireless.band a ipv4.method shared
-nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless-security.key-mgmt wpa-psk 802-11-wireless-security.psk $(hostname -s)_password
+	nmcli connection add type wifi ifname '*' con-name $(hostname -s)_FieldWifi autoconnect no ssid $(hostname -s)_FieldWifi
+	nmcli connection modify $(hostname -s)_FieldWifi 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared
+	nmcli connection modify $(hostname -s)_FieldWifi 802-11-wireless-security.key-mgmt wpa-psk 802-11-wireless-security.psk $(hostname -s)_password
+
+	nmcli connection add type wifi ifname '*' con-name $(hostname -s)_FieldWifi_5G autoconnect no ssid $(hostname -s)_FieldWifi_5G
+	nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless.mode ap 802-11-wireless.band a ipv4.method shared
+	nmcli connection modify $(hostname -s)_FieldWifi_5G 802-11-wireless-security.key-mgmt wpa-psk 802-11-wireless-security.psk $(hostname -s)_password
+else
+	echo "$(hostname -s)_FieldWifi is already setup."
+fi
 
 # This will make a link to start the hotspot wifi on the Desktop
 ##################
@@ -324,7 +333,7 @@ EOF
 sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
 
-# This will make a link to restart Network Manager Service if there is a problem
+# This will make a link to restart Network Manager Service if there is a problem or to go back to regular wifi after using the adhoc connection
 ##################
 sudo bash -c 'cat > $USERHOME/Desktop/utilities/StartNmService.desktop' <<- EOF
 [Desktop Entry]
@@ -333,7 +342,7 @@ Type=Application
 Terminal=false
 Icon[en_US]=preferences-system-network
 Name[en_US]=Restart Network Manager Service
-Exec=gksu systemctl restart NetworkManager.service
+Exec=pkexec systemctl restart NetworkManager.service
 Name=Restart Network Manager Service
 Icon=$(echo $DIR)/icons/preferences-system-network.svg
 EOF
@@ -369,11 +378,12 @@ sudo apt -y install samba
 # Installs caja-share so that you can easily share the folders you want.
 sudo apt -y install caja-share
 
-# Adds yourself to the user group of who can use samba.
-sudo smbpasswd -a $SUDO_USER
-
-# This makes sure that you actually get added to the right group
-sudo adduser $SUDO_USER sambashare
+# Adds yourself to the user group of who can use samba, but checks first if you are already in the list
+if [ -z "$(sudo pdbedit -L | grep $SUDO_USER)" ]
+then
+	sudo smbpasswd -a $SUDO_USER
+	sudo adduser $SUDO_USER sambashare
+fi
 
 #########################################################
 #############  Very Important Configuration Items
@@ -479,7 +489,7 @@ Encoding=UTF-8
 Name=INDI Web Manager App
 Type=Application
 Exec=INDIWebManagerApp %U
-Icon=$(python3 -m site --user-site)/indiweb/views/img/indi_logo.png
+Icon=$(sudo -H -u $SUDO_USER python3 -m site --user-site)/indiweb/views/img/indi_logo.png
 Comment=Program to start and configure INDI WebManager
 EOF
 ##################
