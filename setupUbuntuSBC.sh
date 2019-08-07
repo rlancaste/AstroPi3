@@ -62,7 +62,7 @@ sudo apt -y dist-upgrade
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
 ##################
-sudo bash -c 'cat > /usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf' <<- EOF
+sudo --preserve-env bash -c 'cat > /usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf' <<- EOF
 [SeatDefaults]
 greeter-session=lightdm-gtk-greeter
 autologin-user=$SUDO_USER
@@ -126,7 +126,7 @@ then
 		
 # This will make sure that the pi will still work over Ethernet connected directly to a router if you have assigned a static ip address as requested.
 ##################
-sudo bash -c 'cat > /etc/network/interfaces' <<- EOF
+sudo --preserve-env bash -c 'cat > /etc/network/interfaces' <<- EOF
 # interfaces(5) file used by ifup(8) and ifdown(8)
 # Include files from /etc/network/interfaces.d:
 source-directory /etc/network/interfaces.d
@@ -165,7 +165,7 @@ then
 	x11vnc -storepasswd /etc/x11vnc.pass
 	# This will store the service file.
 ######################
-sudo bash -c 'cat > /lib/systemd/system/x11vnc.service' << EOF
+sudo --preserve-env bash -c 'cat > /lib/systemd/system/x11vnc.service' << EOF
 [Unit]
 Description=Start x11vnc at startup.
 After=multi-user.target
@@ -197,7 +197,7 @@ fi
 
 # This will create a shortcut on the desktop in the utilities folder for creating udev rules for Serial Devices.
 ##################
-sudo bash -c 'cat > $USERHOME/Desktop/utilities/SerialDevices.desktop' <<- EOF
+sudo --preserve-env bash -c 'cat > $USERHOME/Desktop/utilities/SerialDevices.desktop' <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -215,7 +215,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/utilities/SerialDevices.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Installing Astrometry Index Files.
 ##################
-sudo bash -c 'cat > $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop' <<- EOF
+sudo --preserve-env bash -c 'cat > $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop' <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -233,7 +233,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.de
 
 # This will create a shortcut on the desktop in the utilities folder for Updating the System.
 ##################
-sudo bash -c 'cat > $USERHOME/Desktop/utilities/systemUpdater.desktop' <<- EOF
+sudo --preserve-env bash -c 'cat > $USERHOME/Desktop/utilities/systemUpdater.desktop' <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -251,7 +251,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/utilities/systemUpdater.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Backing Up and Restoring the KStars/INDI Files.
 ##################
-sudo bash -c 'cat > $USERHOME/Desktop/utilities/backupOrRestore.desktop' <<- EOF
+sudo --preserve-env bash -c 'cat > $USERHOME/Desktop/utilities/backupOrRestore.desktop' <<- EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Version=1.0
@@ -276,7 +276,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/utilities/backupOrRestore.desktop
 # If you want to leave wifi power management enabled, put #'s in front of this section
 display "Preventing Wifi Power Management from shutting down AdHoc and Hotspot Networks"
 ##################
-sudo bash -c 'cat > /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf' <<- EOF
+sudo --preserve-env bash -c 'cat > /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf' <<- EOF
 [connection]
 wifi.powersave = 2
 EOF
@@ -303,7 +303,7 @@ fi
 
 # This will make a link to start the hotspot wifi on the Desktop
 ##################
-sudo bash -c 'cat > $USERHOME/Desktop/utilities/StartFieldWifi.desktop' <<- EOF
+sudo --preserve-env bash -c 'cat > $USERHOME/Desktop/utilities/StartFieldWifi.desktop' <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -318,7 +318,7 @@ EOF
 sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi.desktop
 ##################
-sudo bash -c 'cat > $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop' <<- EOF
+sudo --preserve-env bash -c 'cat > $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop' <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -335,7 +335,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
 
 # This will make a link to restart Network Manager Service if there is a problem or to go back to regular wifi after using the adhoc connection
 ##################
-sudo bash -c 'cat > $USERHOME/Desktop/utilities/StartNmService.desktop' <<- EOF
+sudo --preserve-env bash -c 'cat > $USERHOME/Desktop/utilities/StartNmService.desktop' <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -352,7 +352,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmService.desktop
 
 # This will make a link to restart nm-applet which sometimes crashes
 ##################
-sudo bash -c 'cat > $USERHOME/Desktop/utilities/StartNmApplet.desktop' <<- EOF
+sudo --preserve-env bash -c 'cat > $USERHOME/Desktop/utilities/StartNmApplet.desktop' <<- EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -421,7 +421,7 @@ sudo apt -y install kstars-bleeding-dbg indi-dbg
 # Note:  This is required for KStars to have the breeze icons.
 display "Creating KDE config file so KStars can have breeze icons."
 ##################
-sudo bash -c 'cat > $USERHOME/.config/kdeglobals' <<- EOF
+sudo --preserve-env bash -c 'cat > $USERHOME/.config/kdeglobals' <<- EOF
 [Icons]
 Theme=breeze
 EOF
@@ -483,7 +483,7 @@ sudo apt -y install indiwebmanagerapp
 
 # This will make a link to start INDIWebManagerApp on the desktop
 ##################
-sudo bash -c 'cat > $USERHOME/Desktop/INDIWebManagerApp.desktop' <<- EOF
+sudo --preserve-env bash -c 'cat > $USERHOME/Desktop/INDIWebManagerApp.desktop' <<- EOF
 [Desktop Entry]
 Encoding=UTF-8
 Name=INDI Web Manager App
@@ -508,7 +508,7 @@ sudo chown $SUDO_USER $USERHOME/.conkyrc
 
 # This will put a link into the autostart folder so it starts at login
 ##################
-sudo bash -c 'cat > /usr/share/mate/autostart/startConky.desktop' <<- EOF
+sudo --preserve-env bash -c 'cat > /usr/share/mate/autostart/startConky.desktop' <<- EOF
 [Desktop Entry]
 Name=StartConky
 Exec=conky -b -d
