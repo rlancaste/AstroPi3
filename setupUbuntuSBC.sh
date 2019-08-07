@@ -83,23 +83,48 @@ sudo apt -y install openssh-server
 sudo systemctl enable ssh
 sudo systemctl start ssh
 
-# This will give the SBC a static IP address so that you can connect to it over an ethernet cable
-# in the observing field if no router is available.
-# You may need to edit this ip address to make sure the first 2 numbers match your computer's self assigned ip address
-# If there is already a static IP defined, it leaves it alone.
-if [ -z "$(grep 'eth0' '/etc/rc.local')" ]
+# This will install and configure network manager and remove dhcpcd5 if installed because it has some issues
+# Also the commands below that setup networking depend upon network manager.
+display "Installing network manager"
+sudo apt -y install network-manager network-manager-gnome
+
+display "Making sure dhcpcd5 is not installed"
+if [ -n "$(dpkg -l | grep dhcpcd5)" ]
 then
-	read -p "Do you want to give your SBC a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
+	sudo apt purge -y openresolv dhcpcd5
+	# This should remove the old manager panel from the taskbar
+	if [ -n "$(grep 'type=dhcpcdui' $USERHOME/.config/lxpanel/LXDE-$SUDO_USER/panels/panel)" ]
+	then
+		sed -i "s/type=dhcpcdui/type=space/g" $USERHOME/.config/lxpanel/LXDE-$SUDO_USER/panels/panel
+	fi
+	if [ -n "$(grep 'type=dhcpcdui' /etc/xdg/lxpanel/LXDE-$SUDO_USER/panels/panel)" ]
+	then
+		sed -i "s/type=dhcpcdui/type=space/g" /etc/xdg/lxpanel/LXDE-$SUDO_USER/panels/panel
+	fi
+	if [ -n "$(grep 'type=dhcpcdui' /etc/xdg/lxpanel/LXDE/panels/panel)" ]
+	then
+		sed -i "s/type=dhcpcdui/type=space/g" /etc/xdg/lxpanel/LXDE/panels/panel
+	fi
+else
+	echo "dhcpcd5 is not installed"
+fi
+
+# This will make sure that network manager can manage whether the ethernet connection is on or off.
+display "Allowing Network Manager to manage Ethernet"
+if [ -n "$(grep 'managed=false' /etc/NetworkManager/NetworkManager.conf)" ]
+then
+	sed -i "s/managed=false/managed=true/g" /etc/NetworkManager/NetworkManager.conf
+fi
+
+# This will set up your Pi to have access to internet with wifi, ethernet with DHCP, and ethernet with direct connection
+if [ -z "$(grep 'address' '/etc/network/interfaces')" ]
+then
+	read -p "Do you want to give your pi a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
 	if [ "$useStaticIP" == "y" ]
 	then
 		read -p "Please enter the IP address you would prefer.  Please make sure that the first two numbers match your client computer's self assigned IP.  For Example mine is: 169.254.0.5 ? " IP
-		display "Setting Static IP to $IP.  Note, you can change this later by editing the file /etc/rc.local"
-		sed -i "/# By default this script does nothing./ a ifconfig eth0 $IP up" /etc/rc.local
-		echo "New contents of /etc/rc.local:"
-		echo "$(cat /etc/rc.local)"
-		echo "~~~~~~~~~~~~~~~~~~~~~~~"
 		
-# This will make sure that the SBC will still work over Ethernet connected directly to a router if you have assigned a static ip address as requested.
+# This will make sure that the pi will still work over Ethernet connected directly to a router if you have assigned a static ip address as requested.
 ##################
 sudo cat > /etc/network/interfaces <<- EOF
 # interfaces(5) file used by ifup(8) and ifdown(8)
@@ -110,29 +135,35 @@ source-directory /etc/network/interfaces.d
 auto lo
 iface lo inet loopback
 
-# These two lines allow the pi to respond to a router's dhcp even though you have a static ip defined.
-allow-hotplug eth0
+# DHCP support for ethernet connections
 iface eth0 inet dhcp
+allow-hotplug eth0
+
+# A Second ethernet connection based upon a static IP address
+auto eth0:1
+iface eth0:1 inet static
+address $IP
+netmask 255.255.255.0
 EOF
 ##################
 	else
-		display "Leaving your IP address to be assigned only by dhcp.  Note that you will always need either a router or wifi network to connect to your SBC."
+		display "Leaving your IP address to be assigned only by dhcp.  Note that you will always need either a router or wifi network to connect to your pi."
 	fi
 else
-	display "This computer already has been assigned a static ip address.  If you need to edit that, please edit the file /etc/rc.local"
+	display "This computer already has been assigned a static ip address.  If you need to edit that, please edit the file /etc/network/interfaces"
 fi
+
 
 # This will promt you to install (1) x11vnc, (2) x2go, or (3) no remote access tool
 read -p "Do you want to install (1) x11vnc, (2) x2go, or (3) no remote access tool? input (1/2/3)? " remoteAccessTool
 if [ "$remoteAccessTool" == "1" ]
 then
-
-# Note: RealVNC does not work on non-Raspberry Pi ARM systems as far as I can tell.
-# This will install x11vnc instead
-sudo apt -y install x11vnc
-# This will get the password for VNC
-x11vnc -storepasswd /etc/x11vnc.pass
-# This will store the service file.
+	# Note: RealVNC does not work on non-Raspberry Pi ARM systems as far as I can tell.
+	# This will install x11vnc instead
+	sudo apt -y install x11vnc
+	# This will get the password for VNC
+	x11vnc -storepasswd /etc/x11vnc.pass
+	# This will store the service file.
 ######################
 bash -c 'cat > /lib/systemd/system/x11vnc.service' << EOF
 [Unit]
@@ -145,24 +176,18 @@ ExecStart=/usr/bin/x11vnc -auth guess -forever -loop -noxdamage -repeat -rfbauth
 WantedBy=multi-user.target
 EOF
 ######################
-# This enables the Service so it runs at startup
-sudo systemctl enable x11vnc.service
-sudo systemctl daemon-reload
-
+	# This enables the Service so it runs at startup
+	sudo systemctl enable x11vnc.service
+	sudo systemctl daemon-reload
 elif [ "$remoteAccessTool" == "2" ]
 then
-
-# This will install x2go for Ubuntu
-sudo add-apt-repository -y ppa:x2go/stable
-sudo apt update
-sudo apt install -y x2goserver x2goserver-xsession x2gomatebindings
-
+	# This will install x2go for Ubuntu
+	sudo add-apt-repository -y ppa:x2go/stable
+	sudo apt update
+	sudo apt install -y x2goserver x2goserver-xsession x2gomatebindings
 else
-
     display "No remote access tool will be installed!"
-
 fi
-
 
 # This will make a folder on the desktop with the right permissions for the launchers
 sudo -H -u $SUDO_USER bash -c 'mkdir -p $USERHOME/Desktop/utilities'

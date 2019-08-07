@@ -13,7 +13,7 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo "Attempting to Install Realtek drivers for Wifi Dongle using chipset RTL8822BU.  This script is intended for a Raspberry Pi3 running Ubuntu-Mate"
+echo "Attempting to Install Realtek drivers for Wifi Dongle using chipset RTL8822BU.  This script is intended for an SBC running Ubuntu or Raspbian"
 read -p "Are you ready to proceed (y/n)? " proceed
 
 if [ "$proceed" != "y" ]
