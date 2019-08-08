@@ -639,7 +639,7 @@ mkdir -p $USERHOME/.config/autostart
 sudo cat > $USERHOME/.config/autostart/startConky.desktop <<- EOF
 [Desktop Entry]
 Name=StartConky
-Exec=conky -d
+Exec=conky -db -p 20
 Terminal=false
 Type=Application
 EOF

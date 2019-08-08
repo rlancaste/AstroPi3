@@ -520,7 +520,7 @@ done
 sudo --preserve-env bash -c 'cat > /usr/share/mate/autostart/startConky.desktop' <<- EOF
 [Desktop Entry]
 Name=StartConky
-Exec=conky -b -d
+Exec=conky -db -p 20
 Terminal=false
 Type=Application
 EOF
