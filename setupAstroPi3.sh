@@ -159,6 +159,7 @@ sudo systemctl enable ssh
 sudo systemctl start ssh
 
 # This will set up your Pi to have access to internet with wifi, ethernet with DHCP, and ethernet with direct connection
+display "Setting up Ethernet for both link-local and DHCP"
 if [ -z "$(ls /etc/NetworkManager/system-connections/ | grep \"Link Local Ethernet\")" ]
 then
 	read -p "Do you want to give your pi a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
@@ -214,6 +215,8 @@ else
 fi
 sudo systemctl enable vncserver-x11-serviced.service
 sudo systemctl start vncserver-x11-serviced.service
+
+display "Making Utilities Folder with script shortcuts for the Desktop"
 
 # This will make a folder on the desktop for the launchers if it doesn't exist already
 if [ ! -d "$USERHOME/Desktop/utilities" ]
