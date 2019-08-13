@@ -52,7 +52,7 @@ chmod +x "$DIR/udevRuleScript.sh"
 chmod +x "$DIR/astrometryIndexInstaller.sh"
 chmod +x "$DIR/systemUpdater.sh"
 chmod +x "$DIR/backupOrRestore.sh"
-sudo chown $SUDO_USER *
+sudo chown -R $SUDO_USER:$SUDO_USER $DIR
 
 echo "Your requested updates are complete."
 
