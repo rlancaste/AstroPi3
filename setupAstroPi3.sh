@@ -158,21 +158,32 @@ sudo apt -y install openssh-server
 sudo systemctl enable ssh
 sudo systemctl start ssh
 
-# This will make sure that network manager can manage whether the ethernet connection is on or off.
-if [ -n "$(grep 'managed=false' /etc/NetworkManager/NetworkManager.conf)" ]
-then
-	sed -i "s/managed=false/managed=true/g" /etc/NetworkManager/NetworkManager.conf
-fi
-
 # This will set up your Pi to have access to internet with wifi, ethernet with DHCP, and ethernet with direct connection
-if [ -z "$(grep 'address' '/etc/network/interfaces')" ]
+if [ -z "$(ls /etc/NetworkManager/system-connections/ | grep \"Link Local Ethernet\")" ]
 then
 	read -p "Do you want to give your pi a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
 	if [ "$useStaticIP" == "y" ]
 	then
 		read -p "Please enter the IP address you would prefer.  Please make sure that the first two numbers match your client computer's self assigned IP.  For Example mine is: 169.254.0.5 ? " IP
-		
-# This will make sure that the pi will still work over Ethernet connected directly to a router if you have assigned a static ip address as requested.
+
+	# This will make sure that network manager can manage whether the ethernet connection is on or off and then you can change the connection in network maanager.
+	if [ -n "$(grep 'managed=false' /etc/NetworkManager/NetworkManager.conf)" ]
+	then
+		sed -i "s/managed=false/managed=true/g" /etc/NetworkManager/NetworkManager.conf
+	fi
+	
+	# This section should add two connections, one for connecting to ethernet with a router and the other for connecting directly to a computer in the observing field with a Link Local IP
+	nmcli connection add type ethernet ifname eth0 con-name "Wired DHCP Ethernet" autoconnect yes
+	nmcli connection modify "Wired DHCP Ethernet" connection.autoconnect-priority 2 	# Higher Priority because then it tries DHCP first and then switches to Link Local as a backup
+	nmcli connection modify "Wired DHCP Ethernet" ipv4.dhcp-timeout 5 					# This sets the timeout for DHCP to a much shorter time so you don't have to wait forever for Link Local
+	nmcli connection modify "Wired DHCP Ethernet" ipv4.may-fail no 						# I'm not sure why this is needed, but without it, it doesn't seem to want to switch to link local
+	nmcli connection modify "Wired DHCP Ethernet" connection.autoconnect-retries 2		# These last two might not be necessary, but they might be needed if the global settings are to infinitely retry
+	nmcli connection modify "Wired DHCP Ethernet" connection.auth-retries 2
+	
+	nmcli connection add type ethernet ifname eth0 con-name "Link Local Ethernet" autoconnect yes ip4 $IP/24
+	nmcli connection modify "Link Local Ethernet" connection.autoconnect-priority 1		# Lower priority because this is the backup for when in the observing field
+	
+# This will make sure /etc/network/interfaces does not interfere
 ##################
 sudo cat > /etc/network/interfaces <<- EOF
 # interfaces(5) file used by ifup(8) and ifdown(8)
@@ -182,16 +193,6 @@ source-directory /etc/network/interfaces.d
 # The loopback network interface
 auto lo
 iface lo inet loopback
-
-# DHCP support for ethernet connections
-iface eth0 inet dhcp
-allow-hotplug eth0
-
-# A Second ethernet connection based upon a static IP address
-auto eth0:1
-iface eth0:1 inet static
-address $IP
-netmask 255.255.255.0
 EOF
 ##################
 	else
