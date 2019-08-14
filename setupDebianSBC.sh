@@ -59,6 +59,9 @@ sudo apt -y dist-upgrade
 #########################################################
 #############  Configuration for Ease of Use/Access
 
+# In the Raspberry Pi scripts, I set the HDMI options in the /boot/config.txt file.  Debian doesn't have that
+# so I set it below when the conky desktop file starts up.
+
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
 ##################
@@ -625,12 +628,14 @@ do
 done
 
 # This will put a link into the autostart folder so it starts at login
+# Also this sets the resolution of the screen to something a bit larger than the default.
+# You should change this to match the screen resolution you want
 ##################
 mkdir -p $USERHOME/.config/autostart
 sudo --preserve-env bash -c 'cat > $USERHOME/.config/autostart/startConky.desktop' <<- EOF
 [Desktop Entry]
 Name=StartConky
-Exec=conky -db -p 20
+Exec=sh -c "xrandr --fb 1600x800; conky -db -p 20"
 Terminal=false
 Type=Application
 EOF
