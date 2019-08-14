@@ -10,6 +10,7 @@ turned it into this script.  Hopefully this is much easier to use.
 ![Running KStars on Pi 3](/images/runningPi3.png "Running KStars on Pi 3")
 ![Running Ekos on Pi 3](/images/ekosRunning.png "Running Ekos on Pi 3")
 ![Running Ekos on 64 bit SBC](/images/64bitEkos.png "Running Ekos on 64 bit SBC")
+![Running Ekos on 64 bit SBC](/images/armbian.png "Running Ekos on a Debian Rock64 SBC")
 
 Before running the script, please be sure to do some research and read up on all that it will do to your Raspberry Pi or other SBC.  You may want to 
 use the script as is or add or remove certain lines before running it by adding or removing comment symbols from the front of the line (#).
@@ -19,7 +20,7 @@ When you are ready, you can follow these steps:
 1.	Download latest version of an image for your SBC.  Some sources:
 - Ubuntu-MATE: https://ubuntu-mate.org/raspberry-pi/ (For Raspberry Pi) 
 - Raspbian: https://www.raspberrypi.org/downloads/raspbian/ (For Raspberry Pi)
-- Bionic LXDE: https://wiki.pine64.org/index.php/ROCK64_Software_Release (For Rock64--Note, still has some issues)
+- Armbian Debian: https://wiki.pine64.org/index.php/ROCK64_Software_Release#Armbian_Debian_Buster_Desktop_.5BmicroSD_.2F_eMMC_Boot.5D_.5B5.91.5D (For Rock64)
 - Ubuntu-MATE: https://wiki.odroid.com/odroid-c2/os_images/ubuntu/v3.0 (For Odroid C2)
 
 	If you are using a different SBC, you should find an appropriate image for your system.  My scripts so far are all based on Ubuntu or Raspbian, so you should
@@ -44,13 +45,17 @@ When you are ready, you can follow these steps:
 
 		cd AstroPi3
 	
-9.  Run one of the following scripts using sudo.  Choose the right one for your system.  The setupAstroPi3.sh is specifically for a Raspberry Pi 3b or 3b+
-	running Ubuntu-Mate in the armhf architecture.  The setupUbuntuSBC.sh script is specifically for an SBC system running Ubuntu on any architecture such as a Rock64 or Odroid C2.  
-	The setupRaspbianPi.sh script is for a Raspberry Pi running Raspbian.
+9.  Run one of the following scripts using sudo.  Choose the right one for your system.  
+	- The setupAstroPi3.sh is for a Raspberry Pi 3b or 3b+ running Ubuntu-Mate in the armhf architecture.  
+	- The setupUbuntuSBC.sh script is for an SBC system running Ubuntu on any architecture such as an Odroid C2.
+	- The setupDebianSBC.sh script is for an SBC system running Debian on any architecture such as a Rock64.
+	- The setupRaspbianPi.sh script is for a Raspberry Pi running Raspbian.  
 
 		sudo ./setupAstroPi3.sh
 	
 		sudo ./setupUbuntuSBC.sh
+		
+		sudo ./setupDebianSBC.sh
 		
 		sudo ./setupAstroRaspbianPi.sh
 	
