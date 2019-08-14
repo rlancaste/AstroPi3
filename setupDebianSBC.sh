@@ -63,13 +63,13 @@ sudo apt -y dist-upgrade
 # so I set it below when the conky desktop file starts up.
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
-display "Setting account: "$SUDO_USER" to auto login."
+#display "Setting account: "$SUDO_USER" to auto login."
 ##################
-sudo --preserve-env bash -c 'cat > /usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf' <<- EOF
-[SeatDefaults]
-greeter-session=lightdm-gtk-greeter
-autologin-user=$SUDO_USER
-EOF
+#sudo --preserve-env bash -c 'cat > /usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf' <<- EOF
+#[SeatDefaults]
+#greeter-session=lightdm-gtk-greeter
+#autologin-user=$SUDO_USER
+#EOF
 ##################
 
 # This will prevent the SBC from turning on the lock-screen / screensaver which can be problematic when using VNC
