@@ -70,8 +70,8 @@ EOF
 ##################
 
 # This will prevent the SBC from turning on the lock-screen / screensaver which can be problematic when using VNC
-gsettings set org.gnome.desktop.session idle-delay 0
-gsettings set org.mate.screensaver lock-enabled false
+#gsettings set org.gnome.desktop.session idle-delay 0
+#gsettings set org.mate.screensaver lock-enabled false
 
 # Installs Synaptic Package Manager for easy software install/removal
 display "Installing Synaptic"
@@ -156,6 +156,7 @@ fi
 
 
 # This will promt you to install (1) x11vnc, (2) x2go, or (3) no remote access tool
+display "Setting up a VNC Server"
 read -p "Do you want to install (1) x11vnc, (2) x2go, or (3) no remote access tool? input (1/2/3)? " remoteAccessTool
 if [ "$remoteAccessTool" == "1" ]
 then
@@ -402,7 +403,7 @@ fi
 # This is not needed on all systems, since different cameras download different size images, and different SBC's have different RAM capacities but 
 # if you are using a DSLR on a system with 1GB of RAM, it definitely is needed.  If you don't want this, comment it out.
 display "Installing zRAM for increased RAM capacity"
-sudo apt -y install zram-config
+sudo apt -y install zram-tools
 
 # This should fix an issue where you might not be able to use a serial mount connection because you are not in the "dialout" group
 display "Enabling Serial Communication"
@@ -475,7 +476,7 @@ display "Installing XPlanet"
 sudo apt -y install xplanet
 
 # Installs Pre Requirements for KStars
-sudo apt -y install build-essential cmake git libeigen3-dev libcfitsio-dev zlib1g-dev libindi-dev extra-cmake-modules libkf5plotting-dev libqt5svg5-dev libkf5iconthemes-dev wcslib-dev
+sudo apt -y install build-essential cmake git libeigen3-dev libcfitsio-dev zlib1g-dev libindi-dev extra-cmake-modules libkf5plotting-dev libqt5svg5-dev libkf5iconthemes-dev wcslib-dev libqt5sql5-sqlite
 sudo apt -y install libkf5xmlgui-dev kio-dev kinit-dev libkf5newstuff-dev kdoctools-dev libkf5notifications-dev libqt5websockets5-dev qtdeclarative5-dev libkf5crash-dev gettext qml-module-qtquick-controls qml-module-qtquick-layouts
 
 #This builds and installs KStars
@@ -572,8 +573,22 @@ sudo -H -u $SUDO_USER pip3 install wheel
 # This will install indiweb as the user
 sudo -H -u $SUDO_USER pip3 install indiweb
 
-#This will install the INDIWebManagerApp in the INDI PPA
-sudo apt -y install indiwebmanagerapp
+# This will clone or update the repo
+if [ ! -d $USERHOME/AstroRoot/INDIWebManagerApp ]
+then
+	cd $USERHOME/AstroRoot/
+	sudo -H -u $SUDO_USER git clone https://github.com/rlancaste/INDIWebManagerApp.git
+	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/INDIWebManagerApp-build
+else
+	cd $USERHOME/AstroRoot/INDIWebManagerApp
+	sudo -H -u $SUDO_USER git pull
+fi
+
+# This will make and install the program
+cd $USERHOME/AstroRoot/INDIWebManagerApp-build
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/INDIWebManagerApp/
+sudo -H -u $SUDO_USER make
+sudo make install
 
 # This will make a link to start INDIWebManagerApp on the desktop
 ##################
@@ -611,7 +626,8 @@ done
 
 # This will put a link into the autostart folder so it starts at login
 ##################
-sudo --preserve-env bash -c 'cat > /usr/share/mate/autostart/startConky.desktop' <<- EOF
+mkdir -p $USERHOME/.config/autostart
+sudo --preserve-env bash -c 'cat > $USERHOME/.config/autostart/startConky.desktop' <<- EOF
 [Desktop Entry]
 Name=StartConky
 Exec=conky -db -p 20
