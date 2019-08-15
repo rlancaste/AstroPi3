@@ -443,7 +443,7 @@ yay -S astrometry.net
 
 # Installs the optional xplanet package for simulating the solar system.  If you don't want it, comment this out with a #.
 display "Installing XPlanet"
-yay -S xplanet
+yay -S --noconfirm --needed xplanet
 
 #This builds and installs KStars
 display "Installing KStars"
@@ -509,6 +509,9 @@ sudo -H -u $SUDO_USER pip3 install wheel
 
 # This will install indiweb as the user
 sudo -H -u $SUDO_USER pip3 install indiweb
+
+# Dependencies for INDIWebManagerApp
+sudo pacman -S --noconfirm --needed extra-cmake-modules
 
 # This will clone or update the repo
 if [ ! -d $USERHOME/AstroRoot/INDIWebManagerApp ]
