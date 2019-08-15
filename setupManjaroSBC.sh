@@ -405,7 +405,7 @@ fi
 # This is not needed on all systems, since different cameras download different size images, and different SBC's have different RAM capacities but 
 # if you are using a DSLR on a system with 1GB of RAM, it definitely is needed.  If you don't want this, comment it out.
 display "Installing zRAM for increased RAM capacity"
-sudo -H -u $SUDO_USER yay -S zramswap
+sudo -H -u $SUDO_USER yay -S --noconfirm zramswap
 sudo pacman -S --noconfirm --needed systemd-swap
 sudo systemctl enable systemd-swap
 sudo systemctl start systemd-swap
@@ -436,11 +436,11 @@ sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
 
 # This builds and installs INDI
 display "Building and Installing INDI 3rd Party"
-sudo -H -u $SUDO_USER yay -S libindi_3rdparty
+sudo -H -u $SUDO_USER yay -S --noconfirm libindi_3rdparty
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
 display "Installing Astrometry.net"
-sudo -H -u $SUDO_USER yay -S astrometry.net
+sudo -H -u $SUDO_USER yay -S --noconfirm astrometry.net
 
 # Installs the optional xplanet package for simulating the solar system.  If you don't want it, comment this out with a #.
 display "Installing XPlanet"
@@ -479,7 +479,7 @@ fi
 
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
 display "Installing PHD2"
-sudo -H -u $SUDO_USER yay -S open-phd-guiding-git
+sudo -H -u $SUDO_USER yay -S --noconfirm open-phd-guiding-git
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
