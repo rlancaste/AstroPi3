@@ -90,7 +90,7 @@ sudo pacman -S --noconfirm --needed networkmanager nm-connection-editor network-
 sudo systemctl enable NetworkManager.service
 
 display "Making sure dhcpcd5 is not installed"
-if [ -n "$(dpkg -l | grep dhcpcd5)" ]
+if [ -n "$(pacman -Qi | awk '/^Name/' | grep dhcpcd5)" ]
 then
 	sudo systemctl disable dhcpcd.service
 	sudo apt purge -y openresolv dhcpcd5
