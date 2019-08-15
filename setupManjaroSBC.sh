@@ -225,6 +225,7 @@ EOF
 	fi
 else
 	echo "VNC is already installed"
+fi
 
 display "Making Utilities Folder with script shortcuts for the Desktop"
 # This will make a folder on the desktop with the right permissions for the launchers
