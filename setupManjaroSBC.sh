@@ -105,10 +105,10 @@ then
 fi
 
 # This will enable SSH which is apparently disabled on some SBCs by default.
-#display "Enabling SSH"
+display "Enabling SSH"
 sudo pacman -S --noconfirm --needed openssh
-sudo systemctl enable ssh
-sudo systemctl start ssh
+sudo systemctl enable sshd
+sudo systemctl start sshd
 
 # This will install and configure network manager and remove dhcpcd5 if installed because it has some issues
 # Also the commands below that setup networking depend upon network manager.
