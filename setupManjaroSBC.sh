@@ -382,7 +382,7 @@ display "Setting up File Sharing"
 
 # Installs samba so that you can share files to your other computer(s).
 sudo pacman -S --noconfirm --needed samba
-sudo -H -u $SUDO_USER yay -S system-config-samba
+sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild system-config-samba
 sudo touch /etc/libuser.conf
 
 # Adds yourself to the user group of who can use samba, but checks first if you are already in the list
@@ -407,7 +407,7 @@ fi
 # This is not needed on all systems, since different cameras download different size images, and different SBC's have different RAM capacities but 
 # if you are using a DSLR on a system with 1GB of RAM, it definitely is needed.  If you don't want this, comment it out.
 display "Installing zRAM for increased RAM capacity"
-sudo -H -u $SUDO_USER yay -S --noconfirm zramswap
+sudo -H -u $SUDO_USER yay -S --noconfirm  --needed --norebuild zramswap
 sudo pacman -S --noconfirm --needed systemd-swap
 sudo systemctl enable systemd-swap
 sudo systemctl start systemd-swap
@@ -438,15 +438,15 @@ sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
 
 # This builds and installs INDI
 display "Building and Installing INDI 3rd Party"
-sudo -H -u $SUDO_USER yay -S --noconfirm libindi_3rdparty
+sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild libindi_3rdparty
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
 display "Installing Astrometry.net"
-sudo -H -u $SUDO_USER yay -S --noconfirm astrometry.net
+sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild astrometry.net
 
 # Installs the optional xplanet package for simulating the solar system.  If you don't want it, comment this out with a #.
 display "Installing XPlanet"
-sudo -H -u $SUDO_USER yay -S --noconfirm --needed xplanet
+sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild xplanet
 
 #This builds and installs KStars
 display "Installing KStars"
@@ -481,7 +481,7 @@ fi
 
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
 display "Installing PHD2"
-sudo -H -u $SUDO_USER yay -S --noconfirm open-phd-guiding-git
+sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild open-phd-guiding-git
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
