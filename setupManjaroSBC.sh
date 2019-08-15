@@ -418,7 +418,7 @@ display "Setting up File Sharing"
 
 # Installs samba so that you can share files to your other computer(s).
 sudo pacman -S --noconfirm --needed samba
-sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild system-config-samba
+#sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild system-config-samba
 sudo touch /etc/libuser.conf
 
 # Adds yourself to the user group of who can use samba, but checks first if you are already in the list
