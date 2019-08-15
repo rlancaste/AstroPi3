@@ -87,14 +87,14 @@ if [ -n "$(grep '/usr/s\?bin/sddm' '/etc/systemd/system/display-manager.service'
 then
 	if [ -z "$(grep User=$SUDO_USER '/etc/sddm.conf')" ]
 	then
-		sed -i "s/User=/User=$SUDO_USER/1" /etc/sddm.conf
+		sed -i "s/^User=.*/User=$SUDO_USER/1" /etc/sddm.conf
 	fi
 	
 	sed -i "s/Relogin=false/Relogin=true/1" /etc/sddm.conf
 	
-	if [ -z "$(grep 'Session=default' '/etc/sddm.conf')" ]
+	if [ -z "$(grep 'Session=lxqt.desktopt' '/etc/sddm.conf')" ]
 	then
-		sed -i "s/Session=/Session=default/1" /etc/sddm.conf
+		sed -i "s/^Session=.*/Session=lxqt.desktop/1" /etc/sddm.conf
 	fi
 fi
 
