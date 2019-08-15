@@ -45,13 +45,19 @@ PS1='AstroPi3-SetupManjaroSBC~$ '
 #########################################################
 #############  Updates
 
-# Making sure yay is installed for the use of the AUR Packages
-sudo pacman -S --noconfirm --needed yay
 
 # Updates the computer to the latest packages.
 display "Updating installed packages"
 sudo pacman -Syu
+
+# Making sure yay is installed for the use of the AUR Packages
+sudo pacman -S --noconfirm --needed yay
+
+# Updates the AUR Packages and their Dependencies
 sudo -H -u $SUDO_USER yay -Syu
+
+# Installs some packages yay will need
+sudo pacman -S --noconfirm --needed patch cmake make gcc pkg-config fakeroot
 
 #########################################################
 #############  Configuration for Ease of Use/Access
@@ -70,10 +76,6 @@ fi
 # This will prevent the SBC from turning on the lock-screen / screensaver which can be problematic when using VNC
 #gsettings set org.gnome.desktop.session idle-delay 0
 #gsettings set org.mate.screensaver lock-enabled false
-
-# Installs Synaptic Package Manager for easy software install/removal
-#display "Installing Synaptic"
-#sudo pacman -S --noconfirm --needed synaptic
 
 # This will enable SSH which is apparently disabled on some SBCs by default.
 #display "Enabling SSH"
@@ -380,13 +382,15 @@ display "Setting up File Sharing"
 
 # Installs samba so that you can share files to your other computer(s).
 sudo pacman -S --noconfirm --needed samba
+sudo -H -u $SUDO_USER yay -S system-config-samba
+sudo touch /etc/libuser.conf
 
 # Adds yourself to the user group of who can use samba, but checks first if you are already in the list
 if [ -z "$(sudo pdbedit -L | grep $SUDO_USER)" ]
 then
 	sudo smbpasswd -a $SUDO_USER
 	sudo adduser $SUDO_USER sambashare
-	sudo systemctl enable smbd nmbd
+	sudo systemctl enable smb nmb
 fi
 
 #########################################################
@@ -428,7 +432,7 @@ EOF
 
 # This installs INDI and KStars Dependencies that will be needed
 display "Installing INDI and KStars Dependencies"
-sudo pacman -S --noconfirm --needed breeze-icons arduino binutils patch cmake make libraw libindi wxgtk2 gpsd gcc
+sudo pacman -S --noconfirm --needed breeze-icons arduino binutils libraw libindi wxgtk2 gpsd
 
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
 
