@@ -83,7 +83,7 @@ fi
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
-if[ -e "/usr/lib/sddm/sddm.conf.d/default.conf" ]
+if[ -f "/usr/lib/sddm/sddm.conf.d/default.conf" ]
 then
 ##################
 sudo --preserve-env bash -c 'cat > /etc/sddm.conf.d/autologin.conf' <<- EOF
@@ -95,7 +95,7 @@ EOF
 fi
 
 # This will prevent the SBC from turning on the lock-screen / powersave function which can be problematic when using VNC
-if[ -e $USERHOME/.config/lxqt/lxqt-powermanagement.conf ]
+if[ -f $USERHOME/.config/lxqt/lxqt-powermanagement.conf ]
 then
 	sed -i "s/enableBatteryWatcher=true/enableBatteryWatcher=false/g" $USERHOME/.config/lxqt/lxqt-powermanagement.conf
 	sed -i "s/enableExtMonLidClosedActions=true/enableExtMonLidClosedActions=false/g" $USERHOME/.config/lxqt/lxqt-powermanagement.conf
