@@ -62,6 +62,22 @@ sudo pacman -S --noconfirm --needed patch cmake make gcc pkg-config fakeroot
 #########################################################
 #############  Configuration for Ease of Use/Access
 
+# This will set up the SBC so that double clicking on desktop icons brings up the program right away
+# The default behavior is to ask what you want to do with the executable file.
+display "Setting desktop icons to open programs when you click them."
+if [ -n "$(grep 'quick_exec=0' $USERHOME/.config/libfm/libfm.conf)" ]
+then
+	sed -i "s/quick_exec=0/quick_exec=1/g" $USERHOME/.config/libfm/libfm.conf
+fi
+if [ -n "$(grep 'quick_exec=0' /etc/xdg/libfm/libfm.conf)" ]
+then
+	sed -i "s/quick_exec=0/quick_exec=1/g" /etc/xdg/libfm/libfm.conf
+fi
+if [ -z "$(grep 'quick_exec' /etc/xdg/libfm/libfm.conf)" ]
+then
+	sed -i "/\[config\]/ a quick_exec=1" /etc/xdg/libfm/libfm.conf
+fi
+
 # In the Raspberry Pi scripts, I set the HDMI options in the /boot/config.txt file.  Manjaro doesn't have that
 # so I set it below when the conky desktop file starts up.
 
