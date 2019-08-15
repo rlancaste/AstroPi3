@@ -86,6 +86,7 @@ display "Setting account: "$SUDO_USER" to auto login."
 if [ -f "/usr/lib/sddm/sddm.conf.d/default.conf" ]
 then
 ##################
+sudo mkdir -p /etc/sddm.conf.d
 sudo --preserve-env bash -c 'cat > /etc/sddm.conf.d/autologin.conf' <<- EOF
 [Autologin]
 User=$SUDO_USER
@@ -139,7 +140,7 @@ fi
 
 # This will set up your Pi to have access to internet with wifi, ethernet with DHCP, and ethernet with direct connection
 display "Setting up Ethernet for both link-local and DHCP"
-if [ -z "$(ls /etc/NetworkManager/system-connections/ | grep \"Link Local Ethernet\")" ]
+if [ -z "$(ls /etc/NetworkManager/system-connections/ | grep \"Link\ Local\ Ethernet\")" ]
 then
 	read -p "Do you want to give your pi a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
 	if [ "$useStaticIP" == "y" ]
