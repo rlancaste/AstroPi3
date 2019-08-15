@@ -543,7 +543,7 @@ sudo chown $SUDO_USER:users $USERHOME/Desktop/phd2.desktop
 display "Installing INDI Web Manager App, indiweb, and python3"
 
 # This will install pip3 and python along with their headers for the next steps
-sudo pacman -S --noconfirm --needed python
+sudo pacman -S --noconfirm --needed python-pip
 
 # Wheel might not be installed on some systems
 sudo -H -u $SUDO_USER pip3 install --user wheel
