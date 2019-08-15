@@ -83,16 +83,20 @@ sudo pacman -S --noconfirm --needed patch cmake make gcc pkg-config fakeroot
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
-if [ -f "/usr/lib/sddm/sddm.conf.d/default.conf" ]
+if [ -n "$(grep '/usr/s\?bin/sddm' '/etc/systemd/system/display-manager.service')" ] && [ -f /etc/sddm.conf ]
 then
-##################
-sudo mkdir -p /etc/sddm.conf.d
-sudo --preserve-env bash -c 'cat > /etc/sddm.conf.d/autologin.conf' <<- EOF
-[Autologin]
-User=$SUDO_USER
-Session=default
-EOF
-##################
+	if [ -z "$(grep User=$SUDO_USER '/etc/sddm.conf')" ]
+	then
+		sed -i "s/User=/User=$SUDO_USER/g" /etc/sddm.conf
+	fi
+	
+	sed -i "s/Relogin=false/Relogin=true/g" /etc/sddm.conf
+	
+	if [ -z "$(grep 'Session=default' '/etc/sddm.conf')" ]
+	then
+		sed -i "s/Session=/Session=default/g" /etc/sddm.conf
+	fi
+fi
 fi
 
 # This will prevent the SBC from turning on the lock-screen / powersave function which can be problematic when using VNC
