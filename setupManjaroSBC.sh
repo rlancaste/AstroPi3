@@ -501,10 +501,10 @@ display "Installing INDI Web Manager App, indiweb, and python3"
 sudo pacman -S --noconfirm --needed python
 
 # Wheel might not be installed on some systems
-sudo -H -u $SUDO_USER pip3 --user install wheel
+sudo -H -u $SUDO_USER pip3 install --user wheel
 
 # This will install indiweb as the user
-sudo -H -u $SUDO_USER pip3 --user install indiweb
+sudo -H -u $SUDO_USER pip3 install --user indiweb
 
 # Dependencies for INDIWebManagerApp
 sudo pacman -S --noconfirm --needed extra-cmake-modules kdoctools
