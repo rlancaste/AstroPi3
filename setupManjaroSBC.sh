@@ -497,12 +497,7 @@ sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/phd2.desktop
 display "Installing INDI Web Manager App, indiweb, and python3"
 
 # This will install pip3 and python along with their headers for the next steps
-sudo pacman -S --noconfirm --needed python3-pip
-sudo pacman -S --noconfirm --needed python3-dev
-
-# Setuptools may be needed in order to install indiweb on some systems
-sudo pacman -S --noconfirm --needed python3-setuptools
-sudo -H -u $SUDO_USER pip3 install setuptools --upgrade
+sudo pacman -S --noconfirm --needed python
 
 # Wheel might not be installed on some systems
 sudo -H -u $SUDO_USER pip3 install wheel
@@ -511,7 +506,7 @@ sudo -H -u $SUDO_USER pip3 install wheel
 sudo -H -u $SUDO_USER pip3 install indiweb
 
 # Dependencies for INDIWebManagerApp
-sudo pacman -S --noconfirm --needed extra-cmake-modules kdoctools-dev
+sudo pacman -S --noconfirm --needed extra-cmake-modules kdoctools
 
 # This will clone or update the repo
 if [ ! -d $USERHOME/AstroRoot/INDIWebManagerApp ]
