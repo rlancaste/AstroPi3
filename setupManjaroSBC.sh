@@ -45,12 +45,13 @@ PS1='AstroPi3-SetupManjaroSBC~$ '
 #########################################################
 #############  Updates
 
+# Making sure yay is installed for the use of the AUR Packages
+sudo pacman -S --noconfirm --needed yay
+
 # Updates the computer to the latest packages.
 display "Updating installed packages"
 sudo pacman -Syu
-
-# Making sure yay is installed for the use of the AUR Packages
-sudo pacman -S --noconfirm --needed yay
+sudo -H -u $SUDO_USER yay -Syu
 
 #########################################################
 #############  Configuration for Ease of Use/Access
@@ -500,10 +501,10 @@ display "Installing INDI Web Manager App, indiweb, and python3"
 sudo pacman -S --noconfirm --needed python
 
 # Wheel might not be installed on some systems
-sudo -H -u $SUDO_USER pip3 install wheel
+sudo -H -u $SUDO_USER pip3 --user install wheel
 
 # This will install indiweb as the user
-sudo -H -u $SUDO_USER pip3 install indiweb
+sudo -H -u $SUDO_USER pip3 --user install indiweb
 
 # Dependencies for INDIWebManagerApp
 sudo pacman -S --noconfirm --needed extra-cmake-modules kdoctools
