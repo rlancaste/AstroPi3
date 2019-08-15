@@ -60,14 +60,12 @@ sudo -H -u $SUDO_USER yay -Syu
 # so I set it below when the conky desktop file starts up.
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
-#display "Setting account: "$SUDO_USER" to auto login."
-##################
-#sudo --preserve-env bash -c 'cat > /usr/share/lightdm/lightdm.conf.d/60-lightdm-gtk-greeter.conf' <<- EOF
-#[SeatDefaults]
-#greeter-session=lightdm-gtk-greeter
-#autologin-user=$SUDO_USER
-#EOF
-##################
+display "Setting account: "$SUDO_USER" to auto login."
+if [ -n "$(grep '#autologin-user' '/etc/lightdm/lightdm.conf')" ]
+then
+	sed -i "s/#autologin-user=/autologin-user=$SUDO_USER/g" /etc/lightdm/lightdm.conf
+	sed -i "s/#autologin-user-timeout=0/autologin-user-timeout=0/g" /etc/lightdm/lightdm.conf
+fi
 
 # This will prevent the SBC from turning on the lock-screen / screensaver which can be problematic when using VNC
 #gsettings set org.gnome.desktop.session idle-delay 0
