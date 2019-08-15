@@ -64,26 +64,26 @@ sudo pacman -S --noconfirm --needed patch cmake make gcc pkg-config fakeroot
 
 # This will set up the SBC so that double clicking on desktop icons brings up the program right away
 # The default behavior is to ask what you want to do with the executable file.
-display "Setting desktop icons to open programs when you click them."
-if [ -n "$(grep 'quick_exec=0' $USERHOME/.config/libfm/libfm.conf)" ]
-then
-	sed -i "s/quick_exec=0/quick_exec=1/g" $USERHOME/.config/libfm/libfm.conf
-fi
-if [ -n "$(grep 'quick_exec=0' /etc/xdg/libfm/libfm.conf)" ]
-then
-	sed -i "s/quick_exec=0/quick_exec=1/g" /etc/xdg/libfm/libfm.conf
-fi
-if [ -z "$(grep 'quick_exec' /etc/xdg/libfm/libfm.conf)" ]
-then
-	sed -i "/\[config\]/ a quick_exec=1" /etc/xdg/libfm/libfm.conf
-fi
+#display "Setting desktop icons to open programs when you click them."
+#if [ -n "$(grep 'quick_exec=0' $USERHOME/.config/libfm/libfm.conf)" ]
+#then
+#	sed -i "s/quick_exec=0/quick_exec=1/g" $USERHOME/.config/libfm/libfm.conf
+#fi
+#if [ -n "$(grep 'quick_exec=0' /etc/xdg/libfm/libfm.conf)" ]
+#then
+#	sed -i "s/quick_exec=0/quick_exec=1/g" /etc/xdg/libfm/libfm.conf
+#fi
+#if [ -z "$(grep 'quick_exec' /etc/xdg/libfm/libfm.conf)" ]
+#then
+#	sed -i "/\[config\]/ a quick_exec=1" /etc/xdg/libfm/libfm.conf
+#fi
 
 # In the Raspberry Pi scripts, I set the HDMI options in the /boot/config.txt file.  Manjaro doesn't have that
 # so I set it below when the conky desktop file starts up.
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
-if[ -f "/usr/lib/sddm/sddm.conf.d/default.conf" ]
+if [ -f "/usr/lib/sddm/sddm.conf.d/default.conf" ]
 then
 ##################
 sudo --preserve-env bash -c 'cat > /etc/sddm.conf.d/autologin.conf' <<- EOF
@@ -95,7 +95,7 @@ EOF
 fi
 
 # This will prevent the SBC from turning on the lock-screen / powersave function which can be problematic when using VNC
-if[ -f $USERHOME/.config/lxqt/lxqt-powermanagement.conf ]
+if [ -f $USERHOME/.config/lxqt/lxqt-powermanagement.conf ]
 then
 	sed -i "s/enableBatteryWatcher=true/enableBatteryWatcher=false/g" $USERHOME/.config/lxqt/lxqt-powermanagement.conf
 	sed -i "s/enableExtMonLidClosedActions=true/enableExtMonLidClosedActions=false/g" $USERHOME/.config/lxqt/lxqt-powermanagement.conf
