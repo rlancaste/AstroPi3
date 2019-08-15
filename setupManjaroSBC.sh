@@ -432,7 +432,8 @@ EOF
 
 # This installs INDI and KStars Dependencies that will be needed
 display "Installing INDI and KStars Dependencies"
-sudo pacman -S --noconfirm --needed breeze-icons arduino binutils libraw libindi wxgtk2 gpsd
+sudo pacman -S --noconfirm --needed breeze-icons arduino binutils libraw libindi wxgtk2 gpsd libdc1394
+
 
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
 
