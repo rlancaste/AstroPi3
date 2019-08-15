@@ -97,7 +97,6 @@ then
 		sed -i "s/Session=/Session=default/g" /etc/sddm.conf
 	fi
 fi
-fi
 
 # This will prevent the SBC from turning on the lock-screen / powersave function which can be problematic when using VNC
 if [ -f $USERHOME/.config/lxqt/lxqt-powermanagement.conf ]
