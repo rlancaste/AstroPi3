@@ -113,6 +113,10 @@ sudo pacman -S --noconfirm --needed openssh
 sudo systemctl enable sshd
 sudo systemctl start sshd
 
+# This adds avahi to local hostnaming is enabled.
+sudo pacman -S --noconfirm --needed nss-mdns 
+sudo systemctl enable avahi-daemon
+
 # This will install and configure network manager and remove dhcpcd5 if installed because it has some issues
 # Also the commands below that setup networking depend upon network manager.
 display "Installing network manager"
