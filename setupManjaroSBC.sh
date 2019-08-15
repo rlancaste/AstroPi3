@@ -180,21 +180,23 @@ EOF
 		display "Leaving your IP address to be assigned only by dhcp.  Note that you will always need either a router or wifi network to connect to your pi."
 	fi
 else
-	display "This computer already has been assigned a static ip address.  If you need to edit that, please edit the file /etc/network/interfaces"
+	display "This computer already has been assigned a static ip address.  If you need to edit that, please go to Network Manager"
 fi
 
 
 # This will promt you to install (1) x11vnc, (2) x2go, or (3) no remote access tool
 display "Setting up a VNC Server"
-read -p "Do you want to install (1) x11vnc, (2) x2go, or (3) no remote access tool? input (1/2/3)? " remoteAccessTool
-if [ "$remoteAccessTool" == "1" ]
+if [ -n "$(pacman -Qi | awk '/^Name/' | grep x11vnc)" ] || [ -n "$(pacman -Qi | awk '/^Name/' | grep x2go)" ]
 then
-	# Note: RealVNC does not work on non-Raspberry Pi ARM systems as far as I can tell.
-	# This will install x11vnc instead
-	sudo pacman -S --noconfirm --needed x11vnc
-	# This will get the password for VNC
-	x11vnc -storepasswd /etc/x11vnc.pass
-	# This will store the service file.
+	read -p "Do you want to install (1) x11vnc, (2) x2go, or (3) no remote access tool? input (1/2/3)? " remoteAccessTool
+	if [ "$remoteAccessTool" == "1" ]
+	then
+		# Note: RealVNC does not work on non-Raspberry Pi ARM systems as far as I can tell.
+		# This will install x11vnc instead
+		sudo pacman -S --noconfirm --needed x11vnc
+		# This will get the password for VNC
+		x11vnc -storepasswd /etc/x11vnc.pass
+		# This will store the service file.
 ######################
 sudo --preserve-env bash -c 'cat > /lib/systemd/system/x11vnc.service' << EOF
 [Unit]
@@ -207,23 +209,24 @@ ExecStart=/usr/bin/x11vnc -auth guess -forever -loop -noxdamage -repeat -rfbauth
 WantedBy=multi-user.target
 EOF
 ######################
-	# This enables the Service so it runs at startup
-	sudo systemctl enable x11vnc.service
-	sudo systemctl daemon-reload
-	sudo systemctl start x11vnc.service
-elif [ "$remoteAccessTool" == "2" ]
-then
-	# This will install x2go for Manjaro
-	sudo pacman -S --noconfirm --needed x2goserver
-	sudo systemctl enable x2goserver.service
-	sudo systemctl daemon-reload
-	sudo systemctl start x2goserver.service
+		# This enables the Service so it runs at startup
+		sudo systemctl enable x11vnc.service
+		sudo systemctl daemon-reload
+		sudo systemctl start x11vnc.service
+	elif [ "$remoteAccessTool" == "2" ]
+	then
+		# This will install x2go for Manjaro
+		sudo pacman -S --noconfirm --needed x2goserver
+		sudo systemctl enable x2goserver.service
+		sudo systemctl daemon-reload
+		sudo systemctl start x2goserver.service
+	else
+		echo "No remote access tool will be installed!"
+	fi
 else
-    display "No remote access tool will be installed!"
-fi
+	echo "VNC is already installed"
 
 display "Making Utilities Folder with script shortcuts for the Desktop"
-
 # This will make a folder on the desktop with the right permissions for the launchers
 if [ ! -d "$USERHOME/Desktop/utilities" ]
 then
