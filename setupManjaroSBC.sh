@@ -83,10 +83,10 @@ fi
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
-if[ -e /usr/lib/sddm/sddm.conf.d/default.conf ]
+if[ -e "/usr/lib/sddm/sddm.conf.d/default.conf" ]
 then
 ##################
-sudo cat > /etc/sddm.conf.d/autologin.conf <<- EOF
+sudo --preserve-env bash -c 'cat > /etc/sddm.conf.d/autologin.conf' <<- EOF
 [Autologin]
 User=$SUDO_USER
 Session=default
