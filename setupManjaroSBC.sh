@@ -186,7 +186,7 @@ fi
 
 # This will promt you to install (1) x11vnc, (2) x2go, or (3) no remote access tool
 display "Setting up a VNC Server"
-if [ -n "$(pacman -Qi | awk '/^Name/' | grep x11vnc)" ] || [ -n "$(pacman -Qi | awk '/^Name/' | grep x2go)" ]
+if [ -z "$(pacman -Qi | awk '/^Name/' | grep x11vnc)" ] || [ -z "$(pacman -Qi | awk '/^Name/' | grep x2go)" ]
 then
 	read -p "Do you want to install (1) x11vnc, (2) x2go, or (3) no remote access tool? input (1/2/3)? " remoteAccessTool
 	if [ "$remoteAccessTool" == "1" ]
