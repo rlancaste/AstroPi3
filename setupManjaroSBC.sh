@@ -50,7 +50,7 @@ display "Updating installed packages"
 sudo pacman -Syu
 
 # Making sure yay is installed for the use of the AUR Packages
-sudo pacman -S --needed yay
+sudo pacman -S --noconfirm --needed yay
 
 #########################################################
 #############  Configuration for Ease of Use/Access
@@ -74,18 +74,18 @@ sudo pacman -S --needed yay
 
 # Installs Synaptic Package Manager for easy software install/removal
 #display "Installing Synaptic"
-#sudo pacman -S synaptic
+#sudo pacman -S --noconfirm --needed synaptic
 
 # This will enable SSH which is apparently disabled on some SBCs by default.
 #display "Enabling SSH"
-#sudo pacman -S openssh-server
+#sudo pacman -S --noconfirm --needed openssh-server
 #sudo systemctl enable ssh
 #sudo systemctl start ssh
 
 # This will install and configure network manager and remove dhcpcd5 if installed because it has some issues
 # Also the commands below that setup networking depend upon network manager.
 display "Installing network manager"
-sudo pacman -S networkmanager nm-connection-editor network-manager-applet
+sudo pacman -S --noconfirm --needed networkmanager nm-connection-editor network-manager-applet
 sudo systemctl enable NetworkManager.service
 
 display "Making sure dhcpcd5 is not installed"
@@ -163,7 +163,7 @@ if [ "$remoteAccessTool" == "1" ]
 then
 	# Note: RealVNC does not work on non-Raspberry Pi ARM systems as far as I can tell.
 	# This will install x11vnc instead
-	sudo pacman -S x11vnc
+	sudo pacman -S --noconfirm --needed x11vnc
 	# This will get the password for VNC
 	x11vnc -storepasswd /etc/x11vnc.pass
 	# This will store the service file.
@@ -186,7 +186,7 @@ EOF
 elif [ "$remoteAccessTool" == "2" ]
 then
 	# This will install x2go for Manjaro
-	sudo pacman -S x2goserver
+	sudo pacman -S --noconfirm --needed x2goserver
 	sudo systemctl enable x2goserver.service
 	sudo systemctl daemon-reload
 	sudo systemctl start x2goserver.service
@@ -380,7 +380,7 @@ sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.deskt
 display "Setting up File Sharing"
 
 # Installs samba so that you can share files to your other computer(s).
-sudo pacman -S samba
+sudo pacman -S --noconfirm --needed samba
 
 # Adds yourself to the user group of who can use samba, but checks first if you are already in the list
 if [ -z "$(sudo pdbedit -L | grep $SUDO_USER)" ]
@@ -405,7 +405,7 @@ fi
 # if you are using a DSLR on a system with 1GB of RAM, it definitely is needed.  If you don't want this, comment it out.
 display "Installing zRAM for increased RAM capacity"
 yay -S zramswap
-sudo pacman -S systemd-swap
+sudo pacman -S --noconfirm --needed systemd-swap
 sudo systemctl enable systemd-swap
 sudo systemctl start systemd-swap
 
@@ -429,7 +429,7 @@ EOF
 
 # This installs INDI and KStars Dependencies that will be needed
 display "Installing INDI and KStars Dependencies"
-sudo pacman -S --needed breeze-icons arduino binutils patch cmake make libraw libindi wxgtk2 gpsd gcc
+sudo pacman -S --noconfirm --needed breeze-icons arduino binutils patch cmake make libraw libindi wxgtk2 gpsd gcc
 
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
 
@@ -447,7 +447,7 @@ yay -S xplanet
 
 #This builds and installs KStars
 display "Installing KStars"
-sudo pacman -S --needed kstars
+sudo pacman -S --noconfirm --needed kstars
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
 display "Building and Installing GSC"
@@ -497,11 +497,11 @@ sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/phd2.desktop
 display "Installing INDI Web Manager App, indiweb, and python3"
 
 # This will install pip3 and python along with their headers for the next steps
-sudo pacman -S python3-pip
-sudo pacman -S python3-dev
+sudo pacman -S --noconfirm --needed python3-pip
+sudo pacman -S --noconfirm --needed python3-dev
 
 # Setuptools may be needed in order to install indiweb on some systems
-sudo pacman -S python3-setuptools
+sudo pacman -S --noconfirm --needed python3-setuptools
 sudo -H -u $SUDO_USER pip3 install setuptools --upgrade
 
 # Wheel might not be installed on some systems
@@ -548,7 +548,7 @@ sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
 
 # This will set you up with conky so that you can see how your system is doing at a moment's glance
 # A big thank you to novaspirit who set up this theme https://github.com/novaspirit/rpi_conky
-sudo pacman -S conky
+sudo pacman -S --noconfirm --needed conky
 cp "$DIR/conkyrc" $USERHOME/.conkyrc
 sudo chown $SUDO_USER:$SUDO_USER $USERHOME/.conkyrc
 
