@@ -306,6 +306,42 @@ else
 	echo "$(hostname -s)_FieldWifi is already setup."
 fi
 
+# This section will set the new field wifi networks to autoconnect if the other networks don't connect.
+display "Configuring Field wifi to autoconnect after wifi fails"
+if [ -f /etc/NetworkManager/conf.d/wifi-enable-autohotspot.conf ]
+then
+	echo "Field Wifi autoconnection is already configured, if you want to change it, edit network manager and /etc/NetworkManager/conf.d/wifi-enable-autohotspot.conf"
+else
+	read -p "Do you wish to configure the field wifi hotspot to automatically come up after a certain time if there is no wifi network (y/n)? " autoWifi
+
+	if [ "$autoWifi" == "y" ]
+	then
+		read -p "What do you want the timeout to be?  Mine is 30 seconds: " wifiTimeout
+		if ! [ "$wifiTimeout" -eq "$wifiTimeout" ] 2> /dev/null
+		then
+   			echo "The timeout must be an integer number of seconds.  Making it 30 instead.  You can edit /etc/NetworkManager/conf.d/wifi-enable-autohotspot.conf to change it."
+   			wifiTimeout=30
+		fi
+		# This sets both wifi networks to autoconnect with a priority to connect on 5G if available
+		nmcli connection modify $(hostname -s)_FieldWifi connection.autoconnect yes
+		nmcli connection modify $(hostname -s)_FieldWifi_5G connection.autoconnect yes
+		nmcli connection modify $(hostname -s)_FieldWifi connection.autoconnect-priority -10
+		nmcli connection modify $(hostname -s)_FieldWifi_5G connection.autoconnect-priority -5
+	
+		# This configuration file will ensure that the wifi networks come up successfully in a reasonable time if the regular wifi fails.
+##################
+sudo --preserve-env bash -c ' cat > /etc/NetworkManager/conf.d/wifi-enable-autohotspot.conf' <<- EOF
+[connection-wifi]
+match-device=interface-name:wlan0
+ipv4.dhcp-timeout=$wifiTimeout
+ipv4.may-fail=no
+connection.auth-retries=2
+connection.autoconnect-retries=2
+EOF
+##################
+	fi
+fi
+
 # This will make a link to start the hotspot wifi on the Desktop
 ##################
 sudo --preserve-env bash -c 'cat > $USERHOME/Desktop/utilities/StartFieldWifi.desktop' <<- EOF
