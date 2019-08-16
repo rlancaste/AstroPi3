@@ -66,13 +66,28 @@ sudo pacman -S --noconfirm --needed patch cmake make gcc pkg-config fakeroot
 # This will set up the SBC so that double clicking on desktop icons brings up the program right away
 # The default behavior is to ask what you want to do with the executable file.
 display "Setting desktop icons to open programs when you click them."
-if [ -n "$(grep 'quick_exec=0' $USERHOME/.config/pcmanfm-qt/lxqt/settings.conf)" ]
+if [ -f $USERHOME/.config/pcmanfm-qt/lxqt/settings.conf ]
 then
 	sed -i "s/QuickExec=false/QuickExec=true/g" $USERHOME/.config/pcmanfm-qt/lxqt/settings.conf
 fi
-if [ -n "$(grep 'quick_exec=0' $USERHOME/.config/pcmanfm-qt/default/settings.conf)" ]
+if [ -f $USERHOME/.config/pcmanfm-qt/default/settings.conf ]
 then
 	sed -i "s/QuickExec=false/QuickExec=true/g" $USERHOME/.config/pcmanfm-qt/default/settings.conf
+fi
+
+# This should prevent a well documented error
+# If a camera is mounted in the file system, it will not connect in INDI
+display "Disabling automounting of Volumes so that cameras do not mount themselves."
+if [ -f $USERHOME/.config/pcmanfm-qt/lxqt/settings.conf ]
+then
+	sed -i "s/MountOnStartup=true/MountOnStartup=false/g" $USERHOME/.config/pcmanfm-qt/lxqt/settings.conf
+	sed -i "s/MountRemovable=true/MountRemovable=false/g" $USERHOME/.config/pcmanfm-qt/lxqt/settings.conf
+	
+fi
+if [ -f $USERHOME/.config/pcmanfm-qt/default/settings.conf ]
+then
+	sed -i "s/MountOnStartup=true/MountOnStartup=false/g" $USERHOME/.config/pcmanfm-qt/default/settings.conf
+	sed -i "s/MountRemovable=true/MountRemovable=false/g" $USERHOME/.config/pcmanfm-qt/default/settings.conf
 fi
 
 # In the Raspberry Pi scripts, I set the HDMI options in the /boot/config.txt file.  Manjaro doesn't have that
