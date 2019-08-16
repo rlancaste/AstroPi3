@@ -458,7 +458,7 @@ sudo make install
 
 display "Building and Installing the INDI 3rd Party Libraries"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
-sudo -H -u $SUDO_USER cd $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
+cd $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi/3rdparty
 sudo -H -u $SUDO_USER make
 sudo make install
