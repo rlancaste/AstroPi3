@@ -62,6 +62,7 @@ sudo pacman -S --noconfirm --needed patch cmake make gcc pkg-config fakeroot
 #########################################################
 #############  Configuration for Ease of Use/Access
 
+# So far this doesn't seem to work on Manjaro with PCManFM , but if you have libfm, you can re-enable this.
 # This will set up the SBC so that double clicking on desktop icons brings up the program right away
 # The default behavior is to ask what you want to do with the executable file.
 #display "Setting desktop icons to open programs when you click them."
@@ -79,7 +80,7 @@ sudo pacman -S --noconfirm --needed patch cmake make gcc pkg-config fakeroot
 #fi
 
 # In the Raspberry Pi scripts, I set the HDMI options in the /boot/config.txt file.  Manjaro doesn't have that
-# so I set it below when the conky desktop file starts up.
+# You should try to come up with some way to set the resolution when headless
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
@@ -617,7 +618,7 @@ mkdir -p $USERHOME/.config/autostart
 sudo --preserve-env bash -c 'cat > $USERHOME/.config/autostart/startConky.desktop' <<- EOF
 [Desktop Entry]
 Name=StartConky
-Exec=sh -c "xrandr --fb 1600x800; conky -db -p 20"
+Exec=conky -db -p 20
 Terminal=false
 Type=Application
 EOF
