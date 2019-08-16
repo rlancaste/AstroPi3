@@ -423,7 +423,6 @@ display "Setting up File Sharing"
 
 # Installs samba so that you can share files to your other computer(s).
 sudo pacman -S --noconfirm --needed samba
-#sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild system-config-samba
 
 if [ ! -f /etc/samba/smb.conf ]
 then
@@ -469,10 +468,31 @@ fi
 # This is not needed on all systems, since different cameras download different size images, and different SBC's have different RAM capacities but 
 # if you are using a DSLR on a system with 1GB of RAM, it definitely is needed.  If you don't want this, comment it out.
 display "Installing zRAM for increased RAM capacity"
-sudo -H -u $SUDO_USER yay -S --noconfirm  --needed --norebuild zramswap
-sudo pacman -S --noconfirm --needed systemd-swap
-sudo systemctl enable systemd-swap
-sudo systemctl start systemd-swap
+if [ ! -f /usr/bin/zram.sh ]
+then
+	sudo pacman -S --noconfirm --needed systemd-swap
+	sudo wget -O /usr/bin/zram.sh https://raw.githubusercontent.com/novaspirit/rpi_zram/master/zram.sh
+	sudo chmod +x /usr/bin/zram.sh
+##################
+sudo --preserve-env bash -c 'cat > /lib/systemd/system/zram.service' << EOF
+[Unit]
+Description=Start zram at startup.
+After=multi-user.target
+[Service]
+Type=simple
+ExecStart=/usr/bin/zram.sh
+[Install]
+WantedBy=multi-user.target
+EOF
+##################
+	sudo systemctl enable systemd-swap
+	sudo systemctl start systemd-swap
+	sudo systemctl enable zram
+	sudo systemctl daemon-reload
+	sudo systemctl start zram
+else
+	echo "zRAM already set up"
+fi
 
 # This should fix an issue where you might not be able to use a serial mount connection because you are not in the "dialout" group
 display "Enabling Serial Communication"
