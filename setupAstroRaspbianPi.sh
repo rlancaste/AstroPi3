@@ -77,7 +77,7 @@ fi
 # This should prevent a well documented error
 # If a camera is mounted in the file system, it will not connect in INDI
 display "Disabling automounting of Volumes so that cameras do not mount themselves."
-if [ -z $USERHOME/.config/pcmanfm/LXDE-pi/pcmanfm.conf ]
+if [ ! -f $USERHOME/.config/pcmanfm/LXDE-pi/pcmanfm.conf ]
 then
 
 ##################
