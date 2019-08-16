@@ -61,6 +61,14 @@ sudo apt -y dist-upgrade
 # This will set up the Pi so that double clicking on desktop icons brings up the program right away
 # The default behavior is to ask what you want to do with the executable file.
 display "Setting desktop icons to open programs when you click them."
+if [ -f $USERHOME/.config/pcmanfm-qt/lxqt/settings.conf ]
+then
+	sed -i "s/QuickExec=false/QuickExec=true/g" $USERHOME/.config/pcmanfm-qt/lxqt/settings.conf
+fi
+if [ -f $USERHOME/.config/pcmanfm-qt/default/settings.conf ]
+then
+	sed -i "s/QuickExec=false/QuickExec=true/g" $USERHOME/.config/pcmanfm-qt/default/settings.conf
+fi
 if [ -f $USERHOME/.config/libfm/libfm.conf ]
 then
 	if [ -z "$(grep 'quick_exec' $USERHOME/.config/libfm/libfm.conf)" ]

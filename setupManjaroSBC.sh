@@ -73,6 +73,24 @@ if [ -f $USERHOME/.config/pcmanfm-qt/default/settings.conf ]
 then
 	sed -i "s/QuickExec=false/QuickExec=true/g" $USERHOME/.config/pcmanfm-qt/default/settings.conf
 fi
+if [ -f $USERHOME/.config/libfm/libfm.conf ]
+then
+	if [ -z "$(grep 'quick_exec' $USERHOME/.config/libfm/libfm.conf)" ]
+	then
+		sed -i "/\[config\]/ a quick_exec=1" $USERHOME/.config/libfm/libfm.conf
+	else
+		sed -i "s/quick_exec=0/quick_exec=1/g" $USERHOME/.config/libfm/libfm.conf
+	fi
+fi
+if [ -f /etc/xdg/libfm/libfm.conf ]
+then
+	if [ -z "$(grep 'quick_exec' /etc/xdg/libfm/libfm.conf)" ]
+	then
+		sed -i "/\[config\]/ a quick_exec=1" /etc/xdg/libfm/libfm.conf
+	else
+		sed -i "s/quick_exec=0/quick_exec=1/g" /etc/xdg/libfm/libfm.conf
+	fi
+fi
 
 # This should prevent a well documented error
 # If a camera is mounted in the file system, it will not connect in INDI
