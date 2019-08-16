@@ -426,6 +426,7 @@ sudo pacman -S --noconfirm --needed samba
 #sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild system-config-samba
 
 if [ ! -f /etc/samba/smb.conf ]
+then
 ##################
 sudo --preserve-env bash -c 'cat > /etc/samba/smb.conf' <<- EOF
 [global]
@@ -443,6 +444,7 @@ sudo --preserve-env bash -c 'cat > /etc/samba/smb.conf' <<- EOF
    valid users = $SUDO_USER
 EOF
 ##################
+fi
 
 # Adds yourself to the user group of who can use samba, but checks first if you are already in the list
 if [ -z "$(sudo pdbedit -L | grep $SUDO_USER)" ]
