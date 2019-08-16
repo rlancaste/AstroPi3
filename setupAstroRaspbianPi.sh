@@ -74,6 +74,25 @@ then
 	sed -i "/\[config\]/ a quick_exec=1" /etc/xdg/libfm/libfm.conf
 fi
 
+# This should prevent a well documented error
+# If a camera is mounted in the file system, it will not connect in INDI
+display "Disabling automounting of Volumes so that cameras do not mount themselves."
+if [ -z $USERHOME/.config/pcmanfm/LXDE-pi/pcmanfm.conf ]
+then
+
+##################
+sudo cat > $USERHOME/.config/pcmanfm/LXDE-pi/pcmanfm.conf <<- EOF
+[volume]
+mount_on_startup=0
+mount_removable=0
+EOF
+##################
+
+else
+	sed -i "s/mount_on_startup=1/mount_on_startup=0/g" $USERHOME/.config/pcmanfm/LXDE-pi/pcmanfm.conf
+	sed -i "s/mount_removable=1/mount_removable=0/g" $USERHOME/.config/pcmanfm/LXDE-pi/pcmanfm.conf
+fi
+
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
 if [ -n "$(grep '#autologin-user' '/etc/lightdm/lightdm.conf')" ]

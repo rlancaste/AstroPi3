@@ -62,7 +62,6 @@ sudo pacman -S --noconfirm --needed patch cmake make gcc pkg-config fakeroot
 #########################################################
 #############  Configuration for Ease of Use/Access
 
-# So far this doesn't seem to work on Manjaro with PCManFM , but if you have libfm, you can re-enable this.
 # This will set up the SBC so that double clicking on desktop icons brings up the program right away
 # The default behavior is to ask what you want to do with the executable file.
 display "Setting desktop icons to open programs when you click them."
