@@ -48,13 +48,13 @@ PS1='AstroPi3-SetupManjaroSBC~$ '
 
 # Updates the computer to the latest packages.
 display "Updating installed packages"
-sudo pacman -Syu
+sudo pacman -Syu --noconfirm
 
 # Making sure yay is installed for the use of the AUR Packages
 sudo pacman -S --noconfirm --needed yay
 
 # Updates the AUR Packages and their Dependencies
-sudo -H -u $SUDO_USER yay -Syu
+sudo -H -u $SUDO_USER yay -Syu --noconfirm
 
 # Installs some packages yay will need
 sudo pacman -S --noconfirm --needed patch cmake make gcc pkg-config fakeroot
