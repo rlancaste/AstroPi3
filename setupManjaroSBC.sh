@@ -115,6 +115,7 @@ sudo systemctl enable sshd
 sudo systemctl start sshd
 
 # This adds avahi to local hostnaming is enabled.
+display "Enabling Avahi for local hostnames"
 sudo pacman -S --noconfirm --needed nss-mdns 
 sudo systemctl enable avahi-daemon
 
