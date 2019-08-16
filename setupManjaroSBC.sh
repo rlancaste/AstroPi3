@@ -424,13 +424,32 @@ display "Setting up File Sharing"
 # Installs samba so that you can share files to your other computer(s).
 sudo pacman -S --noconfirm --needed samba
 #sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild system-config-samba
-sudo touch /etc/libuser.conf
+
+if [ ! -f /etc/samba/smb.conf ]
+##################
+sudo --preserve-env bash -c 'cat > /etc/samba/smb.conf' <<- EOF
+[global]
+   workgroup = ASTROGROUP
+   server string = Samba Server
+   server role = standalone server
+   log file = /var/log/samba/log.%m
+   max log size = 50
+   dns proxy = no
+[homes]
+   comment = Home Directories
+   browseable = no
+   read only = no
+   writable = yes
+   valid users = $SUDO_USER
+EOF
+##################
 
 # Adds yourself to the user group of who can use samba, but checks first if you are already in the list
 if [ -z "$(sudo pdbedit -L | grep $SUDO_USER)" ]
 then
+	# creates a samba password for you
 	sudo smbpasswd -a $SUDO_USER
-	sudo adduser $SUDO_USER sambashare
+	# Enables the Samba services
 	sudo systemctl enable smb nmb
 fi
 
