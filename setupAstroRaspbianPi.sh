@@ -61,17 +61,23 @@ sudo apt -y dist-upgrade
 # This will set up the Pi so that double clicking on desktop icons brings up the program right away
 # The default behavior is to ask what you want to do with the executable file.
 display "Setting desktop icons to open programs when you click them."
-if [ -n "$(grep 'quick_exec=0' $USERHOME/.config/libfm/libfm.conf)" ]
+if [ ! -f $USERHOME/.config/libfm/libfm.conf ]
 then
-	sed -i "s/quick_exec=0/quick_exec=1/g" $USERHOME/.config/libfm/libfm.conf
+	if [ -z "$(grep 'quick_exec' $USERHOME/.config/libfm/libfm.conf)" ]
+	then
+		sed -i "/\[config\]/ a quick_exec=1" $USERHOME/.config/libfm/libfm.conf
+	else
+		sed -i "s/quick_exec=0/quick_exec=1/g" $USERHOME/.config/libfm/libfm.conf
+	fi
 fi
-if [ -n "$(grep 'quick_exec=0' /etc/xdg/libfm/libfm.conf)" ]
+if [ ! -f /etc/xdg/libfm/libfm.conf ]
 then
-	sed -i "s/quick_exec=0/quick_exec=1/g" /etc/xdg/libfm/libfm.conf
-fi
-if [ -z "$(grep 'quick_exec' /etc/xdg/libfm/libfm.conf)" ]
-then
-	sed -i "/\[config\]/ a quick_exec=1" /etc/xdg/libfm/libfm.conf
+	if [ -z "$(grep 'quick_exec' /etc/xdg/libfm/libfm.conf)" ]
+	then
+		sed -i "/\[config\]/ a quick_exec=1" /etc/xdg/libfm/libfm.conf
+	else
+		sed -i "s/quick_exec=0/quick_exec=1/g" /etc/xdg/libfm/libfm.conf
+	fi
 fi
 
 # This should prevent a well documented error
