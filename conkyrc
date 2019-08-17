@@ -34,14 +34,15 @@ template0 ${if_up \1}IP ${addr \1} ${alignr}Gateway ${gw_iface}\nEssid ${wireles
 template1 ${if_up \1}IP ${addr \1}\nUp [${totalup \1}] ${alignr}${upspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${upspeed \1} \nDn [${totaldown \1}]${alignr}${downspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${downspeed \1} \n${else}Ethernet (\1)${alignr}not connected\n${endif}
 
 TEXT
-${font Arial:size=20}${color Tan1}${exec hostname}${color Ivory} LINUX
+${font Arial:size=20}${color Tan1}${execi 999999 hostname}${color Ivory} LINUX
 
 ${voffset -90}
 ${color DimGray}
 ${font}
 ${font Arial:bold:size=10}${color Tan1}SYSTEM ${color DarkSlateGray} ${hr 2}
-$font${color DimGray}$sysname $kernel $alignr $machine
-Architecture $alignr${exec dpkg --print-architecture}
+$font${color DimGray}Distro $alignr ${execi 999999 lsb_release -ds}
+$sysname $kernel $alignr $machine
+Architecture $alignr${execi 999999 dpkg --print-architecture}
 Frequency $alignr${freq_g cpu0}Ghz
 Uptime $alignr${uptime}
 File System $alignr${fs_type}
