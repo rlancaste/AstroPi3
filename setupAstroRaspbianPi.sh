@@ -496,6 +496,10 @@ then
    sed -i "/^exit 0/i /usr/bin/zram.sh &" /etc/rc.local
 fi
 
+# This should fix an issue where modemmanager could interfere with serial connections
+display "Removing Modemmanger, which can interfere with serial connections."
+sudo apt remove modemmanager
+
 # This should fix an issue where you might not be able to use a serial mount connection because you are not in the "dialout" group
 display "Enabling Serial Communication"
 sudo usermod -a -G dialout $SUDO_USER
