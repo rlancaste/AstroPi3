@@ -88,25 +88,6 @@ then
 	fi
 fi
 
-# This should prevent a well documented error
-# If a camera is mounted in the file system, it will not connect in INDI
-display "Disabling automounting of Volumes so that cameras do not mount themselves."
-if [ ! -f $USERHOME/.config/pcmanfm/LXDE-pi/pcmanfm.conf ]
-then
-
-##################
-sudo cat > $USERHOME/.config/pcmanfm/LXDE-pi/pcmanfm.conf <<- EOF
-[volume]
-mount_on_startup=0
-mount_removable=0
-EOF
-##################
-
-else
-	sed -i "s/mount_on_startup=1/mount_on_startup=0/g" $USERHOME/.config/pcmanfm/LXDE-pi/pcmanfm.conf
-	sed -i "s/mount_removable=1/mount_removable=0/g" $USERHOME/.config/pcmanfm/LXDE-pi/pcmanfm.conf
-fi
-
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
 if [ -n "$(grep '#autologin-user' '/etc/lightdm/lightdm.conf')" ]
@@ -532,6 +513,16 @@ sudo apt -y install libftdi-dev libgps-dev libraw-dev libdc1394-22-dev libgphoto
 sudo apt -y install ffmpeg libavcodec-dev libavdevice-dev
 
 #sudo apt install cdbs fxload libkrb5-dev dkms Are these needed too???
+
+# This should prevent a well documented error
+# If a camera is mounted in the file system, it will not connect in INDI
+display "Disabling automounting of Volumes so that cameras do not mount themselves."
+echo "Deleting key files if they exist."
+sudo rm /usr/share/dbus-1/services/org.gtk.vfs.GPhoto2VolumeMonitor.service
+sudo rm /usr/share/dbus-1/services/org.gtk.Private.GPhoto2VolumeMonitor.service
+sudo rm /usr/share/gvfs/mounts/gphoto2.mount
+sudo rm /usr/share/gvfs/remote-volume-monitors/gphoto2.monitor
+sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
 
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
 

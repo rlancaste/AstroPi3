@@ -92,21 +92,6 @@ then
 	fi
 fi
 
-# This should prevent a well documented error
-# If a camera is mounted in the file system, it will not connect in INDI
-display "Disabling automounting of Volumes so that cameras do not mount themselves."
-if [ -f $USERHOME/.config/pcmanfm-qt/lxqt/settings.conf ]
-then
-	sed -i "s/MountOnStartup=true/MountOnStartup=false/g" $USERHOME/.config/pcmanfm-qt/lxqt/settings.conf
-	sed -i "s/MountRemovable=true/MountRemovable=false/g" $USERHOME/.config/pcmanfm-qt/lxqt/settings.conf
-	
-fi
-if [ -f $USERHOME/.config/pcmanfm-qt/default/settings.conf ]
-then
-	sed -i "s/MountOnStartup=true/MountOnStartup=false/g" $USERHOME/.config/pcmanfm-qt/default/settings.conf
-	sed -i "s/MountRemovable=true/MountRemovable=false/g" $USERHOME/.config/pcmanfm-qt/default/settings.conf
-fi
-
 # In the Raspberry Pi scripts, I set the HDMI options in the /boot/config.txt file.  Manjaro doesn't have that
 # You should try to come up with some way to set the resolution when headless
 
@@ -591,6 +576,15 @@ EOF
 display "Installing INDI and KStars Dependencies"
 sudo pacman -S --noconfirm --needed breeze-icons arduino binutils libraw libindi wxgtk2 gpsd libdc1394
 
+# This should prevent a well documented error
+# If a camera is mounted in the file system, it will not connect in INDI
+display "Disabling automounting of Volumes so that cameras do not mount themselves."
+echo "Deleting key files if they exist."
+sudo rm /usr/share/dbus-1/services/org.gtk.vfs.GPhoto2VolumeMonitor.service
+sudo rm /usr/share/dbus-1/services/org.gtk.Private.GPhoto2VolumeMonitor.service
+sudo rm /usr/share/gvfs/mounts/gphoto2.mount
+sudo rm /usr/share/gvfs/remote-volume-monitors/gphoto2.monitor
+sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
 
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
 
