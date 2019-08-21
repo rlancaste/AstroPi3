@@ -574,7 +574,50 @@ EOF
 
 # This installs INDI and KStars Dependencies that will be needed
 display "Installing INDI and KStars Dependencies"
-sudo pacman -S --noconfirm --needed breeze-icons arduino binutils libraw libindi wxgtk2 gpsd libdc1394
+sudo pacman -S --noconfirm --needed breeze-icons arduino binutils libraw wxgtk2 gpsd libdc1394
+
+# Note that INDI is available in Manjaro Packages and INDI 3rd Party is available in AUR.
+# But there are issues in installing on ARM 64 bit, so for now this is disabled.
+#sudo pacman -S --noconfirm --needed  libindi
+#display "Building and Installing INDI 3rd Party"
+#sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild libindi_3rdparty
+
+sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
+
+# This builds and installs INDI.  Note that this should not be the standard way on Manjaro, the commands above should be used
+# But this will build and install the Latest INDI.
+display "Building and Installing INDI"
+
+if [ ! -d $USERHOME/AstroRoot/indi ]
+then
+	cd $USERHOME/AstroRoot/
+	sudo -H -u $SUDO_USER git clone https://github.com/indilib/indi.git 
+	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build
+else
+	cd $USERHOME/AstroRoot/indi
+	sudo -H -u $SUDO_USER git pull
+fi
+
+display "Building and Installing core LibINDI"
+sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/libindi
+cd $USERHOME/AstroRoot/indi-build/libindi
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/libindi
+sudo -H -u $SUDO_USER make
+sudo make install
+
+display "Building and Installing the INDI 3rd Party Libraries"
+sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
+cd $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi/3rdparty
+sudo -H -u $SUDO_USER make
+sudo make install
+
+display "Building and Installing the INDI 3rd Party Drivers"
+sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
+cd $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/3rdparty
+sudo -H -u $SUDO_USER make
+sudo make install
 
 # This should prevent a well documented error
 # If a camera is mounted in the file system, it will not connect in INDI
@@ -585,12 +628,6 @@ sudo rm /usr/share/dbus-1/services/org.gtk.Private.GPhoto2VolumeMonitor.service
 sudo rm /usr/share/gvfs/mounts/gphoto2.mount
 sudo rm /usr/share/gvfs/remote-volume-monitors/gphoto2.monitor
 sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
-
-sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
-
-# This builds and installs INDI
-display "Building and Installing INDI 3rd Party"
-sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild libindi_3rdparty
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
 display "Installing Astrometry.net"
