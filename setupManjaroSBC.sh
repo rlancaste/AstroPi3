@@ -642,7 +642,6 @@ display "Installing KStars"
 sudo pacman -S --noconfirm --needed kstars
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
-
 display "Building and Installing GSC"
 if [ ! -d /usr/share/GSC ]
 then

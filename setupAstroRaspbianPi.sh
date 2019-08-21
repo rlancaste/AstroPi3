@@ -592,29 +592,34 @@ sudo make install
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
 display "Building and Installing GSC"
-sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/gsc
-cd $USERHOME/AstroRoot/gsc
-if [ ! -f $USERHOME/AstroRoot/gsc/bincats_GSC_1.2.tar.gz ]
+if [ ! -d /usr/share/GSC ]
 then
-	sudo -H -u $SUDO_USER wget -O bincats_GSC_1.2.tar.gz http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2
-fi
-sudo -H -u $SUDO_USER tar -xvzf bincats_GSC_1.2.tar.gz
-cd $USERHOME/AstroRoot/gsc/src
-sudo -H -u $SUDO_USER make
-sudo -H -u $SUDO_USER mv gsc.exe gsc
-sudo cp gsc /usr/bin/
-cp -r $USERHOME/AstroRoot/gsc /usr/share/
-sudo mv /usr/share/gsc /usr/share/GSC
-sudo rm -r /usr/share/GSC/bin-dos
-sudo rm -r /usr/share/GSC/src
-sudo rm /usr/share/GSC/bincats_GSC_1.2.tar.gz
-sudo rm /usr/share/GSC/bin/gsc.exe
-sudo rm /usr/share/GSC/bin/decode.exe
-
-if [ -z "$(grep 'export GSCDAT' /etc/profile)" ]
-then
-	cp /etc/profile /etc/profile.copy
-	echo "export GSCDAT=/usr/share/GSC" >> /etc/profile
+	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/gsc
+	cd $USERHOME/AstroRoot/gsc
+	if [ ! -f $USERHOME/AstroRoot/gsc/bincats_GSC_1.2.tar.gz ]
+	then
+		sudo -H -u $SUDO_USER wget -O bincats_GSC_1.2.tar.gz http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2
+	fi
+	sudo -H -u $SUDO_USER tar -xvzf bincats_GSC_1.2.tar.gz
+	cd $USERHOME/AstroRoot/gsc/src
+	sudo -H -u $SUDO_USER make
+	sudo -H -u $SUDO_USER mv gsc.exe gsc
+	sudo cp gsc /usr/bin/
+	cp -r $USERHOME/AstroRoot/gsc /usr/share/
+	sudo mv /usr/share/gsc /usr/share/GSC
+	sudo rm -r /usr/share/GSC/bin-dos
+	sudo rm -r /usr/share/GSC/src
+	sudo rm /usr/share/GSC/bincats_GSC_1.2.tar.gz
+	sudo rm /usr/share/GSC/bin/gsc.exe
+	sudo rm /usr/share/GSC/bin/decode.exe
+	
+	if [ -z "$(grep 'export GSCDAT' /etc/profile)" ]
+	then
+		cp /etc/profile /etc/profile.copy
+		echo "export GSCDAT=/usr/share/GSC" >> /etc/profile
+	fi
+else
+	echo "GSC is already installed"
 fi
 
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
