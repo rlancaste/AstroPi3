@@ -497,6 +497,27 @@ sudo apt-add-repository ppa:pch/phd2 -y
 sudo apt update
 sudo apt -y install phd2
 
+# Installs PHD2 Log viewer if you want it.  If not, comment out with a #.
+disdplay "Installing PHD2 Log Viewer"
+sudo apt install phdlogview
+
+# This will make a shortcut to PHD Log Viewer.  If you aren't installing it, be sure to remove this too.
+##################
+sudo --preserve-env bash -c 'cat > $USERHOME/Desktop/utilities/PHDLogViewer.desktop' <<- EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon[en_US]=phd2
+Name[en_US]=PHD Log Viewer
+Exec=/usr/bin/phdlogview
+Name=PHD Log Viewer
+Icon=phd2
+EOF
+##################
+sudo chmod +x $USERHOME/Desktop/utilities/PHDLogViewer.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/PHDLogViewer.desktop
+
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
 

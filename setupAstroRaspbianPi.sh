@@ -645,6 +645,62 @@ sudo -H -u $SUDO_USER cmake -DOPENSOURCE_ONLY=1 $USERHOME/AstroRoot/phd2
 sudo -H -u $SUDO_USER make
 sudo make install
 
+display "Installing Dependencies for wxFormBuilder and PHD Log Viewer"
+sudo apt -y install libwxgtk3.0-dev libwxgtk-media3.0-dev meson
+
+# This code will build and install wxFormBuilder to /usr/bin.  It is required for PHD Log Viewer.
+# If you don't want PHD Log Viewer, comment or remove all of this.
+if [ ! -d $USERHOME/AstroRoot/wxFormBuilder ]
+then
+	display "Building and Installing wxFormBuilder"
+	cd $USERHOME/AstroRoot
+	sudo -H -u $SUDO_USER git clone https://github.com/wxFormBuilder/wxFormBuilder.git
+	cd $USERHOME/AstroRoot/wxFormBuilder
+	
+	meson _build --prefix /usr
+	ninja -C _build install
+	cd /usr/lib
+	# Note that this next line should not really be required, but wxformbuilder cannot find its libraries without it sometimes.
+	ln -s /usr/lib/arm-linux-gnueabihf/wxformbuilder /usr/lib/wxformbuilder
+fi
+
+# This code will build and install PHD Log Viewer.  If you don't want it, comment it out.
+display "Building and Installing PHD Log Viewer"
+if [ ! -d $USERHOME/AstroRoot/phdlogview ]
+then
+	cd $USERHOME/AstroRoot/
+	sudo -H -u $SUDO_USER git clone https://github.com/agalasso/phdlogview.git
+	# Note that phdlogview.fbp needs to be updated to the latest version of wxFormBuilder.  This copy has been updated
+	# so that it won't cause an error in the build.  As soon as the repo gets updated to be compatible, this next line can be removed.
+	sudo -H -u $SUDO_USER cp -f $USERHOME/AstroPi3/phdlogview.fbp $USERHOME/AstroRoot/phdlogview/phdlogview.fbp
+	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/phdlogview/tmp
+else
+	cd $USERHOME/AstroRoot/phdlogview
+	sudo -H -u $SUDO_USER git pull
+fi
+
+cd $USERHOME/AstroRoot/phdlogview/tmp
+sudo -H -u $SUDO_USER cmake $USERHOME/AstroRoot/phdlogview
+sudo -H -u $SUDO_USER make
+cp $USERHOME/AstroRoot/phdlogview/tmp/phdlogview /usr/bin/
+
+# This will make a shortcut to PHD Log Viewer.  If you aren't installing it, be sure to remove this too.
+##################
+sudo cat > $USERHOME/Desktop/utilities/PHDLogViewer.desktop <<- EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon[en_US]=phd2
+Name[en_US]=PHD Log Viewer
+Exec=/usr/bin/phdlogview
+Name=PHD Log Viewer
+Icon=phd2
+EOF
+##################
+sudo chmod +x $USERHOME/Desktop/utilities/PHDLogViewer.desktop
+sudo chown $SUDO_USER $USERHOME/Desktop/utilities/PHDLogViewer.desktop
+
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
 
