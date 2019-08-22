@@ -607,7 +607,7 @@ sudo -H -u $SUDO_USER make
 sudo make install
 
 # This step should not be required.  For some reason, some libraries are installing in /usr/lib64, but then it looks for them in /usr/lib
-sudo cp /usr/lib64/* /usr/lib/
+sudo cp -r /usr/lib64/* /usr/lib/
 
 display "Building and Installing the INDI 3rd Party Libraries"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
