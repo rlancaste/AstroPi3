@@ -606,6 +606,9 @@ sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
 sudo -H -u $SUDO_USER make
 sudo make install
 
+# This step should not be required.  For some reason, some libraries are installing in /usr/lib64, but then it looks for them in /usr/lib
+sudo cp /usr/lib64/* /usr/lib/
+
 display "Building and Installing the INDI 3rd Party Libraries"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
 cd $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
@@ -640,7 +643,7 @@ sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild xplanet
 
 #This builds and installs KStars
 display "Installing KStars"
-sudo pacman -S --noconfirm --needed kstars
+sudo pacman -S --noconfirm --needed kstars --assume-installed libindi=1.8.0
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
 display "Building and Installing GSC"
