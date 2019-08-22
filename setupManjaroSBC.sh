@@ -635,6 +635,7 @@ sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
 display "Installing Astrometry.net"
+sudo pacman -S --noconfirm --needed wcslib
 sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild astrometry.net
 
 # Installs the optional xplanet package for simulating the solar system.  If you don't want it, comment this out with a #.
@@ -679,7 +680,7 @@ fi
 
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
 display "Installing PHD2"
-sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild open-phd-guiding-git
+sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild open-phd-guiding-git --assume-installed libindi=1.8.0
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
