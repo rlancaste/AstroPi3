@@ -579,6 +579,7 @@ sudo pacman -S --noconfirm --needed breeze-icons arduino binutils libraw wxgtk2 
 
 # Note that INDI is available in Manjaro Packages and INDI 3rd Party is available in AUR.
 # But there are issues in installing on ARM 64 bit, so for now this is disabled.
+# When it is ready to be re-enabled, be sure uncomment this and to delete the build code.
 #sudo pacman -S --noconfirm --needed  libindi
 #display "Building and Installing INDI 3rd Party"
 #sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild libindi_3rdparty
@@ -636,7 +637,7 @@ sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
 display "Installing Astrometry.net"
-sudo pacman -S --noconfirm --needed wcslib
+sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild wcslib62
 sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild astrometry.net
 
 # Installs the optional xplanet package for simulating the solar system.  If you don't want it, comment this out with a #.
