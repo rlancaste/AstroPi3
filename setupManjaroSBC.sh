@@ -607,6 +607,7 @@ sudo -H -u $SUDO_USER make
 sudo make install
 
 # This step should not be required.  For some reason, some libraries are installing in /usr/lib64, but then it looks for them in /usr/lib
+# This should be solved another way.
 sudo cp -r /usr/lib64/* /usr/lib/
 
 display "Building and Installing the INDI 3rd Party Libraries"
@@ -679,8 +680,27 @@ else
 fi
 
 # Installs PHD2 if you want it.  If not, comment each line out with a #.
-display "Installing PHD2"
-sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild open-phd-guiding-git --assume-installed libindi=1.8.0
+# display "Installing PHD2"
+#sudo -H -u $SUDO_USER yay -S --noconfirm --needed --norebuild open-phd-guiding-git
+
+# This builds and installs PHD2.  It is required for now because libindi is manually installed and you cant set that option in yay
+sudo pacman -S --noconfirm --needed wxgtk3
+display "Building and Installing PHD2"
+
+if [ ! -d $USERHOME/AstroRoot/phd2 ]
+then
+	cd $USERHOME/AstroRoot/
+	sudo -H -u $SUDO_USER git clone https://github.com/OpenPHDGuiding/phd2.git
+	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/phd2-build
+else
+	cd $USERHOME/AstroRoot/phd2
+	sudo -H -u $SUDO_USER git pull
+fi
+
+cd $USERHOME/AstroRoot/phd2-build
+sudo -H -u $SUDO_USER cmake -DOPENSOURCE_ONLY=1 $USERHOME/AstroRoot/phd2
+sudo -H -u $SUDO_USER make
+sudo make install
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
