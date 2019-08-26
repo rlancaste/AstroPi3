@@ -666,14 +666,15 @@ if [ ! -d $USERHOME/AstroRoot/phdlogview ]
 then
 	cd $USERHOME/AstroRoot/
 	sudo -H -u $SUDO_USER git clone https://github.com/agalasso/phdlogview.git
-	# Note that phdlogview.fbp needs to be updated to the latest version of wxFormBuilder.  This copy has been updated
-	# so that it won't cause an error in the build.  As soon as the repo gets updated to be compatible, this next line can be removed.
-	sudo -H -u $SUDO_USER cp -f $USERHOME/AstroPi3/phdlogview.fbp $USERHOME/AstroRoot/phdlogview/phdlogview.fbp
 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/phdlogview/tmp
 else
 	cd $USERHOME/AstroRoot/phdlogview
 	sudo -H -u $SUDO_USER git pull
 fi
+
+# Note that phdlogview.fbp needs to be updated to the latest version of wxFormBuilder.  This copy has been updated
+# so that it won't cause an error in the build.  As soon as the repo gets updated to be compatible, this next line can be removed.
+sudo -H -u $SUDO_USER cp -f $USERHOME/AstroPi3/phdlogview.fbp $USERHOME/AstroRoot/phdlogview/phdlogview.fbp
 
 cd $USERHOME/AstroRoot/phdlogview/tmp
 sudo -H -u $SUDO_USER cmake $USERHOME/AstroRoot/phdlogview
