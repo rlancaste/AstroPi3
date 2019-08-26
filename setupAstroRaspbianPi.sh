@@ -543,21 +543,21 @@ display "Building and Installing core LibINDI"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/libindi
 cd $USERHOME/AstroRoot/indi-build/libindi
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/libindi
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 display "Building and Installing the INDI 3rd Party Libraries"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
 cd $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi/3rdparty
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 display "Building and Installing the INDI 3rd Party Drivers"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
 cd $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DWITH_FXLOAD=1 $USERHOME/AstroRoot/indi/3rdparty
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
@@ -587,7 +587,7 @@ fi
 
 cd $USERHOME/AstroRoot/kstars-build
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/kstars/
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
@@ -602,7 +602,7 @@ then
 	fi
 	sudo -H -u $SUDO_USER tar -xvzf bincats_GSC_1.2.tar.gz
 	cd $USERHOME/AstroRoot/gsc/src
-	sudo -H -u $SUDO_USER make
+	sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 	sudo -H -u $SUDO_USER mv gsc.exe gsc
 	sudo cp gsc /usr/bin/
 	cp -r $USERHOME/AstroRoot/gsc /usr/share/
@@ -638,7 +638,7 @@ fi
 
 cd $USERHOME/AstroRoot/phd2-build
 sudo -H -u $SUDO_USER cmake -DOPENSOURCE_ONLY=1 $USERHOME/AstroRoot/phd2
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 display "Installing Dependencies for wxFormBuilder and PHD Log Viewer"
@@ -677,7 +677,7 @@ fi
 
 cd $USERHOME/AstroRoot/phdlogview/tmp
 sudo -H -u $SUDO_USER cmake $USERHOME/AstroRoot/phdlogview
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 cp $USERHOME/AstroRoot/phdlogview/tmp/phdlogview /usr/bin/
 
 # This will make a shortcut to PHD Log Viewer.  If you aren't installing it, be sure to remove this too.
@@ -733,7 +733,7 @@ fi
 # This will make and install the program
 cd $USERHOME/AstroRoot/INDIWebManagerApp-build
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/INDIWebManagerApp/
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 # This will make a link to start INDIWebManagerApp on the desktop
