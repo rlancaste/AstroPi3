@@ -450,9 +450,30 @@ sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
 display "Setting up File Sharing"
 
 # Installs samba so that you can share files to your other computer(s).
-sudo apt -y install samba samba-common-bin system-config-samba
+sudo apt -y install samba samba-common-bin
 sudo touch /etc/libuser.conf
 
+if [ ! -f /etc/samba/smb.conf ]
+then
+	sudo mkdir -p /etc/samba/
+##################
+sudo cat > /etc/samba/smb.conf <<- EOF
+[global]
+   workgroup = ASTROGROUP
+   server string = Samba Server
+   server role = standalone server
+   log file = /var/log/samba/log.%m
+   max log size = 50
+   dns proxy = no
+[homes]
+   comment = Home Directories
+   browseable = no
+   read only = no
+   writable = yes
+   valid users = $SUDO_USER
+EOF
+##################
+fi
 
 # Adds yourself to the user group of who can use samba, but checks first if you are already in the list
 if [ -z "$(sudo pdbedit -L | grep $SUDO_USER)" ]
