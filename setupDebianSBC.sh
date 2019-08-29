@@ -420,17 +420,38 @@ sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.deskt
 display "Setting up File Sharing"
 
 # Installs samba so that you can share files to your other computer(s).
-sudo apt -y install samba
+sudo apt -y install samba samba-common-bin
 
-# Installs caja-share so that you can easily share the folders you want.
-sudo apt -y install caja-share
+if [ ! -f /etc/samba/smb.conf ]
+then
+##################
+sudo --preserve-env bash -c 'cat > /etc/samba/smb.conf' <<- EOF
+[global]
+   workgroup = ASTROGROUP
+   server string = Samba Server
+   server role = standalone server
+   log file = /var/log/samba/log.%m
+   max log size = 50
+   dns proxy = no
+[homes]
+   comment = Home Directories
+   browseable = no
+   read only = no
+   writable = yes
+   valid users = $SUDO_USER
+EOF
+##################
+fi
 
 # Adds yourself to the user group of who can use samba, but checks first if you are already in the list
 if [ -z "$(sudo pdbedit -L | grep $SUDO_USER)" ]
 then
+	# creates a samba password for you
 	sudo smbpasswd -a $SUDO_USER
-	sudo adduser $SUDO_USER sambashare
+	# Enables the Samba services
+	sudo systemctl enable smb nmb
 fi
+
 
 #########################################################
 #############  Very Important Configuration Items
@@ -497,21 +518,21 @@ display "Building and Installing core LibINDI"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/libindi
 cd $USERHOME/AstroRoot/indi-build/libindi
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/libindi
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 display "Building and Installing the INDI 3rd Party Libraries"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
 cd $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi/3rdparty
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 display "Building and Installing the INDI 3rd Party Drivers"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
 cd $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/3rdparty
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 # Installs the Astrometry.net package for supporting offline plate solves.  If you just want the online solver, comment this out with a #.
@@ -541,7 +562,7 @@ fi
 
 cd $USERHOME/AstroRoot/kstars-build
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/kstars/
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
@@ -592,7 +613,7 @@ fi
 
 cd $USERHOME/AstroRoot/phd2-build
 sudo -H -u $SUDO_USER cmake -DOPENSOURCE_ONLY=1 $USERHOME/AstroRoot/phd2
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
@@ -639,7 +660,7 @@ fi
 # This will make and install the program
 cd $USERHOME/AstroRoot/INDIWebManagerApp-build
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/INDIWebManagerApp/
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 # This will make a link to start INDIWebManagerApp on the desktop
