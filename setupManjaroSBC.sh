@@ -62,6 +62,10 @@ sudo pacman -S --noconfirm --needed patch cmake make gcc pkg-config fakeroot
 #########################################################
 #############  Configuration for Ease of Use/Access
 
+# This makes sure there is a config folder owned by the user, since many things depend on it.
+mkdir -p $USERHOME/.config
+sudo chown $SUDO_USER:users $USERHOME/.config
+
 # This will set up the SBC so that double clicking on desktop icons brings up the program right away
 # The default behavior is to ask what you want to do with the executable file.
 display "Setting desktop icons to open programs when you click them."
@@ -571,6 +575,7 @@ sudo --preserve-env bash -c 'cat > $USERHOME/.config/kdeglobals' <<- EOF
 Theme=breeze
 EOF
 ##################
+sudo chown $SUDO_USER:users $USERHOME/.config/kdeglobals
 
 # This installs INDI and KStars Dependencies that will be needed
 display "Installing INDI and KStars Dependencies"
@@ -604,7 +609,7 @@ display "Building and Installing core LibINDI"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/libindi
 cd $USERHOME/AstroRoot/indi-build/libindi
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/libindi
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 # This step should not be required.  For some reason, some libraries are installing in /usr/lib64, but then it looks for them in /usr/lib
@@ -615,14 +620,14 @@ display "Building and Installing the INDI 3rd Party Libraries"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
 cd $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi/3rdparty
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 display "Building and Installing the INDI 3rd Party Drivers"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
 cd $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/3rdparty
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 # This should prevent a well documented error
@@ -700,7 +705,7 @@ fi
 
 cd $USERHOME/AstroRoot/phd2-build
 sudo -H -u $SUDO_USER cmake -DOPENSOURCE_ONLY=1 $USERHOME/AstroRoot/phd2
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
@@ -745,7 +750,7 @@ fi
 # This will make and install the program
 cd $USERHOME/AstroRoot/INDIWebManagerApp-build
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/INDIWebManagerApp/
-sudo -H -u $SUDO_USER make
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 # This will make a link to start INDIWebManagerApp on the desktop
