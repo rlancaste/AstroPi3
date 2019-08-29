@@ -79,6 +79,10 @@ sudo apt -y dist-upgrade
 #########################################################
 #############  Configuration for Ease of Use/Access
 
+# This makes sure there is a config folder owned by the user, since many things depend on it.
+mkdir -p $USERHOME/.config
+sudo chown $SUDO_USER $USERHOME/.config
+
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 display "Setting account: "$SUDO_USER" to auto login."
 ##################

@@ -59,6 +59,10 @@ sudo apt -y dist-upgrade
 #########################################################
 #############  Configuration for Ease of Use/Access
 
+# This makes sure there is a config folder owned by the user, since many things depend on it.
+mkdir -p $USERHOME/.config
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/.config
+
 # In the Raspberry Pi scripts, I set the HDMI options in the /boot/config.txt file.  Debian doesn't have that
 # so I set it below when the conky desktop file starts up.
 
@@ -491,6 +495,7 @@ sudo --preserve-env bash -c 'cat > $USERHOME/.config/kdeglobals' <<- EOF
 Theme=breeze
 EOF
 ##################
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/.config/kdeglobals
 
 # Installs Pre Requirements for INDI
 sudo apt -y install libnova-dev libcfitsio-dev libusb-1.0-0-dev libusb-dev zlib1g-dev libgsl-dev build-essential cmake git libjpeg-dev libcurl4-gnutls-dev libtiff-dev
