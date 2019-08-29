@@ -68,10 +68,15 @@ sudo chown $SUDO_USER:$SUDO_USER $USERHOME/.config
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
 #display "Setting account: "$SUDO_USER" to auto login."
-if [ -n "$(grep '#autologin-user' '/etc/lightdm/lightdm.conf')" ]
+if [ -f /etc/lightdm/lightdm.conf ]
 then
 	sed -i "s/#autologin-user=/autologin-user=$SUDO_USER/g" /etc/lightdm/lightdm.conf
 	sed -i "s/#autologin-user-timeout=0/autologin-user-timeout=0/g" /etc/lightdm/lightdm.conf
+fi
+if [ -f /etc/gdm3/daemon.conf ]
+then
+	sed -i "s/#  AutomaticLoginEnable = true/AutomaticLoginEnable = true/g" /etc/gdm3/daemon.conf
+	sed -i "s/#  AutomaticLogin = user1/AutomaticLogin = $SUDO_USER/g" /etc/gdm3/daemon.conf
 fi
 
 # This will prevent the SBC from turning on the lock-screen / screensaver which can be problematic when using VNC
