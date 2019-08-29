@@ -58,6 +58,10 @@ sudo apt -y dist-upgrade
 #########################################################
 #############  Configuration for Ease of Use/Access
 
+# This makes sure there is a config folder owned by the user, since many things depend on it.
+mkdir -p $USERHOME/.config
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/.config
+
 # This will set up the Pi so that double clicking on desktop icons brings up the program right away
 # The default behavior is to ask what you want to do with the executable file.
 display "Setting desktop icons to open programs when you click them."
@@ -233,7 +237,7 @@ display "Making Utilities Folder with script shortcuts for the Desktop"
 if [ ! -d "$USERHOME/Desktop/utilities" ]
 then
 	mkdir -p $USERHOME/Desktop/utilities
-	sudo chown $SUDO_USER $USERHOME/Desktop/utilities
+	sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities
 fi
 
 # This will create a shortcut on the desktop in the utilities folder for creating udev rules for Serial Devices.
@@ -252,7 +256,7 @@ Icon=$(echo $DIR)/icons/plip.png
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/SerialDevices.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/SerialDevices.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/SerialDevices.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Installing Astrometry Index Files.
 ##################
@@ -270,7 +274,7 @@ Icon=$(echo $DIR)/icons/mate-preferences-desktop-display.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Updating the System.
 ##################
@@ -288,7 +292,7 @@ Icon=$(echo $DIR)/icons/system-software-update.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/systemUpdater.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/systemUpdater.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/systemUpdater.desktop
 
 # This will create a shortcut on the desktop in the utilities folder for Backing Up and Restoring the KStars/INDI Files.
 ##################
@@ -306,7 +310,7 @@ Icon=$(echo $DIR)/icons/system-upgrade.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/backupOrRestore.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/backupOrRestore.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/backupOrRestore.desktop
 
 #########################################################
 #############  Configuration for Hotspot Wifi for Connecting on the Observing Field
@@ -393,7 +397,7 @@ Icon=$(echo $DIR)/icons/irda.png
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi.desktop
 ##################
 sudo cat > $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop <<- EOF
 [Desktop Entry]
@@ -408,7 +412,7 @@ Icon=$(echo $DIR)/icons/irda.png
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
 
 # This will make a link to restart Network Manager Service if there is a problem or to go back to regular wifi after using the adhoc connection
 ##################
@@ -425,7 +429,7 @@ Icon=$(echo $DIR)/icons/preferences-system-network.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartNmService.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmService.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartNmService.desktop
 
 # This will make a link to restart nm-applet which sometimes crashes
 ##################
@@ -442,7 +446,7 @@ Icon=$(echo $DIR)/icons/preferences-system-network.svg
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartNmApplet.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
 
 #########################################################
 #############  File Sharing Configuration
@@ -527,6 +531,7 @@ sudo cat > $USERHOME/.config/kdeglobals <<- EOF
 Theme=breeze
 EOF
 ##################
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/.config/kdeglobals
 
 # Installs Pre Requirements for INDI
 sudo apt -y install libnova-dev libcfitsio-dev libusb-1.0-0-dev libusb-dev zlib1g-dev libgsl-dev build-essential cmake git libjpeg-dev libcurl4-gnutls-dev libtiff-dev
@@ -717,18 +722,18 @@ Icon=phd2
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/PHDLogViewer.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/utilities/PHDLogViewer.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/PHDLogViewer.desktop
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
 
 sudo cp /usr/share/applications/org.kde.kstars.desktop  $USERHOME/Desktop/
 sudo chmod +x $USERHOME/Desktop/org.kde.kstars.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/org.kde.kstars.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/org.kde.kstars.desktop
 
 sudo cp /usr/share/applications/phd2.desktop  $USERHOME/Desktop/
 sudo chmod +x $USERHOME/Desktop/phd2.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/phd2.desktop
 
 #########################################################
 #############  INDI WEB MANAGER APP
@@ -771,7 +776,7 @@ Comment=Program to start and configure INDI WebManager
 EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/INDIWebManagerApp.desktop
-sudo chown $SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
 ##################
 
 #########################################################
@@ -781,7 +786,7 @@ sudo chown $SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
 # A big thank you to novaspirit who set up this theme https://github.com/novaspirit/rpi_conky
 sudo apt -y install conky-all
 cp "$DIR/conkyrc" $USERHOME/.conkyrc
-sudo chown $SUDO_USER $USERHOME/.conkyrc
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/.conkyrc
 
 #This should dynamically add lines to the conkyrc file based on the number of CPUs found
 NUMEROFCPUS=$(grep -c ^processor /proc/cpuinfo)
