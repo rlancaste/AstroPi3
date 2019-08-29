@@ -67,7 +67,7 @@ sudo chown $SUDO_USER:$SUDO_USER $USERHOME/.config
 # so I set it below when the conky desktop file starts up.
 
 # This will set your account to autologin.  If you don't want this. then put a # on each line to comment it out.
-#display "Setting account: "$SUDO_USER" to auto login."
+display "Setting account: "$SUDO_USER" to auto login."
 if [ -f /etc/lightdm/lightdm.conf ]
 then
 	sed -i "s/#autologin-user=/autologin-user=$SUDO_USER/g" /etc/lightdm/lightdm.conf
