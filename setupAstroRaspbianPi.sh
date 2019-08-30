@@ -229,6 +229,7 @@ fi
 display "Installing RealVNC Server"
 sudo apt install realvnc-vnc-server
 sudo systemctl enable vncserver-x11-serviced.service
+sudo systemctl daemon-reload
 sudo systemctl start vncserver-x11-serviced.service
 
 display "Making Utilities Folder with script shortcuts for the Desktop"
