@@ -449,6 +449,44 @@ EOF
 sudo chmod +x $USERHOME/Desktop/utilities/StartNmApplet.desktop
 sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
 
+# This will support the functions of the next two shortcuts.
+display "Setting up Night Vision tools"
+sudo apt -y install xcalib
+
+# This will create a link that will turn the screen red to preserve night vision
+##################
+sudo cat > $USERHOME/Desktop/utilities/NightVisionMode.desktop <<- EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Icon[en_US]=redeyes
+Exec=xcalib -red 1 0 100 -green .1 0 1 -blue .1 0 1 -alter
+Name[en_US]=Night Vision Mode
+Name=Night Vision Mode
+Icon=$(echo $DIR)/icons/redeyes.svg
+EOF
+##################
+sudo chmod +x $USERHOME/Desktop/utilities/NightVisionMode.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/NightVisionMode.desktop
+
+# This will create a link that will turn the screen back to normal
+##################
+sudo cat > $USERHOME/Desktop/utilities/NormalVisionMode.desktop <<- EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Icon[en_US]=redeyes
+Exec=xcalib -clear
+Name[en_US]=Normal Vision Mode
+Name=Normal Vision Mode
+Icon=$(echo $DIR)/icons/blackeyes.svg
+EOF
+##################
+sudo chmod +x $USERHOME/Desktop/utilities/NormalVisionMode.desktop
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/NormalVisionMode.desktop
+
 #########################################################
 #############  File Sharing Configuration
 
