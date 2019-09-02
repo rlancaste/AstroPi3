@@ -586,8 +586,9 @@ do
 done
 
 # This will put a link into the autostart folder so it starts at login
+mkdir -p $USERHOME/.config/autostart
 ##################
-sudo --preserve-env bash -c 'cat > /usr/share/mate/autostart/startConky.desktop' <<- EOF
+sudo --preserve-env bash -c 'cat > $USERHOME/.config/autostart/startConky.desktop' <<- EOF
 [Desktop Entry]
 Name=StartConky
 Exec=conky -db -p 20
