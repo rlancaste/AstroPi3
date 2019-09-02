@@ -421,7 +421,30 @@ display "Setting up File Sharing"
 sudo apt -y install samba
 
 # Installs caja-share so that you can easily share the folders you want.
-sudo apt -y install caja-share
+#sudo apt -y install caja-share
+
+# Shares the entire user folder instead (much simpler to work with)
+if [ ! -f /etc/samba/smb.conf ]
+then
+	sudo mkdir -p /etc/samba/
+##################
+sudo --preserve-env bash -c 'cat > /etc/samba/smb.conf' <<- EOF
+[global]
+   workgroup = ASTROGROUP
+   server string = Samba Server
+   server role = standalone server
+   log file = /var/log/samba/log.%m
+   max log size = 50
+   dns proxy = no
+[homes]
+   comment = Home Directories
+   browseable = no
+   read only = no
+   writable = yes
+   valid users = $SUDO_USER
+EOF
+##################
+fi
 
 # Adds yourself to the user group of who can use samba, but checks first if you are already in the list
 if [ -z "$(sudo pdbedit -L | grep $SUDO_USER)" ]
