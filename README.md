@@ -127,6 +127,8 @@ Here is a list of what the script does (If you want to disable or modify any of 
 
 - Places a shortcut/launcher for INDI Web Manager App on the Desktop
 
+- I also recently added a night vision script to the utilities folder.  But it only seems to affect real displays, not VNC.
+
 Icons included in repo:
 The icons for INDI, KStars, and PHD2 are included in their respective packages and are the same
 no matter what operating system you are currently using.  The icons I used
