@@ -1,40 +1,51 @@
-background yes
-use_xft yes
-xftfont 123:size=8
-xftalpha 0.1
-update_interval 0.5
-total_run_times 0
-own_window yes
-own_window_type normal
-own_window_transparent yes
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-double_buffer yes
-minimum_size 250 5
-maximum_width 400
-draw_shades no
-draw_outline no
-draw_borders no
-draw_graph_borders no
-default_color gray
-default_shade_color red
-default_outline_color green
-alignment top_right
-gap_x 10
-gap_y 10
-no_buffers yes
-uppercase no
-cpu_avg_samples 2
-net_avg_samples 1
-override_utf8_locale no
-use_spacer right
+conky.config = {
+    alignment = 'top_right',
+    background = true,
+    border_width = 1,
+    cpu_avg_samples = 2,
+    default_color = 'gray',
+    default_outline_color = 'green',
+    default_shade_color = 'red',
+    double_buffer = true,
+    draw_borders = false,
+    draw_graph_borders = false,
+    draw_outline = false,
+    draw_shades = false,
+    use_xft = true,
+    font = '123:size=8',
+    gap_x = 10,
+    gap_y = 10,
+    maximum_width = 400,
+    minimum_height = 250,
+    minimum_width = 5,
+    net_avg_samples = 1,
+    no_buffers = true,
+    out_to_console = false,
+    out_to_ncurses = false,
+    out_to_stderr = false,
+    out_to_x = true,
+    extra_newline = false,
+    override_utf8_locale = false,
+    own_window = true,
+    own_window_argb_visual = true,
+    own_window_argb_value = 120,
+    own_window_class = 'Conky',
+    own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+    own_window_transparent = false,
+    own_window_type = 'normal',
+    stippled_borders = 0,
+    total_run_times = 0,
+    update_interval = 0.5,
+    uppercase = false,
+    use_spacer = 'right',
+    show_graph_scale = false,
+    show_graph_range = false,
+    template0 = [[${if_up \1}IP ${addr \1} ${alignr}Gateway ${gw_iface}\nEssid ${wireless_essid \1}\nSignal ${wireless_link_qual \1}: ${wireless_link_qual_perc \1}% ${alignr}${wireless_mode \1} Rate ${wireless_bitrate \1}\nUp [${totalup \1}] ${alignr}${upspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${upspeed \1} \nDn [${totaldown \1}]${alignr}${downspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${downspeed \1}\n ${else}WiFi (\1)${alignr}not connected\n${endif}]],
+    template1 = [[${if_up \1}IP ${addr \1}\nUp [${totalup \1}] ${alignr}${upspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${upspeed \1} \nDn [${totaldown \1}]${alignr}${downspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${downspeed \1} \n${else}Ethernet (\1)${alignr}not connected\n${endif}]]
+}
 
-# Wifi interface info
-template0 ${if_up \1}IP ${addr \1} ${alignr}Gateway ${gw_iface}\nEssid ${wireless_essid \1}\nSignal ${wireless_link_qual \1}: ${wireless_link_qual_perc \1}% ${alignr}${wireless_mode \1} Rate ${wireless_bitrate \1}\nUp [${totalup \1}] ${alignr}${upspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${upspeed \1} \nDn [${totaldown \1}]${alignr}${downspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${downspeed \1}\n ${else}WiFi (\1)${alignr}not connected\n${endif}
-# Ethernet interface info
-template1 ${if_up \1}IP ${addr \1}\nUp [${totalup \1}] ${alignr}${upspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${upspeed \1} \nDn [${totaldown \1}]${alignr}${downspeedgraph \1 10,120 884400 995500 -l}\n${voffset -15}${alignr}${downspeed \1} \n${else}Ethernet (\1)${alignr}not connected\n${endif}
-
-TEXT
-${font Arial:size=20}${color Tan1}${execi 999999 hostname}${color Ivory} LINUX
+conky.text = [[
+${font Arial:size=20}${color Tan1}${execi 999999 hostname -s}${color Ivory} LINUX
 
 ${voffset -90}
 ${color DimGray}
@@ -46,9 +57,8 @@ Architecture $alignr${execi 999999 dpkg --print-architecture}
 Frequency $alignr${freq_g cpu0}Ghz
 Uptime $alignr${uptime}
 File System $alignr${fs_type}
-
 ${font Arial:bold:size=10}${color Tan1}CPU ${color DarkSlateGray}${hr 2}
-$font${color DimGray}Temp: $alignr ${exec /opt/vc/bin/vcgencmd measure_temp | cut -c6-9} C
+$font${color DimGray}Temp: $alignr ${hwmon temp 1} C
 $font${color DimGray}
 ${cpugraph DimGray DarkSlateGray} $color
 
@@ -59,8 +69,8 @@ $font${color DimGray}SWAP $alignc $swap / $swapmax $alignr $swapperc%
 $swapbar
 
 ${font Arial:bold:size=10}${color Tan1}HDD ${color DarkSlateGray}${hr 2}
-$font${color DimGray}/home $alignc ${fs_used /home} / ${fs_size /home} $alignr ${fs_free_perc /home}%
-${fs_bar /home}
+$font${color DimGray}/home $alignc ${fs_used /} / ${fs_size /} $alignr ${fs_free_perc /}%
+${fs_bar /}
 
 ${font Arial:bold:size=10}${color Tan1}TOP PROCESSES ${color DarkSlateGray}${hr 2}
 ${color DimGray}$font${top_mem name 2}${alignr}${top mem 2} %
@@ -73,3 +83,5 @@ $font${color Gray}Ethernet
 $font${color DimGray}${execpi 120 cat /proc/net/dev | grep 'eth' | cut --fields=-1 --delimiter=':' | sed 's/^/\$\{template1 /;s/$/\}/'}
 $font${color Gray}Wireless Networks
 $font${color DimGray}${execpi 120 cat /proc/net/dev | grep 'wl' | cut --fields=-1 --delimiter=':' | sed 's/^/\$\{template0 /;s/$/\}/'}
+
+]]
