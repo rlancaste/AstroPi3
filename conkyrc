@@ -45,7 +45,7 @@ conky.config = {
 }
 
 conky.text = [[
-${font Arial:size=20}${color Tan1}${execi 999999 hostname -s}${color Ivory} LINUX
+${font Arial:size=20}${color Tan1}${execi 999999 hostname}${color Ivory} LINUX
 
 ${voffset -90}
 ${color DimGray}
@@ -58,7 +58,7 @@ Frequency $alignr${freq_g cpu0}Ghz
 Uptime $alignr${uptime}
 File System $alignr${fs_type}
 ${font Arial:bold:size=10}${color Tan1}CPU ${color DarkSlateGray}${hr 2}
-$font${color DimGray}Temp: $alignr ${hwmon temp 1} C
+$font${color DimGray}Temp: $alignr ${exec /opt/vc/bin/vcgencmd measure_temp | cut -c6-9} C
 $font${color DimGray}
 ${cpugraph DimGray DarkSlateGray} $color
 
