@@ -607,21 +607,34 @@ fi
 display "Building and Installing core LibINDI"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/libindi
 cd $USERHOME/AstroRoot/indi-build/libindi
-sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi/libindi
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi
 sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
+
+# This builds and installs INDI 3rd Party
+display "Building and Installing INDI 3rd Party"
+
+if [ ! -d $USERHOME/AstroRoot/indi-3rdparty ]
+then
+	cd $USERHOME/AstroRoot/
+	sudo -H -u $SUDO_USER git clone https://github.com/indilib/indi-3rdparty.git
+	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build
+else
+	cd $USERHOME/AstroRoot/indi-3rdparty
+	sudo -H -u $SUDO_USER git pull
+fi
 
 display "Building and Installing the INDI 3rd Party Libraries"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
 cd $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
-sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi/3rdparty
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi-3rdparty
 sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 display "Building and Installing the INDI 3rd Party Drivers"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
 cd $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
-sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DWITH_FXLOAD=1 $USERHOME/AstroRoot/indi/3rdparty
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DWITH_FXLOAD=1 $USERHOME/AstroRoot/indi-3rdparty
 sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
