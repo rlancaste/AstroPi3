@@ -619,7 +619,7 @@ else
 	sudo -H -u $SUDO_USER git pull
 fi
 
-display "Building and Installing core LibINDI"
+display "Building and Installing Core LibINDI"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/indi-core
 cd $USERHOME/AstroRoot/indi-build/indi-core
 sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi
