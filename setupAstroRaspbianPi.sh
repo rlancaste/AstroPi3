@@ -592,16 +592,16 @@ sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
 
 #This removes the old build folders from the outdated version of this script before the repo was split
-if [ ! -d $USERHOME/AstroRoot/indi-build/libindi ]
+if [ -d $USERHOME/AstroRoot/indi-build/libindi ]
 then
 	display "Removing old build folders from before the Repo was split."
 	sudo rm -r $USERHOME/AstroRoot/indi-build/libindi
 fi
-if [ ! -d $USERHOME/AstroRoot/indi-build/3rdpartyLibraries ]
+if [ -d $USERHOME/AstroRoot/indi-build/3rdpartyLibraries ]
 then
 	sudo rm -r $USERHOME/AstroRoot/indi-build/3rdpartyLibraries
 fi
-if [ ! -d $USERHOME/AstroRoot/indi-build/3rdpartyDrivers ]
+if [ -d $USERHOME/AstroRoot/indi-build/3rdpartyDrivers ]
 then
 	sudo rm -r $USERHOME/AstroRoot/indi-build/3rdpartyDrivers
 fi
