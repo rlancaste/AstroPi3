@@ -585,7 +585,7 @@ sudo apt update
 sudo apt -y install phd2
 
 # Installs PHD2 Log viewer if you want it.  If not, comment out with a #.
-disdplay "Installing PHD2 Log Viewer"
+display "Installing PHD2 Log Viewer"
 sudo apt install phdlogview
 
 # This will make a shortcut to PHD Log Viewer.  If you aren't installing it, be sure to remove this too.
