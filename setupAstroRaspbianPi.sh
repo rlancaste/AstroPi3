@@ -926,8 +926,5 @@ chmod +x "$DIR/astrometryIndexInstaller.sh"
 chmod +x "$DIR/systemUpdater.sh"
 chmod +x "$DIR/backupOrRestore.sh"
 
-<<<<<<< HEAD
 display "Script Execution Complete.  Your Raspberry Pi 3 or 4 should now be ready to use for Astrophotography.  You should restart your Pi."
-=======
-display "Script Execution Complete.  Your Raspberry Pi 3 should now be ready to use for Astrophotography.  You should restart your Pi."
->>>>>>> 190129ca6af37dafd7a76a117e565d263682f4aa
+
