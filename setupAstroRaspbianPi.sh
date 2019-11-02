@@ -7,8 +7,6 @@
 #	License as published by the Free Software Foundation; either
 #	version 2 of the License, or (at your option) any later version.
 
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-
 if [ "$(whoami)" != "root" ]; then
 	echo "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
 	exit 1
@@ -18,6 +16,8 @@ elif [ -z "$BASH_VERSION" ]; then
 else
 	echo "You are running BASH $BASH_VERSION as the root user."
 fi
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 function display
 {
