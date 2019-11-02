@@ -490,7 +490,7 @@ sudo chmod +x $USERHOME/Desktop/utilities/StartNmApplet.desktop
 sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
 
 # This will support the functions of the next two shortcuts.
-display "Setting up Night Vision tools"
+display "Setting up Night Vision tools, note that they may not work if you aren't using a real display."
 sudo apt -y install xcalib
 
 # This will create a link that will turn the screen red to preserve night vision
