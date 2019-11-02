@@ -21,19 +21,19 @@ function display
     echo -en "\033]0;AstroPi3-SetupAstroRaspbianPi-$*\a"
 }
 
-display "Welcome to the AstroPi3 Raspberry Pi 3 or 4 Raspbian KStars/INDI Configuration Script."
-
-display "This will update, install and configure your Raspberry Pi 3 or 4 to work with INDI and KStars to be a hub for Astrophotography. Be sure to read the script first to see what it does and to customize it."
-
 if [ "$(whoami)" != "root" ]; then
-	display "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
+	echo "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
 	exit 1
 elif [ -z "$BASH_VERSION" ]; then
-	display "Please run this script in a BASH shell because it is a script written using BASH commands.  Exiting now."
+	echo "Please run this script in a BASH shell because it is a script written using BASH commands.  Exiting now."
 	exit 1
 else
 	echo "You are running BASH $BASH_VERSION as the root user."
 fi
+
+display "Welcome to the AstroPi3 Raspberry Pi 3 or 4 Raspbian KStars/INDI Configuration Script."
+
+display "This will update, install and configure your Raspberry Pi 3 or 4 to work with INDI and KStars to be a hub for Astrophotography. Be sure to read the script first to see what it does and to customize it."
 
 read -p "Are you ready to proceed (y/n)? " proceed
 
