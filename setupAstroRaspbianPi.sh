@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#	AstroRaspbianPi Raspberry Pi 3/4 Raspbian KStars/INDI Configuration Script
+#	AstroRaspbianPi Raspberry Pi 3 or 4 Raspbian KStars/INDI Configuration Script
 #﻿  Copyright (C) 2018 Robert Lancaster <rlancaste@gmail.com>
 #	This script is free software; you can redistribute it and/or
 #	modify it under the terms of the GNU General Public
@@ -21,13 +21,18 @@ function display
     echo -en "\033]0;AstroPi3-SetupAstroRaspbianPi-$*\a"
 }
 
-display "Welcome to the AstroPi3 Raspberry Pi 3 Raspbian KStars/INDI Configuration Script."
+display "Welcome to the AstroPi3 Raspberry Pi 3 or 4 Raspbian KStars/INDI Configuration Script."
 
-display "This will update, install and configure your Raspberry Pi 3 to work with INDI and KStars to be a hub for Astrophotography. Be sure to read the script first to see what it does and to customize it."
+display "This will update, install and configure your Raspberry Pi 3 or 4 to work with INDI and KStars to be a hub for Astrophotography. Be sure to read the script first to see what it does and to customize it."
 
 if [ "$(whoami)" != "root" ]; then
 	display "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
 	exit 1
+elif [ -z "$BASH_VERSION" ]; then
+	display "Please run this script in a BASH shell because it is a script written using BASH commands.  Exiting now."
+	exit 1
+else
+	echo "You are running BASH $BASH_VERSION as the root user."
 fi
 
 read -p "Are you ready to proceed (y/n)? " proceed
@@ -41,6 +46,49 @@ export USERHOME=$(sudo -u $SUDO_USER -H bash -c 'echo $HOME')
 
 # This changes the UserPrompt for the Setup Script (Necessary to make the messages display in the title bar)
 PS1='AstroPi3-SetupAstroRaspbianPi~$ '
+
+#########################################################
+#############  Asking Questions for optional items later
+
+if [ -z "$(ls /etc/NetworkManager/system-connections/ | grep Link\ Local\ Ethernet)" ]
+then
+	read -p "Do you want to give your pi a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
+	if [ "$useStaticIP" == "y" ]
+	then
+		read -p "Please enter the IP address you would prefer.  Please make sure that the first two numbers match your client computer's self assigned IP.  For Example mine is: 169.254.0.5 ? " IP
+		if [[ "$IP" =~ ^(([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))\.){3}([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))$ ]] # Note that this formula came from Jon in the thread: https://stackoverflow.com/questions/13777387/check-for-ip-validity
+		then
+			echo "IP Address is in correct format, proceeding"
+		else
+			echo "IP Address invalid, the static IP cannot be set up with this address.  Please configure Network Manager later or run the script again."
+			read -p "Do you wish to abort and try to enter the IP address again (y/n)?" abortDueToIP
+			if [ "$abortDueToIP" == "y" ]
+			then
+				exit
+			fi
+		fi
+	else
+		display "Leaving your IP address to be assigned only by dhcp.  Note that you will always need either a router or wifi network to connect to your pi."
+	fi
+fi
+
+if [ -f /etc/NetworkManager/conf.d/wifi-enable-autohotspot.conf ]
+then
+	echo "Field Wifi autoconnection is already configured, if you want to change it, edit network manager and /etc/NetworkManager/conf.d/wifi-enable-autohotspot.conf"
+else
+	read -p "Do you wish to configure the field wifi hotspot to automatically come up after a certain time if there is no wifi network (y/n)? " autoWifi
+
+	if [ "$autoWifi" == "y" ]
+	then
+		read -p "What do you want the timeout to be?  Mine is 30 seconds: " wifiTimeout
+		if ! [ "$wifiTimeout" -eq "$wifiTimeout" ] 2> /dev/null
+		then
+   			echo "The timeout must be an integer number of seconds.  Making it 30 instead.  You can edit /etc/NetworkManager/conf.d/wifi-enable-autohotspot.conf to change it."
+   			wifiTimeout=30
+		fi
+	fi
+fi
+
 
 #########################################################
 #############  Updates
@@ -177,13 +225,11 @@ fi
 display "Setting up Ethernet for both link-local and DHCP"
 if [ -z "$(ls /etc/NetworkManager/system-connections/ | grep Link\ Local\ Ethernet)" ]
 then
-	read -p "Do you want to give your pi a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
 	if [ "$useStaticIP" == "y" ]
 	then
-		read -p "Please enter the IP address you would prefer.  Please make sure that the first two numbers match your client computer's self assigned IP.  For Example mine is: 169.254.0.5 ? " IP
 		if [[ "$IP" =~ ^(([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))\.){3}([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))$ ]] # Note that this formula came from Jon in the thread: https://stackoverflow.com/questions/13777387/check-for-ip-validity
 		then
-			echo "IP Address is in correct format, proceeding"
+			echo "IP Address is in correct format, proceeding to set up the static IP"
 			
 			# This will make sure that network manager can manage whether the ethernet connection is on or off and then you can change the connection in network maanager.
 			if [ -n "$(grep 'managed=false' /etc/NetworkManager/NetworkManager.conf)" ]
@@ -353,16 +399,8 @@ if [ -f /etc/NetworkManager/conf.d/wifi-enable-autohotspot.conf ]
 then
 	echo "Field Wifi autoconnection is already configured, if you want to change it, edit network manager and /etc/NetworkManager/conf.d/wifi-enable-autohotspot.conf"
 else
-	read -p "Do you wish to configure the field wifi hotspot to automatically come up after a certain time if there is no wifi network (y/n)? " autoWifi
-
 	if [ "$autoWifi" == "y" ]
 	then
-		read -p "What do you want the timeout to be?  Mine is 30 seconds: " wifiTimeout
-		if ! [ "$wifiTimeout" -eq "$wifiTimeout" ] 2> /dev/null
-		then
-   			echo "The timeout must be an integer number of seconds.  Making it 30 instead.  You can edit /etc/NetworkManager/conf.d/wifi-enable-autohotspot.conf to change it."
-   			wifiTimeout=30
-		fi
 		# This sets both wifi networks to autoconnect with a priority to connect on 5G if available
 		nmcli connection modify $(hostname -s)_FieldWifi connection.autoconnect yes
 		nmcli connection modify $(hostname -s)_FieldWifi_5G connection.autoconnect yes
@@ -622,7 +660,7 @@ fi
 display "Building and Installing Core LibINDI"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/indi-core
 cd $USERHOME/AstroRoot/indi-build/indi-core
-sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug $USERHOME/AstroRoot/indi
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo $USERHOME/AstroRoot/indi
 sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
@@ -642,14 +680,14 @@ fi
 display "Building and Installing the INDI 3rd Party Libraries"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdparty-Libraries
 cd $USERHOME/AstroRoot/indi-build/3rdparty-Libraries
-sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi-3rdparty
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_LIBS=1 $USERHOME/AstroRoot/indi-3rdparty
 sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
 display "Building and Installing the INDI 3rd Party Drivers"
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build/3rdparty-Drivers
 cd $USERHOME/AstroRoot/indi-build/3rdparty-Drivers
-sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug -DWITH_FXLOAD=1 $USERHOME/AstroRoot/indi-3rdparty
+sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_FXLOAD=1 $USERHOME/AstroRoot/indi-3rdparty
 sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
@@ -888,4 +926,8 @@ chmod +x "$DIR/astrometryIndexInstaller.sh"
 chmod +x "$DIR/systemUpdater.sh"
 chmod +x "$DIR/backupOrRestore.sh"
 
+<<<<<<< HEAD
+display "Script Execution Complete.  Your Raspberry Pi 3 or 4 should now be ready to use for Astrophotography.  You should restart your Pi."
+=======
 display "Script Execution Complete.  Your Raspberry Pi 3 should now be ready to use for Astrophotography.  You should restart your Pi."
+>>>>>>> 190129ca6af37dafd7a76a117e565d263682f4aa
