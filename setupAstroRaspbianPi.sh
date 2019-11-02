@@ -31,6 +31,19 @@ function display
     echo -en "\033]0;AstroPi3-SetupAstroRaspbianPi-$*\a"
 }
 
+function checkForConnection
+{
+		testCommand=$(curl -Is $2 | head -n 1)
+		if [[ "${testCommand}" == *"OK"* || "${testCommand}" == *"Moved"* ]]
+  		then 
+  			echo "$1 connection was found. The script can proceed."
+  		else
+  			echo "$1, ($2), a required connection, was not found, aborting script."
+  			echo "If you would like the script to run anyway, please comment out the line that tests this connection in this script."
+  			exit
+		fi
+}
+
 display "Welcome to the AstroPi3 Raspberry Pi 3 or 4 Raspbian KStars/INDI Configuration Script."
 
 display "This will update, install and configure your Raspberry Pi 3 or 4 to work with INDI and KStars to be a hub for Astrophotography. Be sure to read the script first to see what it does and to customize it."
@@ -41,6 +54,17 @@ if [ "$proceed" != "y" ]
 then
 	exit
 fi
+
+display "Testing connections to required web addresses for running the script.  If the pi cannot connect to the internet, you should correct this before running the script.  If a required resource is not available, you should find out if the resource has moved, or remove the requirement for this resource."
+checkForConnection ZRam-script "https://raw.githubusercontent.com/novaspirit/rpi_zram/master/zram.sh"
+checkForConnection INDI-Git-Repo "https://github.com/indilib/indi.git"
+checkForConnection INDI-3rdparty-Repo "https://github.com/indilib/indi-3rdparty.git"
+checkForConnection GSC-Source "http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2"
+checkForConnection KStars-Repo "https://github.com/KDE/kstars"
+checkForConnection PHD2-Repo "https://github.com/OpenPHDGuiding/phd2.git"
+checkForConnection WX-FormBuilder-Repo "https://github.com/wxFormBuilder/wxFormBuilder.git"
+checkForConnection PHD2-LogViewer-Repo "https://github.com/agalasso/phdlogview.git"
+checkForConnection INDIWebManagerApp-Repo "https://github.com/rlancaste/INDIWebManagerApp.git"
 
 export USERHOME=$(sudo -u $SUDO_USER -H bash -c 'echo $HOME')
 
@@ -489,6 +513,21 @@ EOF
 sudo chmod +x $USERHOME/Desktop/utilities/StartNmApplet.desktop
 sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
 
+#########################################################
+#############  Checking Network connectivity before continuing, since the Network changes may have caused internet to drop out if on WIFI
+display "Verifying that the Pi is still online and able to access all required online resources.  The network configuration may have been changed.  If the Pi no longer has internet connection, you should restart it and reconnect it to the internet."
+checkForConnection ZRam-script "https://raw.githubusercontent.com/novaspirit/rpi_zram/master/zram.sh"
+checkForConnection INDI-Git-Repo "https://github.com/indilib/indi.git"
+checkForConnection INDI-3rdparty-Repo "https://github.com/indilib/indi-3rdparty.git"
+checkForConnection GSC-Source "http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2"
+checkForConnection KStars-Repo "https://github.com/KDE/kstars"
+checkForConnection PHD2-Repo "https://github.com/OpenPHDGuiding/phd2.git"
+checkForConnection WX-FormBuilder-Repo "https://github.com/wxFormBuilder/wxFormBuilder.git"
+checkForConnection PHD2-LogViewer-Repo "https://github.com/agalasso/phdlogview.git"
+checkForConnection INDIWebManagerApp-Repo "https://github.com/rlancaste/INDIWebManagerApp.git"
+
+
+
 # This will support the functions of the next two shortcuts.
 display "Setting up Night Vision tools, note that they may not work if you aren't using a real display."
 sudo apt -y install xcalib
@@ -712,7 +751,7 @@ display "Building and Installing KStars"
 if [ ! -d $USERHOME/AstroRoot/kstars ]
 then
 	cd $USERHOME/AstroRoot/
-	sudo -H -u $SUDO_USER git clone git://anongit.kde.org/kstars
+	sudo -H -u $SUDO_USER git clone https://github.com/KDE/kstars
 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/kstars-build
 else
 	cd $USERHOME/AstroRoot/kstars
