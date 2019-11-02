@@ -70,6 +70,8 @@ then
 	else
 		display "Leaving your IP address to be assigned only by dhcp.  Note that you will always need either a router or wifi network to connect to your pi."
 	fi
+else
+	echo "A Static IP Address is already configured.  If you want to change that, you can delete the Link Local Ethernet System Connection in network manager."
 fi
 
 if [ -f /etc/NetworkManager/conf.d/wifi-enable-autohotspot.conf ]
