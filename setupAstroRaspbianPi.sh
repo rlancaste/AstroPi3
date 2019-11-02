@@ -36,7 +36,7 @@ function checkForConnection
 		testCommand=$(curl -Is $2 | head -n 1)
 		if [[ "${testCommand}" == *"OK"* || "${testCommand}" == *"Moved"* ]]
   		then 
-  			echo "$1 connection was found. The script can proceed."
+  			echo "$1 was found. The script can proceed."
   		else
   			echo "$1, ($2), a required connection, was not found, aborting script."
   			echo "If you would like the script to run anyway, please comment out the line that tests this connection in this script."
@@ -73,6 +73,8 @@ PS1='AstroPi3-SetupAstroRaspbianPi~$ '
 
 #########################################################
 #############  Asking Questions for optional items later
+
+display "Checking items that will require your input while running the script, so you don't get asked so many questions later.  Note that some installations later (VNC, samba in particular) may still require your input later on, this is out of my control."
 
 if [ -z "$(ls /etc/NetworkManager/system-connections/ | grep Link\ Local\ Ethernet)" ]
 then
