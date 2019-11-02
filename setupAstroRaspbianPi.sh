@@ -9,6 +9,16 @@
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+if [ "$(whoami)" != "root" ]; then
+	echo "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
+	exit 1
+elif [ -z "$BASH_VERSION" ]; then
+	echo "Please run this script in a BASH shell because it is a script written using BASH commands.  Exiting now."
+	exit 1
+else
+	echo "You are running BASH $BASH_VERSION as the root user."
+fi
+
 function display
 {
     echo ""
@@ -20,16 +30,6 @@ function display
     # This will display the message in the title bar (Note that the PS1 variable needs to be changed too--see below)
     echo -en "\033]0;AstroPi3-SetupAstroRaspbianPi-$*\a"
 }
-
-if [ "$(whoami)" != "root" ]; then
-	echo "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
-	exit 1
-elif [ -z "$BASH_VERSION" ]; then
-	echo "Please run this script in a BASH shell because it is a script written using BASH commands.  Exiting now."
-	exit 1
-else
-	echo "You are running BASH $BASH_VERSION as the root user."
-fi
 
 display "Welcome to the AstroPi3 Raspberry Pi 3 or 4 Raspbian KStars/INDI Configuration Script."
 
