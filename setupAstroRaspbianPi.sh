@@ -693,7 +693,7 @@ display "Building and Installing INDI"
 if [ ! -d $USERHOME/AstroRoot/indi ]
 then
 	cd $USERHOME/AstroRoot/
-	sudo -H -u $SUDO_USER git clone https://github.com/indilib/indi.git 
+	sudo -H -u $SUDO_USER git clone --depth 1 https://github.com/indilib/indi.git 
 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build
 else
 	cd $USERHOME/AstroRoot/indi
@@ -713,7 +713,7 @@ display "Building and Installing INDI 3rd Party"
 if [ ! -d $USERHOME/AstroRoot/indi-3rdparty ]
 then
 	cd $USERHOME/AstroRoot/
-	sudo -H -u $SUDO_USER git clone https://github.com/indilib/indi-3rdparty.git
+	sudo -H -u $SUDO_USER git clone --depth 1 https://github.com/indilib/indi-3rdparty.git
 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build
 else
 	cd $USERHOME/AstroRoot/indi-3rdparty
@@ -753,7 +753,7 @@ display "Building and Installing KStars"
 if [ ! -d $USERHOME/AstroRoot/kstars ]
 then
 	cd $USERHOME/AstroRoot/
-	sudo -H -u $SUDO_USER git clone https://github.com/KDE/kstars
+	sudo -H -u $SUDO_USER git clone --depth 1 https://github.com/KDE/kstars
 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/kstars-build
 else
 	cd $USERHOME/AstroRoot/kstars
@@ -804,7 +804,7 @@ display "Building and Installing PHD2"
 if [ ! -d $USERHOME/AstroRoot/phd2 ]
 then
 	cd $USERHOME/AstroRoot/
-	sudo -H -u $SUDO_USER git clone https://github.com/OpenPHDGuiding/phd2.git
+	sudo -H -u $SUDO_USER git clone --depth 1 https://github.com/OpenPHDGuiding/phd2.git
 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/phd2-build
 else
 	cd $USERHOME/AstroRoot/phd2
@@ -825,7 +825,7 @@ if [ ! -d $USERHOME/AstroRoot/wxFormBuilder ]
 then
 	display "Building and Installing wxFormBuilder"
 	cd $USERHOME/AstroRoot
-	sudo -H -u $SUDO_USER git clone https://github.com/wxFormBuilder/wxFormBuilder.git
+	sudo -H -u $SUDO_USER git clone --depth 1 https://github.com/wxFormBuilder/wxFormBuilder.git
 	cd $USERHOME/AstroRoot/wxFormBuilder
 	
 	meson _build --prefix /usr
@@ -840,7 +840,7 @@ display "Building and Installing PHD Log Viewer"
 if [ ! -d $USERHOME/AstroRoot/phdlogview ]
 then
 	cd $USERHOME/AstroRoot/
-	sudo -H -u $SUDO_USER git clone https://github.com/agalasso/phdlogview.git
+	sudo -H -u $SUDO_USER git clone --depth 1 https://github.com/agalasso/phdlogview.git
 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/phdlogview/tmp
 else
 	cd $USERHOME/AstroRoot/phdlogview
@@ -899,7 +899,7 @@ sudo -H -u $SUDO_USER pip3 install indiweb
 if [ ! -d $USERHOME/AstroRoot/INDIWebManagerApp ]
 then
 	cd $USERHOME/AstroRoot/
-	sudo -H -u $SUDO_USER git clone https://github.com/rlancaste/INDIWebManagerApp.git
+	sudo -H -u $SUDO_USER git clone --depth 1 https://github.com/rlancaste/INDIWebManagerApp.git
 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/INDIWebManagerApp-build
 else
 	cd $USERHOME/AstroRoot/INDIWebManagerApp
