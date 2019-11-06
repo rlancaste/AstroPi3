@@ -76,7 +76,16 @@ PS1='AstroPi3-SetupAstroRaspbianPi~$ '
 
 display "Checking items that will require your input while running the script, so you don't get asked so many questions later.  Note that some installations later (VNC, samba in particular) may still require your input later on, this is out of my control."
 
-if [ -z "$(ls /etc/NetworkManager/system-connections/ | grep Link\ Local\ Ethernet)" ]
+staticIPExists=false
+if [ -d "/etc/NetworkManager/system-connections/" ]
+then
+	if [ -z "$(ls /etc/NetworkManager/system-connections/ | grep Link\ Local\ Ethernet)" ]
+	then
+		staticIPExists=true
+	fi
+fi
+
+if [ "$staticIPExists" == false ]
 then
 	read -p "Do you want to give your pi a static ip address so that you can connect to it in the observing field with no router or wifi and just an ethernet cable (y/n)? " useStaticIP
 	if [ "$useStaticIP" == "y" ]
