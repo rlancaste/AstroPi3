@@ -688,7 +688,7 @@ else
 fi
 
 cd $USERHOME/AstroRoot/phd2-build
-sudo -H -u $SUDO_USER cmake -DOPENSOURCE_ONLY=1 $USERHOME/AstroRoot/phd2
+sudo -H -u $SUDO_USER cmake $USERHOME/AstroRoot/phd2
 sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
