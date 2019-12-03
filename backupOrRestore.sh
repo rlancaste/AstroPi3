@@ -68,8 +68,10 @@ then
 	if [ -d "$savedLocation" ]
 	then
 		cp -f "$savedLocation/kstarsrc" ~/.config/kstarsrc
-		cp -rf "$savedLocation/kstarsData" ~/.local/share/kstars 
-		cp -rf "$savedLocation/INDIConfig" ~/.indi
+		mkdir -p ~/.local/share/kstars/
+		cp -rf "$savedLocation/kstarsData/*" ~/.local/share/kstars/
+		mkdir -p ~/.indi/
+		cp -rf "$savedLocation/INDIConfig/*" ~/.indi/
 		echo "Your KStars/INDI restore is complete."
 		read -p "Hit [Enter] to end the script" closing
 		exit
