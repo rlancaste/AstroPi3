@@ -770,7 +770,7 @@ else
 fi
 
 cd $USERHOME/AstroRoot/kstars-build
-sudo -H -u $SUDO_USER cmake -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/kstars/
+sudo -H -u $SUDO_USER cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/kstars/
 sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
