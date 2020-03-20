@@ -549,6 +549,29 @@ sudo apt -y install ffmpeg libavcodec-dev libavdevice-dev libfftw3-dev
 
 sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot
 
+read -p "Do you want to pull for indi & indi-3rdparty (1) latest master, (2) 1.8.4, (3) 1.8.3, or (4) latest release? input (1/2/3/4)? " gitTagINDI
+if [ "$gitTagINDI" == "1" ]
+then
+	# Note: The master branch is broken in indi-3rdparty 
+	# This will install check out latest branch instead
+	Releases_Tag="master"
+elif [ "$gitTagINDI" == "2" ]
+then
+	# This will install x2go for Manjaro
+	Releases_Tag="v1.8.4"
+elif [ "$gitTagINDI" == "3" ]
+then
+	# This will install x2go for Manjaro
+	Releases_Tag="v1.8.3"
+elif [ "$gitTagINDI" == "4" ]
+then
+	# This will install x2go for Manjaro
+	Releases_Tag="latest"
+else
+	echo "Indi & Indi-3rdparty latest releases will be installed!"
+	Releases_Tag="latest"
+fi
+
 #This removes the old build folders from the outdated version of this script before the repo was split
 if [ -d $USERHOME/AstroRoot/indi-build/libindi ]
 then
@@ -572,9 +595,30 @@ then
 	cd $USERHOME/AstroRoot/
 	sudo -H -u $SUDO_USER git clone https://github.com/indilib/indi.git 
 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build
+	cd $USERHOME/AstroRoot/indi
 else
 	cd $USERHOME/AstroRoot/indi
 	sudo -H -u $SUDO_USER git pull
+fi
+# list all repo tags
+tags=$(eval "git tag")
+IFS=$'\n' lines=($tags)
+
+if [ "$Releases_Tag" == "master" ]
+then
+	# This will pull currnet branch
+	echo "pull latest master"
+	git pull
+
+elif [ "$Releases_Tag" == "latest" ]
+then
+	# This will install latest release
+	echo "Indi & Indi-3rdparty latest release ${lines[-1]} will be installed!"
+	git checkout ${lines[-1]}
+else
+	# This will install selected release
+	echo "Indi & Indi-3rdparty release ${Releases_Tag} will be installed!"
+	git checkout ${Releases_Tag}
 fi
 
 display "Building and Installing Core LibINDI"
@@ -592,9 +636,31 @@ then
 	cd $USERHOME/AstroRoot/
 	sudo -H -u $SUDO_USER git clone https://github.com/indilib/indi-3rdparty.git
 	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/indi-build
+	cd $USERHOME/AstroRoot/indi-3rdparty
 else
 	cd $USERHOME/AstroRoot/indi-3rdparty
 	sudo -H -u $SUDO_USER git pull
+fi
+
+# list all repo tags
+tags=$(eval "git tag")
+IFS=$'\n' lines=($tags)
+
+if [ "$Releases_Tag" == "master" ]
+then
+	# This will pull currnet branch
+	echo "pull latest master"
+	git pull
+
+elif [ "$Releases_Tag" == "latest" ]
+then
+	# This will install latest release
+	echo "Indi & Indi-3rdparty latest release ${lines[-1]} will be installed!"
+	git checkout ${lines[-1]}
+else
+	# This will install selected release
+	echo "Indi & Indi-3rdparty release ${Releases_Tag} will be installed!"
+	git checkout ${Releases_Tag}
 fi
 
 display "Building and Installing the INDI 3rd Party Libraries"
