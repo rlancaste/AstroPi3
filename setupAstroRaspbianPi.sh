@@ -60,6 +60,7 @@ checkForConnection ZRam-script "https://raw.githubusercontent.com/novaspirit/rpi
 checkForConnection INDI-Git-Repo "https://github.com/indilib/indi.git"
 checkForConnection INDI-3rdparty-Repo "https://github.com/indilib/indi-3rdparty.git"
 checkForConnection GSC-Source "http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2"
+checkForConnection StellarSolver-Repo "https://github.com/rlancaste/stellarsolver.git"
 checkForConnection KStars-Repo "https://github.com/KDE/kstars"
 checkForConnection PHD2-Repo "https://github.com/OpenPHDGuiding/phd2.git"
 checkForConnection WX-FormBuilder-Repo "https://github.com/wxFormBuilder/wxFormBuilder.git"
@@ -819,6 +820,24 @@ sudo apt -y install xplanet
 sudo apt -y install build-essential cmake git libeigen3-dev libcfitsio-dev zlib1g-dev libindi-dev extra-cmake-modules libkf5plotting-dev libqt5svg5-dev libkf5iconthemes-dev wcslib-dev libqt5sql5-sqlite
 sudo apt -y install libkf5xmlgui-dev kio-dev kinit-dev libkf5newstuff-dev kdoctools-dev libkf5notifications-dev libqt5websockets5-dev qtdeclarative5-dev libkf5crash-dev gettext qml-module-qtquick-controls qml-module-qtquick-layouts
 sudo apt -y install libkf5notifyconfig-dev libqt5datavisualization5-dev qt5keychain-dev
+
+# This builds and installs StellarSolver
+display "Building and Installing StellarSolver"
+
+if [ ! -d $USERHOME/AstroRoot/stellarsolver ]
+then
+	cd $USERHOME/AstroRoot/
+	sudo -H -u $SUDO_USER git clone --depth 1 https://github.com/rlancaste/stellarsolver.git
+	sudo -H -u $SUDO_USER mkdir -p $USERHOME/AstroRoot/stellar-build
+else
+	cd $USERHOME/AstroRoot/stellarsolver
+	sudo -H -u $SUDO_USER git pull
+fi
+
+cd $USERHOME/AstroRoot/stellar-build
+sudo -H -u $SUDO_USER cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/stellarsolver/
+sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
+sudo make install
 
 #This builds and installs KStars
 display "Building and Installing KStars"
