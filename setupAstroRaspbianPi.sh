@@ -911,22 +911,6 @@ sudo make install
 display "Installing Dependencies for wxFormBuilder and PHD Log Viewer"
 sudo apt -y install libwxgtk3.0-dev libwxgtk-media3.0-dev meson
 
-# This code will build and install wxFormBuilder to /usr/bin.  It is required for PHD Log Viewer.
-# If you don't want PHD Log Viewer, comment or remove all of this.
-if [ ! -d $USERHOME/AstroRoot/wxFormBuilder ]
-then
-	display "Building and Installing wxFormBuilder"
-	cd $USERHOME/AstroRoot
-	sudo -H -u $SUDO_USER git clone --depth 1 https://github.com/wxFormBuilder/wxFormBuilder.git
-	cd $USERHOME/AstroRoot/wxFormBuilder
-	
-	meson _build --prefix /usr
-	ninja -C _build install
-	cd /usr/lib
-	# Note that this next line should not really be required, but wxformbuilder cannot find its libraries without it sometimes.
-	ln -s /usr/lib/arm-linux-gnueabihf/wxformbuilder /usr/lib/wxformbuilder
-fi
-
 # This code will build and install PHD Log Viewer.  If you don't want it, comment it out.
 display "Building and Installing PHD Log Viewer"
 if [ ! -d $USERHOME/AstroRoot/phdlogview ]
@@ -944,7 +928,7 @@ fi
 sudo -H -u $SUDO_USER cp -f $USERHOME/AstroPi3/phdlogview.fbp $USERHOME/AstroRoot/phdlogview/phdlogview.fbp
 
 cd $USERHOME/AstroRoot/phdlogview/tmp
-sudo -H -u $SUDO_USER cmake $USERHOME/AstroRoot/phdlogview
+sudo -H -u $SUDO_USER cmake -DHAVE_WXFB=0 $USERHOME/AstroRoot/phdlogview
 sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 cp $USERHOME/AstroRoot/phdlogview/tmp/phdlogview /usr/bin/
 
