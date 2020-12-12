@@ -28,9 +28,15 @@ When you are ready, you can follow these steps:
 	**Be warned that right now the INDI SBIG driver does not compile in 64 bit on the ARM architecture, so if you are using an SBIG camera on a Pi, use an armhf (32 bit) image.
 2.  You will need to flash that img file to the SD card.  The easiest way to do this is to download the free program Etcher (https://etcher.io)
 3.  Drag and drop the disk image you downloaded into etcher along with the mounted SD card.  Click to initialize the flash.
-4.  Note: Formerly, you had to edit the /boot/config.txt file here, but I automated this step.  Until you have run the script, be sure to keep an HDMI display connected while you are setting up the pi, so that the HDMI connection does not go to sleep.
-	(Once you have run the script, you can plug in an HDMI monitor at any time) 
+4.  If you are installing Ubuntu-MATE on the Pi 3 (not the Pi 4) you will need to edit the /boot/config.txt file before you remove it from your computer.  Apparently there is an issue where one of the settings is optimized for the Pi 4, but does not work on the Pi 3.
+	Luckily it is a fairly simple solution.  Just change 
+		dtoverlay=vc4-fkms-v3d 
+	To:
+		dtoverlay=vc4-kms-v3d,cma-64,cma-128
+	For reference: https://bugs.launchpad.net/ubuntu/+source/linux-raspi/+bug/1889223
 5.  Insert the SD Card into the SBC, connect a mouse, keyboard, and display.  Then turn it on.  Often the SBC will reboot the first time to resize the partition.
+    Note:  Until you finish the script, be sure to keep an HDMI display connected while you are setting up the pi, so that the HDMI connection does not go to sleep.
+	(Once you have run the script, you can plug in an HDMI monitor at any time) 
 6.  You should get a setup window if you are using a Raspberry Pi running Ubuntu-MATE that will allow you to setup your login name and computer name.
     This is difficult to change later, so set it up carefully. Note that it may say your name is unavailable at first, but when you enter your login name that may change.
 	After the configuration, your pi will restart.  You may need to restart it again to get your wifi network connection started.  If you are running Raspbian or some other SBC,
