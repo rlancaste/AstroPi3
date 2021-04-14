@@ -214,6 +214,9 @@ fi
 
 # This comments out a line in Raspbian's config file that seems to prevent the desired screen resolution in VNC
 # The logic here is that if the line does exist, and if the line is not commented out, comment it out.
+# However it should be noted that this change may disable the 2nd HDMI output.
+# If you want to use your PI in a headless mode and set your own resolution, you need to run this code on a PI 4.
+# If you want to use two HDMI monitors with the PI 4, instead of going headless, you should not run this code.
 if [ -n "$(grep '^dtoverlay=vc4-kms-v3d' '/boot/config.txt')" ]
 then
 	sed -i "s/dtoverlay=vc4-kms-v3d/#dtoverlay=vc4-kms-v3d/g" /boot/config.txt
