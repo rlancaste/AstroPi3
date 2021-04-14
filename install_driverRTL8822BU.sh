@@ -8,7 +8,7 @@
 #	version 2 of the License, or (at your option) any later version.
 
 if [ "$(whoami)" != "root" ]; then
-	display "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
+	echo "Please run this script with sudo due to the fact that it must do a number of sudo tasks.  Exiting now."
 	exit 1
 fi
 
