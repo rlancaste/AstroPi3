@@ -38,9 +38,9 @@ When you are ready, you can follow these steps:
 		dtoverlay=vc4-kms-v3d,cma-64,cma-128
 		
 	For reference: https://bugs.launchpad.net/ubuntu/+source/linux-raspi/+bug/1889223
-5.  Insert the SD Card into the SBC, connect a mouse, keyboard, and display.  Then turn it on.  Often the SBC will reboot the first time to resize the partition.
-    Note:  Until you finish the script, be sure to keep an HDMI display connected while you are setting up the pi, so that the HDMI connection does not go to sleep.
-	(Once you have run the script, you can plug in an HDMI monitor at any time) 
+5.  Insert the SD Card into the SBC, connect a mouse, keyboard, and display.  Also be sure to connect it to the internet with an Ethernet Cord (not WIFI, since it might lose the connection later) Then turn it on.  Often the SBC will reboot the first time to resize the partition.
+    Note:  Until you finish the script, be sure to keep an HDMI display connected while you are setting up the pi, so that the HDMI connection does not go to sleep.  Also be sure to keep it connected to Ethernet, not WIFI, since it will probably lose the connection and not finish halfway through if you use wifi.
+	(Once you have run the script, you can plug in an HDMI monitor or use WIFI at any time) 
 6.  You should get a setup window if you are using a Raspberry Pi running Ubuntu-MATE that will allow you to setup your login name and computer name.
     This is difficult to change later, so set it up carefully. Note that it may say your name is unavailable at first, but when you enter your login name that may change.
 	After the configuration, your pi will restart.  You may need to restart it again to get your wifi network connection started.  If you are running Raspbian or some other SBC,
