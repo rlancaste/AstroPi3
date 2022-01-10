@@ -74,8 +74,8 @@ gsettings set org.gnome.desktop.session idle-delay 0
 gsettings set org.mate.screensaver lock-enabled false
 
 # Installs Synaptic Package Manager for easy software install/removal
-display "Installing Synaptic"
-sudo apt -y install synaptic
+display "Installing Synaptic and apt-add-repository"
+sudo apt -y install synaptic software-properties-common
 
 # This will enable SSH which is apparently disabled on some SBCs by default.
 display "Enabling SSH"
