@@ -617,7 +617,7 @@ sudo chown $SUDO_USER:users $USERHOME/.config/kdeglobals
 
 # This installs INDI and KStars Dependencies that will be needed
 display "Installing INDI and KStars Dependencies"
-sudo pacman -S --noconfirm --needed cfitsio fftw gsl libjpeg-turbo libnova libtheora libusb boost cmake qt5-base
+sudo pacman -S --noconfirm --needed cfitsio fftw gsl libjpeg-turbo libnova libtheora libusb boost cmake qt5-base libevdev
 sudo pacman -S --noconfirm --needed breeze-icons arduino binutils libraw wxgtk2 gpsd libdc1394 libftdi1 libgphoto2
 
 # Note that INDI is available in Manjaro Packages and INDI 3rd Party is available in AUR.

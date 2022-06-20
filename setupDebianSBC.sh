@@ -543,7 +543,7 @@ sudo chown $SUDO_USER:$SUDO_USER $USERHOME/.config/kdeglobals
 # Installs Pre Requirements for INDI
 sudo apt -y install libnova-dev libcfitsio-dev libusb-1.0-0-dev libusb-dev zlib1g-dev libgsl-dev build-essential cmake git libjpeg-dev libcurl4-gnutls-dev libtiff-dev
 sudo apt -y install libftdi-dev libgps-dev libraw-dev libdc1394-22-dev libgphoto2-dev libboost-dev libboost-regex-dev librtlsdr-dev liblimesuite-dev libftdi1-dev
-sudo apt -y install ffmpeg libavcodec-dev libavdevice-dev libfftw3-dev
+sudo apt -y install ffmpeg libavcodec-dev libavdevice-dev libfftw3-dev libev-dev
 
 #sudo apt install cdbs fxload libkrb5-dev dkms Are these needed too???
 

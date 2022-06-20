@@ -216,16 +216,30 @@ fi
 
 # To view the Raspberry Pi Remotely, this installs RealVNC Servier and enables it to run by default.
 display "Installing RealVNC Server"
+
 if [ -z "$(dpkg -l | grep realvnc-vnc-server)" ]
 then
-	wget https://www.realvnc.com/download/binary/latest/debian/arm/ -O VNC.deb
+	architecture=$(dpkg --print-architecture)
+	display "Your architechture is $architecture, attempting to install RealVNC for that version"
+	if [ $architecture == "arm64" ]
+	then
+		wget https://archive.raspberrypi.org/debian/pool/main/r/realvnc-vnc/realvnc-vnc-server_6.7.2.43081_arm64.deb -O VNC.deb
+		cd /usr/lib/aarch64-linux-gnu
+		sudo ln libvcos.so /usr/lib/libvcos.so.0
+		sudo ln libvchiq_arm.so /usr/lib/libvchiq_arm.so.0
+		sudo ln libbcm_host.so /usr/lib/libbcm_host.so.0
+	else
+		wget https://www.realvnc.com/download/binary/latest/debian/arm/ -O VNC.deb
+	fi
 	sudo dpkg -i VNC.deb
 	rm VNC.deb
 else
 	echo "RealVNC is already installed"
 fi
 sudo systemctl enable vncserver-x11-serviced.service
+sudo systemctl enable vncserver-virtuald.service
 sudo systemctl start vncserver-x11-serviced.service
+sudo systemctl start vncserver-virtuald.service
 
 display "Making Utilities Folder with script shortcuts for the Desktop"
 
