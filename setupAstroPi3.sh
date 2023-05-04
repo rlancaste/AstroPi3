@@ -221,6 +221,7 @@ if [ -z "$(dpkg -l | grep realvnc-vnc-server)" ]
 then
 	architecture=$(dpkg --print-architecture)
 	display "Your architechture is $architecture, attempting to install RealVNC for that version"
+	cd ~/
 	if [ $architecture == "arm64" ]
 	then
 		wget https://archive.raspberrypi.org/debian/pool/main/r/realvnc-vnc/realvnc-vnc-server_6.7.2.43081_arm64.deb -O VNC.deb
@@ -228,6 +229,7 @@ then
 		sudo ln libvcos.so /usr/lib/libvcos.so.0
 		sudo ln libvchiq_arm.so /usr/lib/libvchiq_arm.so.0
 		sudo ln libbcm_host.so /usr/lib/libbcm_host.so.0
+		cd ~/
 	else
 		wget https://www.realvnc.com/download/binary/latest/debian/arm/ -O VNC.deb
 	fi

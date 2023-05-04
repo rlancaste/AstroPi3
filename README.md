@@ -25,7 +25,6 @@ When you are ready, you can follow these steps:
 
 	If you are using a different SBC, you should find an appropriate image for your system.  My scripts so far are all based on Ubuntu or Raspbian, so you should
 	probably get an image that is Ubuntu or Raspbian for now.
-	**Be warned that right now the INDI SBIG driver does not compile in 64 bit on the ARM architecture, so if you are using an SBIG camera on a Pi, use an armhf (32 bit) image.
 2.  You will need to flash that img file to the SD card.  The easiest way to do this is to download the free program Etcher (https://etcher.io)
 3.  Drag and drop the disk image you downloaded into etcher along with the mounted SD card.  Click to initialize the flash.
 4.  If you are installing Ubuntu-MATE on the Pi 3 (not the Pi 4) you will need to edit the /boot/config.txt file before you remove it from your computer.  Apparently there is an issue where one of the settings is optimized for the Pi 4, but does not work on the Pi 3.
