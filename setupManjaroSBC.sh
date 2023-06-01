@@ -598,7 +598,7 @@ sudo pacman -R --noconfirm modemmanager
 
 # This should fix an issue where you might not be able to use a serial mount connection because you are not in the "dialout" group
 display "Enabling Serial Communication"
-sudo usermod -a -G dialout $SUDO_USER
+sudo usermod -a -G uucp $SUDO_USER
 
 
 #########################################################
