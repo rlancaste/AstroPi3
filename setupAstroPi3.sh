@@ -134,6 +134,9 @@ then
 	sed -i "s/#hdmi_mode=1/hdmi_mode=46/g" /boot/firmware/config.txt
 fi
 
+# Note that in Ubuntu 20.04 and later, these commands no longer seem to have an effect.  
+# An alternative is to add the following to cmdline.txt:  video=HDMI-A-1:1920x1080@60D based on this website: https://forums.raspberrypi.com/viewtopic.php?t=327076
+
 # This will prevent the raspberry pi from turning on the lock-screen / screensaver which can be problematic when using VNC
 gsettings set org.gnome.desktop.session idle-delay 0
 gsettings set org.mate.screensaver lock-enabled false
@@ -155,6 +158,9 @@ EOF
 # Installs Synaptic Package Manager for easy software install/removal
 display "Installing Synaptic"
 sudo apt -y install synaptic
+
+# For some reason Users and Groups settings are no longer a part of the default installation on Ubuntu Mate
+sudo apt -y install gnome-system-tools
 
 # This will enable SSH which is apparently disabled on Raspberry Pi by default.
 display "Enabling SSH"
@@ -269,6 +275,7 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/SerialDevices.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/SerialDevices.desktop
+gio set $USERHOME/Desktop/utilities/SerialDevices.desktop "metadata::trusted" true
 
 # This will create a shortcut on the desktop in the utilities folder for Installing Astrometry Index Files.
 ##################
@@ -287,6 +294,7 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop
+gio set $USERHOME/Desktop/utilities/InstallAstrometryIndexFiles.desktop "metadata::trusted" true
 
 # This will create a shortcut on the desktop in the utilities folder for Updating the System.
 ##################
@@ -305,6 +313,7 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/systemUpdater.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/systemUpdater.desktop
+gio set $USERHOME/Desktop/utilities/systemUpdater.desktop "metadata::trusted" true
 
 # This will create a shortcut on the desktop in the utilities folder for Backing Up and Restoring the KStars/INDI Files.
 ##################
@@ -323,6 +332,7 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/backupOrRestore.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/backupOrRestore.desktop
+gio set $USERHOME/Desktop/utilities/backupOrRestore.desktop "metadata::trusted" true
 
 #########################################################
 #############  Configuration for Hotspot Wifi for Connecting on the Observing Field
@@ -410,6 +420,7 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi.desktop
+gio set $USERHOME/Desktop/utilities/StartFieldWifi.desktop "metadata::trusted" true
 ##################
 sudo cat > $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop <<- EOF
 [Desktop Entry]
@@ -425,7 +436,7 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop
-
+gio set $USERHOME/Desktop/utilities/StartFieldWifi_5G.desktop "metadata::trusted" true
 # This will make a link to restart Network Manager Service if there is a problem or to go back to regular wifi after using the adhoc connection
 ##################
 sudo cat > $USERHOME/Desktop/utilities/StartNmService.desktop <<- EOF
@@ -442,7 +453,7 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartNmService.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmService.desktop
-
+gio set $USERHOME/Desktop/utilities/StartNmService.desktop "metadata::trusted" true
 # This will make a link to restart nm-applet which sometimes crashes
 ##################
 sudo cat > $USERHOME/Desktop/utilities/StartNmApplet.desktop <<- EOF
@@ -459,6 +470,7 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/StartNmApplet.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.desktop
+gio set $USERHOME/Desktop/utilities/StartNmApplet.desktop "metadata::trusted" true
 
 # This will support the functions of the next two shortcuts.
 display "Setting up Night Vision tools"
@@ -480,6 +492,7 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/NightVisionMode.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/NightVisionMode.desktop
+gio set $USERHOME/Desktop/utilities/NightVisionMode.desktop "metadata::trusted" true
 
 # This will create a link that will turn the screen back to normal
 ##################
@@ -497,7 +510,7 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/NormalVisionMode.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/NormalVisionMode.desktop
-
+gio set $USERHOME/Desktop/utilities/NormalVisionMode.desktop "metadata::trusted" true
 #########################################################
 #############  File Sharing Configuration
 
@@ -620,6 +633,7 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/utilities/PHDLogViewer.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/utilities/PHDLogViewer.desktop
+gio set $USERHOME/Desktop/utilities/PHDLogViewer.desktop "metadata::trusted" true
 
 # This will copy the desktop shortcuts into place.  If you don't want  Desktop Shortcuts, of course you can comment this out.
 display "Putting shortcuts on Desktop"
@@ -627,10 +641,12 @@ display "Putting shortcuts on Desktop"
 sudo cp /usr/share/applications/org.kde.kstars.desktop  $USERHOME/Desktop/
 sudo chmod +x $USERHOME/Desktop/org.kde.kstars.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/org.kde.kstars.desktop
+gio set $USERHOME/Desktop/org.kde.kstars.desktop "metadata::trusted" true
 
 sudo cp /usr/share/applications/phd2.desktop  $USERHOME/Desktop/
 sudo chmod +x $USERHOME/Desktop/phd2.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/phd2.desktop
+gio set $USERHOME/Desktop/phd2.desktop "metadata::trusted" true
 
 #########################################################
 #############  INDI WEB MANAGER App
@@ -668,6 +684,7 @@ EOF
 ##################
 sudo chmod +x $USERHOME/Desktop/INDIWebManagerApp.desktop
 sudo chown $SUDO_USER $USERHOME/Desktop/INDIWebManagerApp.desktop
+gio set $USERHOME/Desktop/INDIWebManagerApp.desktop "metadata::trusted" true
 ##################
 
 #########################################################
