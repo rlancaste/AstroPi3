@@ -527,10 +527,12 @@ sudo apt -y install samba
 # Installs caja-share so that you can easily share the folders you want.
 #sudo apt -y install caja-share
 
-# Shares the entire user folder instead (much simpler to work with)
-if [ ! -f /etc/samba/smb.conf ]
+# Creates the samba directory if it does not exist
+if [ ! -d /etc/samba/ ]
 then
 	sudo mkdir -p /etc/samba/
+fi
+# Shares the entire user folder instead (much simpler to work with)
 ##################
 sudo cat > /etc/samba/smb.conf <<- EOF
 [global]
@@ -548,7 +550,7 @@ sudo cat > /etc/samba/smb.conf <<- EOF
    valid users = $SUDO_USER
 EOF
 ##################
-fi
+
 
 # Adds yourself to the user group of who can use samba, but checks first if you are already in the list
 if [ -z "$(sudo pdbedit -L | grep $SUDO_USER)" ]
