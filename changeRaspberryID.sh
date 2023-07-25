@@ -21,7 +21,7 @@ fi
 
 oldhostname=$(cat /etc/hostname)
 echo "Your old host name is: " $oldhostname
-read -p "What do you want your new hostname to be?" newhostname
+read -p "What do you want your new hostname to be? " newhostname
 
 # Write the new host name to the appropriate files
 sudo $newhostname > /etc/hostname
