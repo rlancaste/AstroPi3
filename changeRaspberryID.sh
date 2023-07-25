@@ -24,8 +24,8 @@ echo "Your old host name is: " $oldhostname
 read -p "What do you want your new hostname to be? " newhostname
 
 # Write the new host name to the appropriate files
-sudo $newhostname > /etc/hostname
-sed -i "s/$oldhostname/$newhostname/g" /etc/hosts
+sudo echo $newhostname > /etc/hostname
+sudo sed -i "s/$oldhostname/$newhostname/g" /etc/hosts
 
 # Regenerate the SSH keys (https://raspberrypi.stackexchange.com/questions/84281/using-a-cloned-raspberry-pi-as-its-own-system#112717)
 sudo rm /etc/ssh/ssh_host*
