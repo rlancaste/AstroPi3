@@ -93,6 +93,15 @@ autologin-user=$SUDO_USER
 EOF
 ##################
 
+##################
+sudo cat > /etc/lightdm/lightdm.conf <<- EOF
+[Seat:*]
+autologin-guest=false
+autologin-user=$SUDO_USER
+autologin-user-timeout=0
+EOF
+##################
+
 display "Setting HDMI settings in the boot folder."
 
 # Note that for these settings, /boot/config.txt might actually be /boot/firmware/config.txt
