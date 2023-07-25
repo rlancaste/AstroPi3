@@ -93,7 +93,7 @@ autologin-user=$SUDO_USER
 EOF
 ##################
 
-display "Setting HDMI settings in /boot/config.txt."
+display "Setting HDMI settings in the boot folder."
 
 # Note that for these settings, /boot/config.txt might actually be /boot/firmware/config.txt
 # So we will change it in both places just in case.
@@ -136,6 +136,11 @@ fi
 
 # Note that in Ubuntu 20.04 and later, these commands no longer seem to have an effect.  
 # An alternative is to add the following to cmdline.txt:  video=HDMI-A-1:1920x1080@60D based on this website: https://forums.raspberrypi.com/viewtopic.php?t=327076
+
+if [ -z "$(grep 'video=HDMI' '/boot/firmware/cmdline.txt')" ]
+then
+	sed -i "s/$/ video=HDMI-A-1:1920x1080@60D/" /boot/firmware/cmdline.txt
+fi
 
 # This will prevent the raspberry pi from turning on the lock-screen / screensaver which can be problematic when using VNC
 gsettings set org.gnome.desktop.session idle-delay 0
