@@ -46,7 +46,7 @@ When you are ready, you can follow these steps:
 	you might not have the option to setup the login name or computer name in the setup script.  I would recommend that you try to do this before you run my script.
 7.  Copy the scripts in this GIT Repo to your SBC and Open a Terminal Window.  You could type the following commands into Terminal to accomplish this goal.
 
-		sudo apt-get install git
+		sudo apt install git
 	
 		git clone https://github.com/rlancaste/AstroPi3.git
 	
