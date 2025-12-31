@@ -867,8 +867,8 @@ else
 fi
 
 cd $USERHOME/AstroRoot/kstars-build
-sudo -H -u $SUDO_USER cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_TESTING=OFF -DBUILD_DOC=OFF --target kstars $USERHOME/AstroRoot/kstars/
-sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
+sudo -H -u $SUDO_USER cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_TESTING=OFF -DBUILD_DOC=OFF $USERHOME/AstroRoot/kstars/
+sudo -H -u $SUDO_USER cmake --build . --target kstars -j $(expr $(nproc) + 2)
 sudo make install
 
 # Installs the General Star Catalog if you plan on using the simulators to test (If not, you can comment this line out with a #)
