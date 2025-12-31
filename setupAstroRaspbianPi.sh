@@ -56,7 +56,7 @@ then
 fi
 
 display "Testing connections to required web addresses for running the script.  If the pi cannot connect to the internet, you should correct this before running the script.  If a required resource is not available, you should find out if the resource has moved, or remove the requirement for this resource."
-checkForConnection ZRam-script "https://raw.githubusercontent.com/novaspirit/rpi_zram/master/zram.sh"
+#checkForConnection ZRam-script "https://raw.githubusercontent.com/novaspirit/rpi_zram/master/zram.sh"
 checkForConnection INDI-Git-Repo "https://github.com/indilib/indi.git"
 checkForConnection INDI-3rdparty-Repo "https://github.com/indilib/indi-3rdparty.git"
 checkForConnection GSC-Source "http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2"
@@ -531,7 +531,7 @@ sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/utilities/StartNmApplet.deskt
 #########################################################
 #############  Checking Network connectivity before continuing, since the Network changes may have caused internet to drop out if on WIFI
 display "Verifying that the Pi is still online and able to access all required online resources.  The network configuration may have been changed.  If the Pi no longer has internet connection, you should restart it and reconnect it to the internet."
-checkForConnection ZRam-script "https://raw.githubusercontent.com/novaspirit/rpi_zram/master/zram.sh"
+#checkForConnection ZRam-script "https://raw.githubusercontent.com/novaspirit/rpi_zram/master/zram.sh"
 checkForConnection INDI-Git-Repo "https://github.com/indilib/indi.git"
 checkForConnection INDI-3rdparty-Repo "https://github.com/indilib/indi-3rdparty.git"
 checkForConnection GSC-Source "http://cdsarc.u-strasbg.fr/viz-bin/nph-Cat/tar.gz?bincats/GSC_1.2"
@@ -633,13 +633,24 @@ fi
 # This is not needed on all systems, since different cameras download different size images, and different SBC's have different RAM capacities but 
 # if you are using a DSLR on a Raspberry Pi with 1GB of RAM, it definitely is needed. If you don't want this, comment it out.
 display "Installing zRAM for increased RAM capacity"
-sudo wget -O /usr/bin/zram.sh https://raw.githubusercontent.com/novaspirit/rpi_zram/master/zram.sh
-sudo chmod +x /usr/bin/zram.sh
-
-if [ -z "$(grep '/usr/bin/zram.sh' '/etc/rc.local')" ]
+sudo apt install zram-tools
+if [ -n "$(grep '#PERCENT=50' '/etc/default/zramswap')" ]
 then
-   sed -i "/^exit 0/i /usr/bin/zram.sh &" /etc/rc.local
+	sed -i "s/#PERCENT=50/PERCENT=50/g" /etc/default/zramswap
 fi
+
+if [ -n "$(grep '#PRIORITY=100' '/etc/default/zramswap')" ]
+then
+	sed -i "s/#PRIORITY=100/PRIORITY=100/g" /etc/default/zramswap
+fi
+
+#sudo wget -O /usr/bin/zram.sh https://raw.githubusercontent.com/novaspirit/rpi_zram/master/zram.sh
+#sudo chmod +x /usr/bin/zram.sh
+
+#if [ -z "$(grep '/usr/bin/zram.sh' '/etc/rc.local')" ]
+#then
+#   sed -i "/^exit 0/i /usr/bin/zram.sh &" /etc/rc.local
+#fi
 
 # This should fix an issue where modemmanager could interfere with serial connections
 display "Removing Modemmanger, which can interfere with serial connections."
@@ -856,7 +867,7 @@ else
 fi
 
 cd $USERHOME/AstroRoot/kstars-build
-sudo -H -u $SUDO_USER cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr $USERHOME/AstroRoot/kstars/
+sudo -H -u $SUDO_USER cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_TESTING=OFF -DBUILD_DOC=OFF --target kstars $USERHOME/AstroRoot/kstars/
 sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
 sudo make install
 
