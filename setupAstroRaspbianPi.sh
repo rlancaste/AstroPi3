@@ -832,8 +832,8 @@ display "Installing XPlanet"
 sudo apt -y install xplanet
 
 # Installs Pre Requirements for KStars
-display "Installing INDI and INDI 3rd Party Prequisites."
-sudo apt -y install build-essential cmake git libeigen3-dev libcfitsio-dev zlib1g-dev libindi-dev extra-cmake-modules libkf6plotting-dev qt6-svg-dev libkf6iconthemes-dev wcslib-dev libqt6sql6-sqlite
+display "Installing KStars and StellarSolver Prequisites."
+sudo apt -y install build-essential cmake git libeigen3-dev libcfitsio-dev zlib1g-dev extra-cmake-modules libkf6plotting-dev qt6-svg-dev libkf6iconthemes-dev wcslib-dev libqt6sql6-sqlite
 sudo apt -y install libkf6xmlgui-dev libkf6kio-dev kinit-dev libkf6newstuff-dev libkf6doctools-dev libkf6notifications-dev qt6-websockets-dev qt6-declarative-dev libkf6crash-dev gettext qml-module-qtquick-controls qml-module-qtquick-layouts
 sudo apt -y install libkf6notifyconfig-dev qt6-datavis3d-dev qtkeychain-qt6-dev libqt6graphs6 libqt6graphswidgets6 qt6-graphs-dev libopencv-dev qt6-base-dev
 
@@ -869,7 +869,7 @@ else
 fi
 
 cd $USERHOME/AstroRoot/kstars-build
-sudo -H -u $SUDO_USER cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_TESTING=OFF -DBUILD_DOC=OFF $USERHOME/AstroRoot/kstars/
+sudo -H -u $SUDO_USER cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_TESTING=OFF -DBUILD_WITH_QT6=ON -DBUILD_DOC=OFF $USERHOME/AstroRoot/kstars/
 sudo -H -u $SUDO_USER cmake --build . --target kstars -j $(expr $(nproc) + 2)
 sudo make install
 
