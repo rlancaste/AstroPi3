@@ -678,9 +678,10 @@ EOF
 sudo chown $SUDO_USER:$SUDO_USER $USERHOME/.config/kdeglobals
 
 # Installs Pre Requirements for INDI
+display "Installing INDI and INDI 3rd Party Prequisites."
 sudo apt -y install libnova-dev libcfitsio-dev libusb-1.0-0-dev libusb-dev zlib1g-dev libgsl-dev build-essential cmake git libjpeg-dev libcurl4-gnutls-dev libtiff-dev
 sudo apt -y install libftdi-dev libgps-dev libraw-dev libdc1394-dev libgphoto2-dev libboost-dev libboost-regex-dev librtlsdr-dev liblimesuite-dev libftdi1-dev
-sudo apt -y install ffmpeg libavcodec-dev libavdevice-dev libfftw3-dev libev-dev libzmq5-dev
+sudo apt -y install ffmpeg libavcodec-dev libavdevice-dev libfftw3-dev libev-dev libzmq5-dev libxisf-dev libudev-dev libbluetooth-dev
 
 #sudo apt install cdbs fxload libkrb5-dev dkms Are these needed too???
 
@@ -831,9 +832,10 @@ display "Installing XPlanet"
 sudo apt -y install xplanet
 
 # Installs Pre Requirements for KStars
+display "Installing INDI and INDI 3rd Party Prequisites."
 sudo apt -y install build-essential cmake git libeigen3-dev libcfitsio-dev zlib1g-dev libindi-dev extra-cmake-modules libkf6plotting-dev qt6-svg-dev libkf6iconthemes-dev wcslib-dev libqt6sql6-sqlite
 sudo apt -y install libkf6xmlgui-dev libkf6kio-dev kinit-dev libkf6newstuff-dev libkf6doctools-dev libkf6notifications-dev qt6-websockets-dev qt6-declarative-dev libkf6crash-dev gettext qml-module-qtquick-controls qml-module-qtquick-layouts
-sudo apt -y install libkf6notifyconfig-dev qt6-datavisualization-dev qtkeychain-qt6-dev
+sudo apt -y install libkf6notifyconfig-dev qt6-datavis3d-dev qtkeychain-qt6-dev libqt6graphs6 libqt6graphswidgets6 qt6-graphs-dev libopencv-dev qt6-base-dev
 
 # This builds and installs StellarSolver
 display "Building and Installing StellarSolver"
@@ -883,7 +885,7 @@ then
 	fi
 	sudo -H -u $SUDO_USER tar -xvzf bincats_GSC_1.2.tar.gz
 	cd $USERHOME/AstroRoot/gsc/src
-	sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2)
+	sudo -H -u $SUDO_USER make -j $(expr $(nproc) + 2) CFLAGS+="-Wno-implicit-int -Wno-implicit-function-declaration"
 	sudo -H -u $SUDO_USER mv gsc.exe gsc
 	sudo cp gsc /usr/bin/
 	cp -r $USERHOME/AstroRoot/gsc /usr/share/
