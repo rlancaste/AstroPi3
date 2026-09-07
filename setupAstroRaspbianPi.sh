@@ -831,9 +831,9 @@ display "Installing XPlanet"
 sudo apt -y install xplanet
 
 # Installs Pre Requirements for KStars
-sudo apt -y install build-essential cmake git libeigen3-dev libcfitsio-dev zlib1g-dev libindi-dev extra-cmake-modules libkf5plotting-dev libqt5svg5-dev libkf5iconthemes-dev wcslib-dev libqt5sql5-sqlite
-sudo apt -y install libkf5xmlgui-dev libkf5kio-dev kinit-dev libkf5newstuff-dev libkf5doctools-dev libkf5notifications-dev libqt5websockets5-dev qtdeclarative5-dev libkf5crash-dev gettext qml-module-qtquick-controls qml-module-qtquick-layouts
-sudo apt -y install libkf5notifyconfig-dev libqt5datavisualization5-dev qt5keychain-dev
+sudo apt -y install build-essential cmake git libeigen3-dev libcfitsio-dev zlib1g-dev libindi-dev extra-cmake-modules libkf6plotting-dev qt6-svg-dev libkf6iconthemes-dev wcslib-dev libqt6sql6-sqlite
+sudo apt -y install libkf6xmlgui-dev libkf6kio-dev kinit-dev libkf6newstuff-dev libkf6doctools-dev libkf6notifications-dev qt6-websockets-dev qt6-declarative-dev libkf6crash-dev gettext qml-module-qtquick-controls qml-module-qtquick-layouts
+sudo apt -y install libkf6notifyconfig-dev qt6-datavisualization-dev qtkeychain-qt6-dev
 
 # This builds and installs StellarSolver
 display "Building and Installing StellarSolver"
