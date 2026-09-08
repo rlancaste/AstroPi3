@@ -186,45 +186,9 @@ then
 	sed -i "s/#autologin-user-timeout=0/autologin-user-timeout=0/g" /etc/lightdm/lightdm.conf
 fi
 
-display "Setting HDMI settings in /boot/config.txt."
+# display "Setting HDMI settings in /boot/config.txt."
 
-# This pretends an HDMI display is connected at all times, otherwise, the pi might shut off HDMI
-# So that when you go to plug in an HDMI connector to diagnose a problem, it doesn't work
-# This makes the HDMI output always available
-if [ -n "$(grep '#hdmi_force_hotplug=1' '/boot/config.txt')" ]
-then
-	sed -i "s/#hdmi_force_hotplug=1/hdmi_force_hotplug=1/g" /boot/config.txt
-fi
-
-# This sets the group for the HDMI mode.  Please see the config file for details about all the different modes
-# There are many options.  I selected group 1 mode 46 because that matches my laptop's resolution.
-# You might want a different mode and group if you want a certain resolution in VNC
-if [ -n "$(grep '#hdmi_group=1' '/boot/config.txt')" ]
-then
-	sed -i "s/#hdmi_group=1/hdmi_group=2/g" /boot/config.txt
-fi
-
-# This sets the HDMI mode.  Please see the config file for details about all the different modes
-# There are many options.  I selected group 1 mode 46 because that matches my laptop's resolution.
-# You might want a different mode and group if you want a certain resolution in VNC
-if [ -n "$(grep '#hdmi_mode=1' '/boot/config.txt')" ]
-then
-	sed -i "s/#hdmi_mode=1/hdmi_mode=46/g" /boot/config.txt
-fi
-
-# This comments out a line in Raspbian's config file that seems to prevent the desired screen resolution in VNC
-# The logic here is that if the line does exist, and if the line is not commented out, comment it out.
-# However it should be noted that this change may disable the 2nd HDMI output.
-# If you want to use your PI in a headless mode and set your own resolution, you need to run this code on a PI 4.
-# If you want to use two HDMI monitors with the PI 4, instead of going headless, you should not run this code.
-if [ -n "$(grep '^dtoverlay=vc4-kms-v3d' '/boot/config.txt')" ]
-then
-	sed -i "s/dtoverlay=vc4-kms-v3d/#dtoverlay=vc4-kms-v3d/g" /boot/config.txt
-fi
-if [ -n "$(grep '^dtoverlay=vc4-fkms-v3d' '/boot/config.txt')" ]
-then
-	sed -i "s/dtoverlay=vc4-fkms-v3d/#dtoverlay=vc4-fkms-v3d/g" /boot/config.txt
-fi
+# The HDMI Settings were removed because Raspbian Trixie works well with VNC remotely or plugged in.
 
 
 # This will prevent the raspberry pi from turning on the lock-screen / screensaver which can be problematic when using VNC
@@ -232,10 +196,6 @@ if [ -z "$(grep 'xserver-command=X -s 0 dpms' '/etc/lightdm/lightdm.conf')" ]
 then
 	sed -i "/\[Seat:\*\]/ a xserver-command=X -s 0 dpms" /etc/lightdm/lightdm.conf
 fi
-
-# Installs Synaptic Package Manager for easy software install/removal
-display "Installing Synaptic"
-sudo apt -y install synaptic
 
 # This will enable SSH which is apparently disabled on Raspberry Pi by default.
 display "Enabling SSH"
@@ -245,21 +205,8 @@ sudo systemctl start ssh
 
 # This will install and configure network manager and remove dhcpcd5 because it has some issues
 # Also the commands below that setup networking depend upon network manager.
-sudo apt -y install network-manager network-manager-gnome
-sudo apt purge -y openresolv dhcpcd5
-# This should remove the old manager panel from the taskbar
-if [ -n "$(grep 'type=dhcpcdui' $USERHOME/.config/lxpanel/LXDE-$SUDO_USER/panels/panel)" ]
-then
-	sed -i "s/type=dhcpcdui/type=space/g" $USERHOME/.config/lxpanel/LXDE-$SUDO_USER/panels/panel
-fi
-if [ -n "$(grep 'type=dhcpcdui' /etc/xdg/lxpanel/LXDE-$SUDO_USER/panels/panel)" ]
-then
-	sed -i "s/type=dhcpcdui/type=space/g" /etc/xdg/lxpanel/LXDE-$SUDO_USER/panels/panel
-fi
-if [ -n "$(grep 'type=dhcpcdui' /etc/xdg/lxpanel/LXDE/panels/panel)" ]
-then
-	sed -i "s/type=dhcpcdui/type=space/g" /etc/xdg/lxpanel/LXDE/panels/panel
-fi
+
+# These commands have been removed because Raspbian Trixie uses network manager already by default
 
 
 # This will set up your Pi to have access to internet with wifi, ethernet with DHCP, and ethernet with direct connection
@@ -622,6 +569,10 @@ fi
 #########################################################
 #############  Very Important Configuration Items
 
+
+# Zram is preferred, but it is now preconfigured and running on Raspbian Trixie.
+# You can increase the size of the RAM by editing /etc/rpi/swap.conf
+
 # This will create a swap file for an increased 2 GB of artificial RAM.  This is not needed on all systems, since different cameras download different size images, but if you are using a DSLR, it definitely is.
 # This method is disabled in favor of the zram method below. If you prefer this method, you can re-enable it by taking out the #'s
 #display "Creating SWAP Memory"
@@ -632,17 +583,17 @@ fi
 # This will create zram, basically a swap file saved in RAM. It will not read or write to the SD card, but instead, writes to compressed RAM.  
 # This is not needed on all systems, since different cameras download different size images, and different SBC's have different RAM capacities but 
 # if you are using a DSLR on a Raspberry Pi with 1GB of RAM, it definitely is needed. If you don't want this, comment it out.
-display "Installing zRAM for increased RAM capacity"
-sudo apt install zram-tools
-if [ -n "$(grep '#PERCENT=50' '/etc/default/zramswap')" ]
-then
-	sed -i "s/#PERCENT=50/PERCENT=50/g" /etc/default/zramswap
-fi
+#display "Configuring zRAM for increased RAM capacity"
+#sudo apt install zram-tools
+#if [ -n "$(grep '#PERCENT=50' '/etc/default/zramswap')" ]
+#then
+#	sed -i "s/#PERCENT=50/PERCENT=50/g" /etc/default/zramswap
+#fi
 
-if [ -n "$(grep '#PRIORITY=100' '/etc/default/zramswap')" ]
-then
-	sed -i "s/#PRIORITY=100/PRIORITY=100/g" /etc/default/zramswap
-fi
+#if [ -n "$(grep '#PRIORITY=100' '/etc/default/zramswap')" ]
+#then
+#	sed -i "s/#PRIORITY=100/PRIORITY=100/g" /etc/default/zramswap
+#fi
 
 #sudo wget -O /usr/bin/zram.sh https://raw.githubusercontent.com/novaspirit/rpi_zram/master/zram.sh
 #sudo chmod +x /usr/bin/zram.sh
@@ -681,7 +632,7 @@ sudo chown $SUDO_USER:$SUDO_USER $USERHOME/.config/kdeglobals
 display "Installing INDI and INDI 3rd Party Prequisites."
 sudo apt -y install libnova-dev libcfitsio-dev libusb-1.0-0-dev libusb-dev zlib1g-dev libgsl-dev build-essential cmake git libjpeg-dev libcurl4-gnutls-dev libtiff-dev
 sudo apt -y install libftdi-dev libgps-dev libraw-dev libdc1394-dev libgphoto2-dev libboost-dev libboost-regex-dev librtlsdr-dev liblimesuite-dev libftdi1-dev
-sudo apt -y install ffmpeg libavcodec-dev libavdevice-dev libfftw3-dev libev-dev libzmq5-dev libxisf-dev libudev-dev libbluetooth-dev
+sudo apt -y install ffmpeg libavcodec-dev libavdevice-dev libfftw3-dev libev-dev libzmq5-dev libxisf-dev libudev-dev libbluetooth-dev liberfa-dev nut-client
 
 #sudo apt install cdbs fxload libkrb5-dev dkms Are these needed too???
 
@@ -834,7 +785,8 @@ sudo apt -y install xplanet
 # Installs Pre Requirements for KStars
 display "Installing KStars and StellarSolver Prequisites."
 sudo apt -y install build-essential cmake git libeigen3-dev libcfitsio-dev zlib1g-dev extra-cmake-modules libkf6plotting-dev qt6-svg-dev qt6-svg-plugins libkf6iconthemes-dev wcslib-dev libqt6sql6-sqlite
-sudo apt -y install libkf6xmlgui-dev libkf6kio-dev kinit-dev libkf6newstuff-dev libkf6doctools-dev libkf6notifications-dev qt6-websockets-dev qt6-declarative-dev libkf6crash-dev gettext qml-module-qtquick-controls qml-module-qtquick-layouts
+sudo apt -y install libkf6xmlgui-dev libkf6kio-dev kinit-dev libkf6newstuff-dev libkf6doctools-dev libkf6notifications-dev qt6-websockets-dev qt6-declarative-dev libkf6crash-dev gettext 
+sudo apt -y install qml6-module-qtquick qml-module-qtquick-controls qml-module-qtquick-layouts qml6-module-qtquick3d
 sudo apt -y install libkf6notifyconfig-dev qt6-datavis3d-dev qtkeychain-qt6-dev libqt6graphs6 libqt6graphswidgets6 qt6-graphs-dev libopencv-dev qt6-base-dev
 
 # This builds and installs StellarSolver
