@@ -982,10 +982,15 @@ sudo chown $SUDO_USER:$SUDO_USER $USERHOME/Desktop/phd2.desktop
 display "Building and Installing INDI Web Manager App, indiweb, and python3"
 
 # This will install pip3
-sudo apt -y install python3-pip
+sudo apt -y install python3-full python3-pip
 
-# This will install indiweb as the user
-sudo -H -u $SUDO_USER pip3 install indiweb
+# This will set up the virtual python environment, since python is now system managed and indiwebmanager may not exist in that system
+mkdir -p $USERHOME/indiwebmanager
+sudo chown $SUDO_USER:$SUDO_USER $USERHOME/indiwebmanager
+sudo -H -u $SUDO_USER python3 -m venv $USERHOME/indiwebmanager
+
+# This will install indiweb as the user in the virtual environment
+sudo -H -u $SUDO_USER $USERHOME/indiwebmanager/bin/pip install indiweb
 
 # This will clone or update the repo
 if [ ! -d $USERHOME/AstroRoot/INDIWebManagerApp ]
